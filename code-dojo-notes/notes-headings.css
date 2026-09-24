@@ -1,0 +1,85 @@
+﻿
+
+/*  This is for styling of collapsible headings           */
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    padding: 20px;
+}
+
+li{
+    margin-left: 20px;
+}
+
+.real-top {
+    margin-top: 10rem;
+
+}
+.individual-languages{
+    text-decoration: underline;
+    color: deepskyblue;
+}
+.section {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Main heading button */
+.heading {
+    width: 100%;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 15px;
+    text-align: left;
+    font-size: 20px;
+    cursor: pointer;
+    
+}
+
+    .heading:hover {
+        background: #34495e;
+    }
+
+/* Subheading button */
+.subheading {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    text-align: left;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 20px;
+}
+
+    .subheading:hover {
+        background: #2980b9;
+    }
+
+
+
+
+/* Hidden content */
+.content {
+    display: none;
+    padding: 15px;
+    background: #ecf0f1;
+    transition: 0.3s;
+}
+
+.subcontent {
+    display: none;
+    font-size: 20px;
+    background: #ffffff;
+    border-top: 1px solid #ccc;
+    margin: 12px;
+ 
+}
