@@ -1,0 +1,137 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*                  ---This is the CSS Reset---                               */
+body {
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: black;
+    color: white;
+    padding: 20px;
+}
+
+section {
+    width: 100%;
+    overflow-y: auto;
+    min-height: 1000px;
+    margin-top: 150px;
+}
+
+.card {
+    background-color: #2B2D2F;
+    border: 3px solid #000000;
+    height: 400px;
+    width: 500px;
+    z-index: 20;
+    color: white;
+    font-size: 30px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: 0.3s ease;
+    pointer-events: none;
+}
+
+    .card.show {
+        opacity: 1;
+        transform: translateX(60%);
+        pointer-events: auto;
+    }
+
+
+
+
+
+header {
+    position: fixed;
+}
+
+.entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 1200px;
+    font-size: 16px;
+    margin: 40px; /* space between panels */
+    background-color: #2B2D2F;
+    color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+
+
+    .post iframe {
+        margin: 20px 0;
+        border-radius: 12px;
+    }
+
+.highlights-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-weight: 50;
+    font-size: 4rem;
+}
+
+.title, .xp {
+    font-size: 5rem;
+    margin-bottom: 40px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: italic;
+    font-weight: 50;
+}
+
+strong {
+    color: #FFF8DC;
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+}
+
+
+.info {
+    font-size: 3rem;
+    transition: 0.3s ease;
+}
+
+.info-link {
+    color: white; /* FIX visibility */
+    
+    transition: 0.3s ease;
+}
+
+    /* hover ONLY the link */
+    .info, .info-link:hover {
+        color: black;
+        transform: scale(1.2);
+    }
+
+
+@media(max-width:995px) {
+
+    .card.show {
+        opacity: 1;
+        transform: translateX(-60%);
+        transform: translateY(-20%);
+        pointer-events: auto;
+    }
+}
