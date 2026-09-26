@@ -1,0 +1,1076 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/.bat + CLI </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-8007-b012-f8e2a4e25f1b" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/.bat + CLI </h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-8089-b96a-fc11ffab9ef5" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80fd-84dd-c27456725628" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-806c-b147-dd0c5caf8002" style="display:inline-block">Variables &amp; “Constants” (Batch-style variables)</h1></summary><div class="indented"><p id="39315921-b68f-8066-9257-c4030e3a9b5e" class="" dir="auto">Q1: What is a variable in a .bat file?<br/>A: A variable is a named placeholder that stores text or values.</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-803f-b696-c769a49299c9" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set name=Alex</code></pre><p id="39315921-b68f-80c0-804b-dec032efd9fd" class="" dir="auto">Q2: When should I use a variable in batch?<br/>A: When you need to reuse or change a value during the script.</p><p id="39315921-b68f-80bf-9ea7-ebd85bebf47f" class="" dir="auto">Q3: How do I create a variable?<br/>A:</p><pre id="39315921-b68f-80f4-b88d-d0b2ddf26897" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set score=10</code></pre><p id="39315921-b68f-809d-84ab-f0b66729e487" class="" dir="auto">Q4: How do I use a variable?<br/>A:</p><pre id="39315921-b68f-8053-a727-d61675d68bab" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %score%</code></pre><p id="39315921-b68f-8084-bddf-ef54d365e16d" class="" dir="auto">Q5: Can variables change in .bat?<br/>A: Yes, by using set again.</p><pre id="39315921-b68f-80cb-b261-ee6592e8e7e2" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set score=20</code></pre><p id="39315921-b68f-802e-9d4f-f1def1e9b565" class="" dir="auto">Q6: What is a “constant” in .bat?<br/>A: Batch doesn’t have real constants, but you simulate one by not changing it.</p><p id="39315921-b68f-8095-8a62-d2f87ca7f23f" class="" dir="auto">Q7: How do I simulate a constant?<br/>A:</p><pre id="39315921-b68f-805a-89ad-e37c97eb77ff" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set MAX=100</code></pre><p id="39315921-b68f-804e-accd-e2f0990434a0" class="" dir="auto">Q8: Why use variables instead of writing values directly?<br/>A: So you can change values in one place.</p><p id="39315921-b68f-8046-91bc-fe386667e057" class="" dir="auto">Q9: What does %variable% mean?<br/>A: It tells batch to insert the variable’s value.</p><p id="39315921-b68f-80ea-9113-eec3f841d987" class="" dir="auto">Q10: Why are variables important in batch?<br/>A: They let scripts remember and reuse data.</p></div></details><hr id="39315921-b68f-8058-a185-e7043d9e02f6" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801b-b562-f7d3f864a793" style="display:inline-block">Data Types (Simple CLI meaning)</h1></summary><div class="indented"><p id="39315921-b68f-80d4-8060-f3302f22b9c2" class="" dir="auto">Q11: What data types exist in .bat?<br/>A: Mostly text (strings), but numbers and booleans are treated as text.</p><p id="39315921-b68f-8004-925a-f0ace4cbbbfe" class="" dir="auto">Q12: How do I store a number?<br/>A:</p><pre id="39315921-b68f-80e7-b02a-d8ab36d2cf90" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set num=5</code></pre><p id="39315921-b68f-8074-968b-f011b4436a8f" class="" dir="auto">Q13: How do I store text?<br/>A:</p><pre id="39315921-b68f-806b-9974-e2bc4f119674" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set name=Hello</code></pre><p id="39315921-b68f-800a-a152-e1c8009178b5" class="" dir="auto">Q14: How do I store true/false?<br/>A:</p><pre id="39315921-b68f-802e-b423-defa5d58d395" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set isOn=true</code></pre><p id="39315921-b68f-8032-ae0c-db43b7c5cf3e" class="" dir="auto">Q15: Why does batch treat everything like text?<br/>A: Because it is a scripting language, not a compiled one.</p><p id="39315921-b68f-80d5-9b00-f4da4aec975e" class="" dir="auto">Q16: How do I convert string to number behavior?<br/>A: Batch does math automatically in SET /A.</p><p id="39315921-b68f-8045-8b92-f7b5de3af76d" class="" dir="auto">Q17: Why does data type matter less in batch?<br/>A: Because batch is loosely typed.</p><p id="39315921-b68f-805b-929d-d6ae7d18f54f" class="" dir="auto">Q18: What is a “value” in batch?<br/>A: Anything stored after = in a variable.</p><p id="39315921-b68f-8067-845d-fb0fdc0bfb14" class="" dir="auto">Q19: Can variables store spaces?<br/>A:</p><pre id="39315921-b68f-80b8-b21c-dff1e4ec456c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set name=John Doe</code></pre><p id="39315921-b68f-8075-a5a7-f1bfefc7fcae" class="" dir="auto">Q20: Why use quotes carefully?<br/>A: Spaces can break commands if not handled properly.</p></div></details><hr id="39315921-b68f-803f-a640-ebb310d40878" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80cc-b6f1-ce8d8f3a7b67" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-8097-9c43-f39834f528d3" class="" dir="auto">Q21: How do I print text in batch?<br/>A:</p><pre id="39315921-b68f-8009-b02f-fd4ded499a6f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Hello World</code></pre><p id="39315921-b68f-80ed-b2bd-f89a5eecd831" class="" dir="auto">Q22: How do I print a variable?<br/>A:</p><pre id="39315921-b68f-80af-9c5f-e5e4e5cbcd43" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %name%</code></pre><p id="39315921-b68f-80c1-8af0-fb88b9df703d" class="" dir="auto">Q23: How do I take user input?<br/>A:</p><pre id="39315921-b68f-8038-9cec-f85363ffc1b6" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /p name=Enter your name:</code></pre><p id="39315921-b68f-800f-b6f1-c453ec60c9e0" class="" dir="auto">Q24: Why use set /p?<br/>A: It pauses and reads user input.</p><p id="39315921-b68f-806e-adc3-edb74279693f" class="" dir="auto">Q25: How do I display a message?<br/>A:</p><pre id="39315921-b68f-80dd-ae58-db57588e5009" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Welcome!</code></pre><p id="39315921-b68f-806b-8da3-c8f3b3029492" class="" dir="auto">Q26: How do I clear the screen?<br/>A:</p><pre id="39315921-b68f-8039-9301-ce239d1d72c6" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cls</code></pre><p id="39315921-b68f-80d4-adef-fbed5ea8e39b" class="" dir="auto">Q27: Why use echo?<br/>A: It outputs text to the terminal.</p><p id="39315921-b68f-8031-8d32-ee37041ebd93" class="" dir="auto">Q28: How do I print blank lines?<br/>A:</p><pre id="39315921-b68f-8018-84d5-f552ec7b7609" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo.</code></pre><p id="39315921-b68f-809b-9d7b-ed5a45becd68" class="" dir="auto">Q29: How do I combine text and variables?<br/>A:</p><pre id="39315921-b68f-8094-8a2c-f585e3b68095" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Hello %name%</code></pre><p id="39315921-b68f-805d-933b-f8a406404e46" class="" dir="auto">Q30: Why is CLI output important?<br/>A: It shows results of your script.</p></div></details><hr id="39315921-b68f-801a-9a1c-e270c6d79abd" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801e-9835-f927b0069e06" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80f2-b8e5-dfab950af0c6" class="" dir="auto">Q31: How do I add numbers in batch?<br/>A:</p><pre id="39315921-b68f-80d9-a56e-c0f9d0418c69" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=5+3</code></pre><p id="39315921-b68f-8083-ac28-fe1ca7fc2ea1" class="" dir="auto">Q32: How do I subtract?<br/>A:</p><pre id="39315921-b68f-8050-ac33-fd84f3e742e1" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10-4</code></pre><p id="39315921-b68f-8003-97bc-fef00d49704d" class="" dir="auto">Q33: How do I multiply?<br/>A:</p><pre id="39315921-b68f-8051-8c49-d4b0e1caea73" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=3*3</code></pre><p id="39315921-b68f-8060-8288-f9ed8e03cc27" class="" dir="auto">Q34: How do I divide?<br/>A:</p><pre id="39315921-b68f-8045-8c80-fc523a44d23c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10/2</code></pre><p id="39315921-b68f-801d-b25b-e8014c2dd098" class="" dir="auto">Q35: What is /a?<br/>A: It tells batch to perform arithmetic.</p><p id="39315921-b68f-8041-8fd5-ca0ac01f4000" class="" dir="auto">Q36: Can batch do decimals?<br/>A: Not well; it uses integer math.</p><p id="39315921-b68f-8066-a079-fea76322dfe0" class="" dir="auto">Q37: What is modulus?<br/>A:</p><pre id="39315921-b68f-8065-a587-f1346bb961eb" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10%%3</code></pre><p id="39315921-b68f-80ae-9323-c67e95240e72" class="" dir="auto">Q38: Why use %% instead of %?<br/>A: Because % is reserved for variables.</p><p id="39315921-b68f-80cd-8311-f3855cdc7b90" class="" dir="auto">Q39: How do I increase a number?<br/>A:</p><pre id="39315921-b68f-8014-9015-f986ad3fe7cd" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a score+=1</code></pre><p id="39315921-b68f-802e-80c1-e565e315a458" class="" dir="auto">Q40: Why use math in scripts?<br/>A: For counters, timers, and logic.</p></div></details><hr id="39315921-b68f-807b-b972-e72ae1816c46" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ec-bbd6-fba65ccc29c5" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8004-8f2e-e1deb4d87761" class="" dir="auto">Q41: What is an if statement in batch?<br/>A: A decision command.</p><p id="39315921-b68f-802b-8b57-dce1e5393fe2" class="" dir="auto">Q42: How do I use if?<br/>A:</p><pre id="39315921-b68f-809c-bde4-d18fe72d2aea" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score%==10 echo Perfect</code></pre><p id="39315921-b68f-8068-b62d-f11a961c50d8" class="" dir="auto">Q43: How do I use if/else?<br/>A:</p><pre id="39315921-b68f-80d4-b21b-de3e3e512b96" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score%==10 (
+    echo Perfect
+) else (
+    echo Try again
+)</code></pre><p id="39315921-b68f-80be-81ba-d4b45b356349" class="" dir="auto">Q44: What does == mean?<br/>A: It compares values.</p><p id="39315921-b68f-8070-b363-e8cab2643557" class="" dir="auto">Q45: When should I use if?<br/>A: When something depends on a condition.</p><p id="39315921-b68f-807a-b91d-ca8d2c0e5f55" class="" dir="auto">Q46: How do I check not equal?<br/>A:</p><pre id="39315921-b68f-80fb-b183-fbb1dfef673c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if not %score%==10 echo Wrong</code></pre><p id="39315921-b68f-80d5-96ec-f01288e1a9c6" class="" dir="auto">Q47: Why use parentheses in batch if?<br/>A: To group commands.</p><p id="39315921-b68f-8091-a126-deba1adcace7" class="" dir="auto">Q48: How do I check empty input?<br/>A:</p><pre id="39315921-b68f-805d-9ec4-e256fea6a1da" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if &quot;%name%&quot;==&quot;&quot; echo Empty</code></pre><p id="39315921-b68f-80be-ac33-fd59017919c1" class="" dir="auto">Q49: What does “not” mean?<br/>A: It reverses the condition.</p><p id="39315921-b68f-8046-a4b9-f2232d56cc28" class="" dir="auto">Q50: Why are conditionals important?<br/>A: They make scripts smart and dynamic.</p></div></details><hr id="39315921-b68f-8006-877f-cef3a9f2f657" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c4-a67b-f55052174329" style="display:inline-block">Random Numbers (Batch-style simulation)</h1></summary><div class="indented"><p id="39315921-b68f-8066-ae8a-ec9f854d5c51" class="" dir="auto">Q51: Does batch have real random?<br/>A: Yes, via %RANDOM%.</p><p id="39315921-b68f-802a-919b-e29c75c93d58" class="" dir="auto">Q52: How do I get a random number?<br/>A:</p><pre id="39315921-b68f-8078-bcbc-f5002fbda658" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %RANDOM%</code></pre><p id="39315921-b68f-8038-a2c9-e6a4639b7577" class="" dir="auto">Q53: How do I get 1–10 random?<br/>A:</p><pre id="39315921-b68f-80ab-95a7-fb084c342f75" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a num=%RANDOM% %% 10 + 1</code></pre><p id="39315921-b68f-8041-b11b-d6d3b8afbd89" class="" dir="auto">Q54: What does %RANDOM% do?<br/>A: Generates a random number.</p><p id="39315921-b68f-8032-8538-cd8cc2620326" class="" dir="auto">Q55: Why use modulus with RANDOM?<br/>A: To limit range.</p><p id="39315921-b68f-802e-81d4-c84974e7864a" class="" dir="auto">Q56: How do I simulate dice roll?<br/>A:</p><pre id="39315921-b68f-8050-966b-fb128f5016ee" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a roll=%RANDOM% %% 6 + 1</code></pre><p id="39315921-b68f-80d3-b382-f01cc52e2cd1" class="" dir="auto">Q57: How do I simulate a coin flip?<br/>A:</p><pre id="39315921-b68f-803c-a21d-cc1b7ed693d2" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a flip=%RANDOM% %% 2</code></pre><p id="39315921-b68f-806a-8def-dcb5ff61076b" class="" dir="auto">Q58: When should I use random?<br/>A: Games, simulations, random behavior.</p><p id="39315921-b68f-80c1-ad75-e5c191002124" class="" dir="auto">Q59: Why is RANDOM useful?<br/>A: It adds unpredictability.</p><p id="39315921-b68f-80e0-a992-eb8dca6414fa" class="" dir="auto">Q60: How do I make a random decision?<br/>A:</p><pre id="39315921-b68f-80ad-bc27-c2d8cd6675ee" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 16384 echo Yes</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8006-b204-c80318970b79" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="block-color-default" data-notion-highlight="default" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8017-afc7-f5b49b8ba20e" style="display:inline-block">Variables &amp; Basic Setup</h1></summary><div class="indented"><p id="39315921-b68f-80bf-9549-cc29bc6573f3" class="" dir="auto">Q1: I want to store a username.<br/>A:</p><pre id="39315921-b68f-803a-9d6a-edab3fb56d07" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set username=Alex</code></pre><p id="39315921-b68f-8078-a90a-f270e356aa93" class="" dir="auto">Q2: I want to store a score.<br/>A:</p><pre id="39315921-b68f-8045-ab4e-d76679726a1b" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set score=0</code></pre><p id="39315921-b68f-8082-8d62-f9effd5b6ab7" class="" dir="auto">Q3: I want to update a score by adding 10.<br/>A:</p><pre id="39315921-b68f-8033-abc2-f8e19cd03123" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a score+=10</code></pre><p id="39315921-b68f-80a8-a1b1-eb921bcc81e8" class="" dir="auto">Q4: I want to reset a score to zero.<br/>A:</p><pre id="39315921-b68f-8082-9108-cf614b40d3c9" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set score=0</code></pre><p id="39315921-b68f-80ad-8c4a-d8ee512948ec" class="" dir="auto">Q5: I want to store a max value.<br/>A:</p><pre id="39315921-b68f-806e-ab44-eff6ec134bb1" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set MAX=100</code></pre><p id="39315921-b68f-809e-8a08-f814cde2fe98" class="" dir="auto">Q6: I want to store player health.<br/>A:</p><pre id="39315921-b68f-80fd-8606-ef040c3eebf8" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set health=100</code></pre><p id="39315921-b68f-804d-bf80-f1bb17380e6b" class="" dir="auto">Q7: I want to store a boolean state.<br/>A:</p><pre id="39315921-b68f-80fc-8658-ed22b37075c9" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set alive=true</code></pre><p id="39315921-b68f-8064-b7e5-cc1b9f18667c" class="" dir="auto">Q8: I want to overwrite a variable.<br/>A:</p><pre id="39315921-b68f-80a5-87f9-da12c7c529c1" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set username=Jordan</code></pre><p id="39315921-b68f-8006-b121-f8c337c7ae50" class="" dir="auto">Q9: I want to store a level number.<br/>A:</p><pre id="39315921-b68f-80e7-88b2-fe243b6d6d5a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set level=1</code></pre><p id="39315921-b68f-8073-9f97-fecad667489b" class="" dir="auto">Q10: I want to double a value.<br/>A:</p><pre id="39315921-b68f-8036-b481-d1143859cf28" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a score*=2</code></pre></div></details><hr id="39315921-b68f-80c9-b49b-d7ccf8a19b9b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8058-bde0-d6765ef0c881" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-8002-acea-f5904b57789a" class="" dir="auto">Q11: I want to print text.<br/>A:</p><pre id="39315921-b68f-800c-ae8e-c47815f32c2c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Hello World</code></pre><p id="39315921-b68f-807b-ac62-ec8f5c9c4275" class="" dir="auto">Q12: I want to print a variable.<br/>A:</p><pre id="39315921-b68f-803a-9154-d9268529970f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %username%</code></pre><p id="39315921-b68f-800d-987c-e3098db4174e" class="" dir="auto">Q13: I want to ask for user input.<br/>A:</p><pre id="39315921-b68f-803e-8850-c56cb41c6414" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /p name=Enter your name:</code></pre><p id="39315921-b68f-8072-b4d7-ef6de70e7556" class="" dir="auto">Q14: I want to display a welcome message.<br/>A:</p><pre id="39315921-b68f-80b7-8b47-fdb1279b60d4" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Welcome %name%</code></pre><p id="39315921-b68f-8009-bf04-d64ad3acaa84" class="" dir="auto">Q15: I want to clear the screen.<br/>A:</p><pre id="39315921-b68f-80f3-819c-d5d6acaf390d" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">cls</code></pre><p id="39315921-b68f-8002-89b5-d59f582979f1" class="" dir="auto">Q16: I want to print a blank line.<br/>A:</p><pre id="39315921-b68f-807b-af7c-f0ed3f357718" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo.</code></pre><p id="39315921-b68f-8082-bdca-c871a9803d6a" class="" dir="auto">Q17: I want to show score output.<br/>A:</p><pre id="39315921-b68f-80b7-97ac-f31f73d5ee54" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Score: %score%</code></pre><p id="39315921-b68f-80e7-9fe7-c49d0412b6d6" class="" dir="auto">Q18: I want to display multiple variables.<br/>A:</p><pre id="39315921-b68f-8078-a23c-ef123575a3a6" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %username% %score%</code></pre><p id="39315921-b68f-80df-a5c9-ca12ae8a3f12" class="" dir="auto">Q19: I want to pause the program.<br/>A:</p><pre id="39315921-b68f-80b9-8af6-e268f741559f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">pause</code></pre><p id="39315921-b68f-80af-80c7-f23b4d778476" class="" dir="auto">Q20: I want to hide commands from output.<br/>A:</p><pre id="39315921-b68f-80ec-b3f5-e1220a7d661a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off</code></pre></div></details><hr id="39315921-b68f-8042-a7ef-ca2c29a9a40c" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800f-8701-cac9d3d88865" style="display:inline-block">Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80e3-bc49-ef31bf77f33d" class="" dir="auto">Q21: I want to add two numbers.<br/>A:</p><pre id="39315921-b68f-8030-bc01-cf2f5b2795b7" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=5+3</code></pre><p id="39315921-b68f-8008-9812-eaaf5c97061b" class="" dir="auto">Q22: I want to subtract numbers.<br/>A:</p><pre id="39315921-b68f-8013-aed3-f17e2bfae257" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10-4</code></pre><p id="39315921-b68f-800a-b257-ebe0c8330546" class="" dir="auto">Q23: I want to multiply numbers.<br/>A:</p><pre id="39315921-b68f-80f6-8d65-c12eca7f2568" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=3*3</code></pre><p id="39315921-b68f-8051-ad9b-f7afcaeb9899" class="" dir="auto">Q24: I want to divide numbers.<br/>A:</p><pre id="39315921-b68f-8099-8ef6-ece76eb3096d" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10/2</code></pre><p id="39315921-b68f-8074-876e-cf3074f8cf7e" class="" dir="auto">Q25: I want remainder.<br/>A:</p><pre id="39315921-b68f-80b2-9ace-ca3e5bdd521a" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=10%%3</code></pre><p id="39315921-b68f-8057-8ff8-f545d57f8e4f" class="" dir="auto">Q26: I want to increase score by 1.<br/>A:</p><pre id="39315921-b68f-8001-ba77-fd3cc7ec9669" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a score+=1</code></pre><p id="39315921-b68f-80b5-bb41-eca952606a1e" class="" dir="auto">Q27: I want to decrease score.<br/>A:</p><pre id="39315921-b68f-8023-ab07-fc7f3e9eabcf" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a score-=1</code></pre><p id="39315921-b68f-805d-928a-dc06883105ee" class="" dir="auto">Q28: I want to calculate total price.<br/>A:</p><pre id="39315921-b68f-80ab-a35d-c21a8a40e625" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a total=price*quantity</code></pre><p id="39315921-b68f-80ee-aec9-cfc8921973f8" class="" dir="auto">Q29: I want to calculate sum of inputs.<br/>A:</p><pre id="39315921-b68f-80c6-be5a-d552c5e2763d" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a sum=a+b</code></pre><p id="39315921-b68f-8069-9e24-e38cf954f52f" class="" dir="auto">Q30: I want to square a number.<br/>A:</p><pre id="39315921-b68f-801b-b3b8-cd47549f4991" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a result=num*num</code></pre></div></details><hr id="39315921-b68f-80e3-9009-d9cfc35ba15a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8040-b367-f8f2962bea16" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-808b-b423-d14d15e9941a" class="" dir="auto">Q31: I want to check if score equals 10.<br/>A:</p><pre id="39315921-b68f-8004-b047-d04793f1791d" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score%==10 echo Perfect</code></pre><p id="39315921-b68f-8089-9763-d0fe404b62ff" class="" dir="auto">Q32: I want to check if score is greater than 50.<br/>A:</p><pre id="39315921-b68f-8062-a2b7-ed1bc4f9dc58" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% GTR 50 echo High Score</code></pre><p id="39315921-b68f-8070-b4d9-e22d5d01f608" class="" dir="auto">Q33: I want to check if score is less than 50.<br/>A:</p><pre id="39315921-b68f-8025-ae79-db290ae67dbb" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% LSS 50 echo Low Score</code></pre><p id="39315921-b68f-803c-b394-ca4bb68f5124" class="" dir="auto">Q34: I want to run code if user is admin.<br/>A:</p><pre id="39315921-b68f-8097-b83a-cb681d26e18b" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %role%==admin echo Access Granted</code></pre><p id="39315921-b68f-805a-a3f4-fc154e5eca47" class="" dir="auto">Q35: I want to handle pass/fail.<br/>A:</p><pre id="39315921-b68f-800c-b898-f1a15d7c10ba" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% GEQ 50 (
+    echo Pass
+) else (
+    echo Fail
+)</code></pre><p id="39315921-b68f-80fe-a793-e654ade5d62e" class="" dir="auto">Q36: I want to check empty input.<br/>A:</p><pre id="39315921-b68f-802c-99dc-fa8fe30d6d37" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if &quot;%name%&quot;==&quot;&quot; echo Empty input</code></pre><p id="39315921-b68f-801b-ae43-c5fd600a0544" class="" dir="auto">Q37: I want to check not equal.<br/>A:</p><pre id="39315921-b68f-8025-8889-ed3cbbf805c7" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if not %score%==10 echo Not Perfect</code></pre><p id="39315921-b68f-8000-8104-daba4d187e9a" class="" dir="auto">Q38: I want to run multiple commands in IF.<br/>A:</p><pre id="39315921-b68f-805e-a6bf-ecf22e252278" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% GTR 50 (
+    echo Good
+    echo Keep going
+)</code></pre><p id="39315921-b68f-800e-a287-edd909285a1a" class="" dir="auto">Q39: I want to check two conditions (AND logic).<br/>A:</p><pre id="39315921-b68f-8041-aeb6-e1a34b2534ee" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% GTR 50 if %health% GTR 0 echo Alive</code></pre><p id="39315921-b68f-800f-b64c-d6b11f349c95" class="" dir="auto">Q40: I want to block invalid input.<br/>A:</p><pre id="39315921-b68f-8022-80a1-c15e3be2c76c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if &quot;%input%&quot;==&quot;&quot; echo Invalid</code></pre></div></details><hr id="39315921-b68f-8016-8975-f3c31c0ec2ed" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b3-a622-c93f7bd874ed" style="display:inline-block">Random Numbers (%RANDOM%)</h1></summary><div class="indented"><p id="39315921-b68f-80ed-866b-c702b5623948" class="" dir="auto">Q41: I want a random number.<br/>A:</p><pre id="39315921-b68f-80e7-9527-e75955508fb4" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo %RANDOM%</code></pre><p id="39315921-b68f-8054-934c-dddacddcd19b" class="" dir="auto">Q42: I want 1–10 random number.<br/>A:</p><pre id="39315921-b68f-8067-94dd-f7b833c0e150" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a num=%RANDOM% %% 10 + 1</code></pre><p id="39315921-b68f-80cf-ae54-e716b817c33a" class="" dir="auto">Q43: I want dice roll.<br/>A:</p><pre id="39315921-b68f-8062-ad70-e6adb22b39cf" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a roll=%RANDOM% %% 6 + 1</code></pre><p id="39315921-b68f-8021-9fd3-c90a0d534070" class="" dir="auto">Q44: I want coin flip.<br/>A:</p><pre id="39315921-b68f-80ea-856b-c310b7bfad66" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a flip=%RANDOM% %% 2</code></pre><p id="39315921-b68f-8092-adaa-d43cc814138d" class="" dir="auto">Q45: I want random damage.<br/>A:</p><pre id="39315921-b68f-8007-afa0-e67abda2f8fc" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a damage=%RANDOM% %% 10 + 5</code></pre><p id="39315921-b68f-8051-b16a-da41a5c2ebf3" class="" dir="auto">Q46: I want random chance check.<br/>A:</p><pre id="39315921-b68f-8064-ba8e-d17055b7f9ab" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 16384 echo Success</code></pre><p id="39315921-b68f-80a3-a7c6-c3594a8815a7" class="" dir="auto">Q47: I want random 50–100 range.<br/>A:</p><pre id="39315921-b68f-80ab-8ccc-f635f7e4a1ff" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a num=%RANDOM% %% 51 + 50</code></pre><p id="39315921-b68f-80ba-b1f7-d02ab327bb45" class="" dir="auto">Q48: I want random event trigger.<br/>A:</p><pre id="39315921-b68f-8045-8ee9-df81e252ea2f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 5000 echo Event Triggered</code></pre><p id="39315921-b68f-807e-91a7-c16104fad152" class="" dir="auto">Q49: I want random yes/no output.<br/>A:</p><pre id="39315921-b68f-8054-a9d5-f20896020729" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 16384 (echo Yes) else (echo No)</code></pre><p id="39315921-b68f-8025-b0e7-ed2062a4af80" class="" dir="auto">Q50: I want random selection between two actions.<br/>A:</p><pre id="39315921-b68f-8052-8e53-d5032b663f68" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 16384 echo Action A
+if %RANDOM% GEQ 16384 echo Action B</code></pre></div></details><hr id="39315921-b68f-8067-b66c-c15fe971fe39" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b1-9658-ed6433a8e5da" style="display:inline-block">Mixed CLI Logic</h1></summary><div class="indented"><p id="39315921-b68f-80e7-b7d4-c8837428506c" class="" dir="auto">Q51: I want to greet user by name.<br/>A:</p><pre id="39315921-b68f-808e-b9c5-f6a568eb602f" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Hello %name%</code></pre><p id="39315921-b68f-80d5-b3ab-c008e9e3e5b1" class="" dir="auto">Q52: I want to add two numbers from variables.<br/>A:</p><pre id="39315921-b68f-8040-847f-e5894a72ad46" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a sum=%a%+%b%</code></pre><p id="39315921-b68f-8006-8dea-e2364f92c965" class="" dir="auto">Q53: I want to limit score to 100.<br/>A:</p><pre id="39315921-b68f-8059-b357-c12129c28936" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %score% GTR 100 set score=100</code></pre><p id="39315921-b68f-8026-8ecd-c9b0b9fd3d13" class="" dir="auto">Q54: I want to check if player is alive.<br/>A:</p><pre id="39315921-b68f-80e9-b6f0-fd69d611a05e" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %alive%==true echo You are alive</code></pre><p id="39315921-b68f-8019-aec5-e5c4edbedd6a" class="" dir="auto">Q55: I want to show stats.<br/>A:</p><pre id="39315921-b68f-8063-9f45-d4e84021b348" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Name: %name% Score: %score%</code></pre><p id="39315921-b68f-808e-9e71-cb9b5ff6f605" class="" dir="auto">Q56: I want to stop execution if input is empty.<br/>A:</p><pre id="39315921-b68f-8068-9b66-e7f9737278fb" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if &quot;%input%&quot;==&quot;&quot; exit</code></pre><p id="39315921-b68f-80b5-92a4-fae36dbb0499" class="" dir="auto">Q57: I want to compare two variables.<br/>A:</p><pre id="39315921-b68f-8071-af17-c4f852a86d28" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %a%==%b% echo Equal</code></pre><p id="39315921-b68f-809d-8fd6-d08e74878f1c" class="" dir="auto">Q58: I want to simulate leveling up.<br/>A:</p><pre id="39315921-b68f-8094-b6c8-c27cd2fad507" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">set /a level+=1</code></pre><p id="39315921-b68f-80a8-83b8-f26edf21a099" class="" dir="auto">Q59: I want to show final result.<br/>A:</p><pre id="39315921-b68f-8069-a4cc-fd7e997ca0d9" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">echo Final Score: %score%</code></pre><p id="39315921-b68f-802a-98a1-d24c094aa2bc" class="" dir="auto">Q60: I want to trigger rare event.<br/>A:</p><pre id="39315921-b68f-80d6-92fc-fcd503072845" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">if %RANDOM% LSS 1000 echo Rare Event Triggered</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80cb-8da8-d4aaf2cff7fb" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-8020-b89f-ee1419e75421" class="" dir="auto">Flowchart Shape Key</h3><table id="3e315921-b68f-80a0-b942-c66567b09b76" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-807d-a12e-dd6765d9fa68" dir="ltr"><th id="Aw}j" class="simple-table-header-color simple-table-header">Shape</th><th id="Va@}" class="simple-table-header-color simple-table-header">Meaning</th><th id="IqUK" class="simple-table-header-color simple-table-header">Batch File examples</th></tr></thead><tbody><tr id="3e315921-b68f-80f7-8436-c5f913aae78e" dir="ltr"><td id="Aw}j" class=""><code>([ START / END ])</code></td><td id="Va@}" class=""><strong>Oval / Terminator</strong></td><td id="IqUK" class="">Start/end of <code>.bat</code> program</td></tr><tr id="3e315921-b68f-80be-8ae8-fb30168d9396" dir="ltr"><td id="Aw}j" class=""><code>[ Process ]</code></td><td id="Va@}" class=""><strong>Rectangle</strong></td><td id="IqUK" class=""><code>set</code>, <code>set /a</code>, setup, calculations</td></tr><tr id="3e315921-b68f-8055-99d7-ca9c4274642f" dir="ltr"><td id="Aw}j" class=""><code>[/ Input / Output /]</code></td><td id="Va@}" class=""><strong>Parallelogram</strong></td><td id="IqUK" class=""><code>set /p</code>, <code>echo</code>, <code>pause</code></td></tr><tr id="3e315921-b68f-807e-9237-dd7a75db2211" dir="ltr"><td id="Aw}j" class=""><code>{ Condition? }</code></td><td id="Va@}" class=""><strong>Diamond</strong></td><td id="IqUK" class=""><code>if</code> / <code>else</code> decisions</td></tr><tr id="3e315921-b68f-80e9-854b-fa306d72b667" dir="ltr"><td id="Aw}j" class=""><code>↓</code></td><td id="Va@}" class=""><strong>Arrow</strong></td><td id="IqUK" class="">Direction of execution</td></tr></tbody></table><hr id="3e315921-b68f-808b-b604-c58d7abad04e" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ff-bc2e-c64b77e1ace3" style="display:inline-block">Project 1: CLI Calculator — Batch File</h1></summary><div class="indented"><h3 id="3e315921-b68f-8004-b5ee-dd788cf019e7" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80c9-beda-f99f34866d99" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Turn echo off: @echo off ]
+     ↓
+[/ Ask for first number /]
+     ↓
+[/ Read and store a /]
+     ↓
+[/ Ask for second number /]
+     ↓
+[/ Read and store b /]
+     ↓
+[ Calculate add = a + b ]
+     ↓
+[ Calculate sub = a - b ]
+     ↓
+[ Calculate mul = a * b ]
+     ↓
+[ Calculate div = a / b ]
+     ↓
+[/ Display Addition result /]
+     ↓
+[/ Display Subtraction result /]
+     ↓
+[/ Display Multiplication result /]
+     ↓
+[/ Display Division result /]
+     ↓
+[/ Pause /]
+     ↓
+([ END ])</code></pre><h3 id="3e315921-b68f-80d3-9706-c7a84b8bb8d2" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80d9-9932-cc526993559f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-800b-9fdd-ff15b9bea76f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>@echo off</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80a8-8b06-d4f29f2e1c33" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for first number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8008-8f38-e09e209e27b2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read/store </strong><code><strong>a</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-80c0-8316-caf0de5ef00d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for second number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-801c-8d6b-cc1cf66d184e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read/store </strong><code><strong>b</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-8086-9143-f9310f25e13f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>add = a+b</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80de-aa83-ce3c2d134fb1" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>sub = a-b</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8022-adb7-c6a260aacc49" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>mul = a*b</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-809a-bb80-ebf226e0e966" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>div = a/b</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-807a-af21-fa84975d9155" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display results</strong> → Parallelograms</li></ul><ul id="3e315921-b68f-8045-8878-c5d7ce717a9a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>pause</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-8023-b7c5-c739004650ad" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-80d3-9724-cc0a4b8815eb" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-8084-8dc0-c0040283c38f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">INPUT → STORE → CALCULATE → OUTPUT</code></pre></div></details><hr id="3e315921-b68f-800f-b8af-d030eb18a3d3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8054-abd0-d419d0fed4b8" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-8017-9e2b-ea48b6014209" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80fe-879c-d717e7dc1ea2" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Turn echo off: @echo off ]
+     ↓
+[ Generate random secret number 1–10 ]
+     ↓
+[/ Ask user for guess /]
+     ↓
+[/ Read and store guess /]
+     ↓
+{ guess == secret? }
+     ↙          ↘
+   YES          NO
+    ↓            ↓
+[/ Display     [/ Display
+  &quot;Correct!&quot; /]  &quot;Wrong! It was secret&quot; /]
+     ↘          ↙
+        ↓
+    [/ Pause /]
+        ↓
+    ([ END ])</code></pre><h3 id="3e315921-b68f-8008-a529-e6dccbcef1cf" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80f7-830d-fc6e4cfbb3e7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80ba-8505-c3cb5bac4cda" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>@echo off</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80f8-a803-d29bad786d6a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate random number</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80f2-bec3-c72a2e7182a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for guess</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80d1-8677-d79278b96fde" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read/store </strong><code><strong>guess</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-804b-a524-ef0321a038d2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>guess == secret?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-80f0-a18b-d888c50e9cd1" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Correct</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80bc-b057-c53c378a7140" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Wrong + secret</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80de-a885-f1ac453d142d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Pause</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8088-824a-dc4f7aa464bc" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-80d1-a6cb-e14f68d55e4a" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-8097-808c-d653c9239644" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">GENERATE RANDOM VALUE
+        ↓
+      INPUT
+        ↓
+    COMPARE
+     ↙    ↘
+   YES    NO
+    ↓      ↓
+ OUTPUT   OUTPUT
+     ↘    ↙
+       END</code></pre></div></details><hr id="3e315921-b68f-80b3-bff3-df9d66ac6dfa" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ce-aa93-fd2399d9e915" style="display:inline-block">Project 3: Simple Login System</h1></summary><div class="indented"><h3 id="3e315921-b68f-8098-b45d-ce4c57a66aef" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80b9-a51f-f06c7e7ae102" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Turn echo off: @echo off ]
+     ↓
+[ Store user = &quot;admin&quot; ]
+     ↓
+[ Store pass = &quot;1234&quot; ]
+     ↓
+[/ Ask for username /]
+     ↓
+[/ Read/store inputUser /]
+     ↓
+[/ Ask for password /]
+     ↓
+[/ Read/store inputPass /]
+     ↓
+{ inputUser == user
+  AND
+  inputPass == pass? }
+       ↙             ↘
+     YES             NO
+      ↓               ↓
+[/ Display          [/ Display
+  &quot;Access             &quot;Access
+  Granted&quot; /]         Denied&quot; /]
+       ↘             ↙
+          ↓
+      [/ Pause /]
+          ↓
+      ([ END ])</code></pre><h3 id="3e315921-b68f-8087-97f7-fb51ed15abfa" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8052-b2a7-ebe16c0101ee" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80a2-b87d-e186e9f39c33" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>@echo off</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8085-806c-d5a9543ff783" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store username</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80aa-a42f-d7a5e2d32919" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store password</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80c6-9939-f00bd2d0de47" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for username</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8028-8b35-e236eb5cc3e7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read username</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-800b-a13e-fb226adb7ee3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for password</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80e6-80d4-c9ff883c7c26" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read password</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8001-8b17-dbf6a35bfaae" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Credentials correct?</strong> → Diamond</li></ul><ul id="3e315921-b68f-8036-8272-e49011114fe0" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Granted</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80e2-a11e-ea9163f92a57" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Denied</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8018-9d7e-d1a731eccdb3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Pause</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8068-8546-d4550d0c40d6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-8067-9114-cf2b3b1f786e" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-8047-8834-fc0c637d5b81" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Username correct ──┐
+                   ├── AND ──&gt; DECISION
+Password correct ──┘
+                       ↓
+                Granted / Denied</code></pre><p id="3e315921-b68f-8000-968c-f41539ea2f0c" class="" dir="auto">The important Batch concept here is that the nested <code>if</code> statements effectively create an <strong>AND condition</strong>.</p></div></details><hr id="3e315921-b68f-80e1-9403-f6f0656b0bff" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-800c-bb8d-dfb0a2249850" style="display:inline-block">Project 4: Score Tracker</h1></summary><div class="indented"><p id="3e315921-b68f-800e-9145-d9cb0555d172" class="" dir="auto">This one introduces a <strong>value modification + upper-limit decision</strong>.</p><h3 id="3e315921-b68f-8067-88dd-ef7e4bae20f1" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-805a-9de4-c6eb7284ba3f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Turn echo off: @echo off ]
+     ↓
+[/ Ask for starting score /]
+     ↓
+[/ Read/store score /]
+     ↓
+[ Generate random points from 1–20 ]
+     ↓
+[ Add random points to score ]
+     ↓
+{ score &gt; 100? }
+     ↙          ↘
+   YES          NO
+    ↓            ↓
+[ Set score     [ Keep score
+  = 100 ]         unchanged ]
+     ↘          ↙
+        ↓
+[/ Display final score /]
+        ↓
+[/ Pause /]
+        ↓
+    ([ END ])</code></pre><h3 id="3e315921-b68f-80fc-9ce9-f2622c4f0fe3" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-801d-8b97-e052936be394" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-8090-b107-c22108eff14b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>@echo off</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8034-89dc-cd0bec7d3ca3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for starting score</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8041-8cbc-d10d1c2d30a5" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read/store score</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-806f-bff3-c876159c4c3b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate random points</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80c7-95a9-f2ac93204e30" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Add points to score</strong> → Rectangle</li></ul><ul id="3e315921-b68f-800a-afd2-caf5c718995d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>score &gt; 100?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-80bf-8f3b-c097967ece94" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Set </strong><code><strong>score = 100</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-809d-bc48-dc1a1e571f99" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Keep score unchanged</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8068-b57c-d315d2adbc40" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display final score</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80f1-91a8-c5db912467c8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Pause</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8087-870f-e7958037752e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-808d-bf47-c5840f414584" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-801a-88c4-f3a6c3ced350" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">STARTING SCORE
+      ↓
+RANDOM POINTS
+      ↓
+ADD POINTS
+      ↓
+SCORE &gt; 100?
+   ↙       ↘
+ YES       NO
+  ↓         ↓
+CAP 100   KEEP SCORE
+   ↘       ↙
+   DISPLAY
+      ↓
+     END</code></pre><p id="3e315921-b68f-80b4-aad2-c81430bee117" class="" dir="auto">This is a good example of a <strong>constraint/cap</strong>:</p><pre id="3e315921-b68f-8065-82d9-fd9d766b8620" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">score = score + random points
+
+IF score &gt; 100
+    score = 100</code></pre></div></details><hr id="3e315921-b68f-80e9-bb44-c10e895cff38" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8012-96c2-d3e8311481ce" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h3 id="3e315921-b68f-8072-8a69-ed3423c523bb" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-801d-8237-f7ab10fc06b8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Turn echo off: @echo off ]
+     ↓
+[ Generate Player 1 roll: 1–6 ]
+     ↓
+[ Generate Player 2 roll: 1–6 ]
+     ↓
+[/ Display Player 1 roll /]
+     ↓
+[/ Display Player 2 roll /]
+     ↓
+{ p1 &gt; p2? }
+    ↙          ↘
+  YES          NO
+   ↓            ↓
+[/ Display    { p2 &gt; p1? }
+  &quot;Player 1     ↙       ↘
+  Wins!&quot; /]   YES       NO
+               ↓         ↓
+          [/ Display   [/ Display
+            &quot;Player      &quot;It&#x27;s a
+            2 Wins!&quot; /]   Tie!&quot; /]
+               ↘         ↙
+                  ↓
+              [/ Pause /]
+                  ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-803c-99f9-f3d2ee3e054a" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8033-9f4f-e5277ad71f03" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-8044-bc6d-e74a0515a9e3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>@echo off</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8014-a834-e48e6e073904" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate Player 1 roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-801a-9bc3-e2d51f3b49b8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate Player 2 roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80cf-a719-d56d57e834af" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Player 1 roll</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80f3-b904-dbc9afb7ebfb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Player 2 roll</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8070-a262-c66e00365e77" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>p1 &gt; p2?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8082-8a8a-d0fb41f9a169" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Player 1 Wins</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80c8-97ec-f249b5bb79f5" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>p2 &gt; p1?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8060-b93e-e46e19bec456" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Player 2 Wins</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80a1-803d-cc02c5df908e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Tie</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8062-ba2b-cb35cb377a42" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Pause</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8013-a53e-f9d88ae79453" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul></div></details><hr id="3e315921-b68f-80dc-b875-e2fb0d2575a3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-800e-81e8-ebfc249e86aa" style="display:inline-block">Batch File Master Flowchart</h1></summary><div class="indented"><p id="3e315921-b68f-80e2-bf21-e2e266766a06" class="" dir="auto">Your five projects fit into the same overall programming model you&#x27;ve been using across languages:</p><pre id="3e315921-b68f-8081-bbdf-ffbe5f623284" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">              ([ START ])
+                   ↓
+             [ PROGRAM SETUP ]
+                   ↓
+              [/ INPUT /]
+                   ↓
+              [ PROCESS ]
+                   ↓
+            { DECISION? }
+              ↙       ↘
+            YES       NO
+             ↓         ↓
+        [ PROCESS ] [ PROCESS ]
+             ↘       ↙
+                ↓
+             [/ OUTPUT /]
+                ↓
+             [/ PAUSE /]
+                ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-8027-b4da-e248df28dafe" class="" dir="auto">What Batch File adds to your belt progression</h3><table id="3e315921-b68f-808c-b242-c002d47084a7" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80a9-939b-d638f582021c" dir="ltr"><th id="Auav" class="simple-table-header-color simple-table-header">Project</th><th id="Az[I" class="simple-table-header-color simple-table-header">Main concept</th></tr></thead><tbody><tr id="3e315921-b68f-8073-83c7-c408d6725518" dir="ltr"><td id="Auav" class=""><strong>1. Calculator</strong></td><td id="Az[I" class="">Variables + arithmetic + input/output</td></tr><tr id="3e315921-b68f-80df-9d55-dfcd7f2b7225" dir="ltr"><td id="Auav" class=""><strong>2. Guessing Game</strong></td><td id="Az[I" class="">Random values + comparison</td></tr><tr id="3e315921-b68f-8037-a566-d360dc07536f" dir="ltr"><td id="Auav" class=""><strong>3. Login</strong></td><td id="Az[I" class="">Strings + nested <code>if</code> + AND logic</td></tr><tr id="3e315921-b68f-803c-a0d2-e490510fa079" dir="ltr"><td id="Auav" class=""><strong>4. Score Tracker</strong></td><td id="Az[I" class="">Variable modification + constraints</td></tr><tr id="3e315921-b68f-80f3-a1eb-e5b6ad7bcc13" dir="ltr"><td id="Auav" class=""><strong>5. Dice Battle</strong></td><td id="Az[I" class="">Random values + multiple decisions</td></tr></tbody></table></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8033-8c87-fe8262005785" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-809c-8652-c1a45a59f07e" style="display:inline-block">Project 1: CLI Calculator (Batch File)</h1></summary><div class="indented"><h2 id="39315921-b68f-80eb-a62c-e347ab3230ff" class="" dir="auto">What it does</h2><p id="39315921-b68f-809e-8e8e-e6ec07d128da" class="" dir="auto">Takes two numbers from the user and performs basic math operations.</p><h2 id="39315921-b68f-80ba-971e-c27f3fea075a" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-802c-a78f-d882f9039347" class="numbered-list" start="1" dir="auto"><li>Turn echo off</li></ol><ol type="1" id="39315921-b68f-8045-9c9f-cd21f77fb34e" class="numbered-list" start="2" dir="auto"><li>Ask for first number</li></ol><ol type="1" id="39315921-b68f-80b1-be89-ef7e6b62b1ae" class="numbered-list" start="3" dir="auto"><li>Ask for second number</li></ol><ol type="1" id="39315921-b68f-804e-a68a-e32d56bcc055" class="numbered-list" start="4" dir="auto"><li>Perform math operations</li></ol><ol type="1" id="39315921-b68f-805d-af12-e6d72ca7fa37" class="numbered-list" start="5" dir="auto"><li>Display results</li></ol><pre id="39315921-b68f-800d-9f44-ee10f4760e5c" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off
+
+:: Step 1: Ask for first number
+set /p a=Enter first number:
+
+:: Step 2: Ask for second number
+set /p b=Enter second number:
+
+:: Step 3: Perform calculations
+set /a add=a+b
+set /a sub=a-b
+set /a mul=a*b
+set /a div=a/b
+
+:: Step 4: Display results
+echo Addition: %add%
+echo Subtraction: %sub%
+echo Multiplication: %mul%
+echo Division: %div%
+
+pause</code></pre></div></details><hr id="39315921-b68f-8022-b3a9-e9d28df3756e" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-807d-9be7-e1e48dabadf8" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-8072-9a9f-e79bb14c2959" class="" dir="auto">What it does</h2><p id="39315921-b68f-8023-920b-dc24da034837" class="" dir="auto">User guesses a random number between 1–10.</p><h2 id="39315921-b68f-8062-b964-e664d1ab2ead" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80b4-ab9b-ce336112bb47" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-808c-830e-f8bb64f4d972" class="numbered-list" start="2" dir="auto"><li>Ask user for guess</li></ol><ol type="1" id="39315921-b68f-80a8-b66d-c6f9dd1baa5a" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80ba-a69e-f9555d293594" class="numbered-list" start="4" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-809c-8b27-dcfd3ec3e497" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off
+
+:: Step 1: Generate random number (1–10)
+set /a secret=%RANDOM% %% 10 + 1
+
+:: Step 2: Ask user for guess
+set /p guess=Guess a number (1-10):
+
+:: Step 3: Compare values
+if %guess%==%secret% (
+    echo Correct!
+) else (
+    echo Wrong! It was %secret%
+)
+
+pause</code></pre></div></details><hr id="39315921-b68f-8075-891d-f3e6cb919e2f" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-807a-b336-e8869b32e951" style="display:inline-block">Project 3: Simple Login System</h1></summary><div class="indented"><h2 id="39315921-b68f-80c3-82a1-f8e5ca9c9622" class="" dir="auto">What it does</h2><p id="39315921-b68f-8058-8cae-f1bde4e3571f" class="" dir="auto">Checks username and password.</p><h2 id="39315921-b68f-80dd-afda-c5d3cde41950" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8067-af43-cb076b5c36c8" class="numbered-list" start="1" dir="auto"><li>Store correct credentials</li></ol><ol type="1" id="39315921-b68f-8089-aa9f-ca8ad7e999d5" class="numbered-list" start="2" dir="auto"><li>Ask user input</li></ol><ol type="1" id="39315921-b68f-8022-a387-e0762e99db23" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80b6-8994-f237fe8291a1" class="numbered-list" start="4" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-8003-941c-d33f0f5f9492" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off
+
+:: Step 1: Store credentials
+set user=admin
+set pass=1234
+
+:: Step 2: Get input
+set /p inputUser=Username:
+set /p inputPass=Password:
+
+:: Step 3: Compare
+if &quot;%inputUser%&quot;==&quot;%user%&quot; if &quot;%inputPass%&quot;==&quot;%pass%&quot; (
+    echo Access Granted
+) else (
+    echo Access Denied
+)
+
+pause</code></pre></div></details><hr id="39315921-b68f-8047-ae74-e4fa8ada42c1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800a-a9b1-c6afb92d82fc" style="display:inline-block">Project 4: Score Tracker</h1></summary><div class="indented"><h2 id="39315921-b68f-802f-aefb-f2e37afa53fa" class="" dir="auto">What it does</h2><p id="39315921-b68f-809a-9d01-e700708ddb18" class="" dir="auto">Adds points and limits max score to 100.</p><h2 id="39315921-b68f-80d1-8e68-ed8d417e06d0" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-802d-86ee-ecc4a9a7da34" class="numbered-list" start="1" dir="auto"><li>Ask starting score</li></ol><ol type="1" id="39315921-b68f-8077-afa0-cb27b9ef18a6" class="numbered-list" start="2" dir="auto"><li>Add random points</li></ol><ol type="1" id="39315921-b68f-8009-902e-fba686276ca5" class="numbered-list" start="3" dir="auto"><li>Limit score</li></ol><ol type="1" id="39315921-b68f-8004-9ba4-f4218ad9c054" class="numbered-list" start="4" dir="auto"><li>Display result</li></ol><pre id="39315921-b68f-809a-9a71-eb26602845ad" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off
+
+:: Step 1: Get starting score
+set /p score=Enter starting score:
+
+:: Step 2: Add random points (1–20)
+set /a score+=%RANDOM% %% 20 + 1
+
+:: Step 3: Cap score at 100
+if %score% GTR 100 set score=100
+
+:: Step 4: Display final score
+echo Final Score: %score%
+
+pause</code></pre></div></details><hr id="39315921-b68f-80bb-bfa1-e1e8a9c1ddc2" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8015-8346-ffaed3dae4c5" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h2 id="39315921-b68f-801b-9777-f96eea808393" class="" dir="auto">What it does</h2><p id="39315921-b68f-8072-8c2f-ca51e3f75ab5" class="" dir="auto">Two players roll dice; highest wins.</p><h2 id="39315921-b68f-80b7-ba17-dd4c10a823d5" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8090-b63d-e2d735a07d4a" class="numbered-list" start="1" dir="auto"><li>Generate Player 1 roll</li></ol><ol type="1" id="39315921-b68f-8039-931b-e3ded88ff781" class="numbered-list" start="2" dir="auto"><li>Generate Player 2 roll</li></ol><ol type="1" id="39315921-b68f-80cf-9d74-e33210a7f1e7" class="numbered-list" start="3" dir="auto"><li>Compare results</li></ol><ol type="1" id="39315921-b68f-8086-a9bb-e1080c00bb49" class="numbered-list" start="4" dir="auto"><li>Display winner</li></ol><pre id="39315921-b68f-8032-b6d0-caff6b4dc4c0" class="code code-wrap" data-notion-code-syntax="bash"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">@echo off
+
+:: Step 1: Player 1 roll (1–6)
+set /a p1=%RANDOM% %% 6 + 1
+
+:: Step 2: Player 2 roll (1–6)
+set /a p2=%RANDOM% %% 6 + 1
+
+:: Step 3: Show rolls
+echo Player 1 rolled: %p1%
+echo Player 2 rolled: %p2%
+
+:: Step 4: Compare results
+if %p1% GTR %p2% (
+    echo Player 1 Wins!
+) else if %p2% GTR %p1% (
+    echo Player 2 Wins!
+) else (
+    echo It&#x27;s a Tie!
+)
+
+pause</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

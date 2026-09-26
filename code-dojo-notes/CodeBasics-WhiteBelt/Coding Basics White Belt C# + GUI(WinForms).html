@@ -1,0 +1,1229 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/C# + GUI(WinForms)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-8022-bd7b-ef813df2f395" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/C# + GUI(WinForms)</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-80b4-8ac0-f560ed71db5b" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c7-bb80-e62ea59de3ec" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8021-9ee9-d1c30f355a97" style="display:inline-block">Variables &amp; Constants (WinForms Basics)</h1></summary><div class="indented"><p id="39315921-b68f-806a-ab55-f6dfe37609b5" class="" dir="auto">Q1: What is a variable in WinForms?<br/>A: A variable stores data the app uses, like text from a textbox or a score.</p><p id="39315921-b68f-8039-8667-c571521b7abd" class="" dir="auto">Q2: When should I use a variable in a WinForms app?<br/>A: When you need to store user input or update values on the form.</p><p id="39315921-b68f-80a7-959d-d91822ae2c10" class="" dir="auto">Q3: How do I store textbox input in a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="39315921-b68f-8007-95dc-dbe858f16556" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string name = textBox1.Text;</code></pre><p id="39315921-b68f-8069-8487-f631521a2642" class="" dir="auto">Q4: Why do I use variables in GUI apps?<br/>A: Because UI controls don’t “remember” values unless you store them.</p><p id="39315921-b68f-8081-961c-e952ce3e73a9" class="" dir="auto">Q5: What is a constant in WinForms?<br/>A: A value that never changes, like a fixed tax rate.</p><p id="39315921-b68f-807a-bed9-e0b008f611bd" class="" dir="auto">Q6: How do I create a constant in WinForms?<br/>A:</p><pre id="39315921-b68f-80a0-963e-e9478b3a7e15" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const double TAX_RATE = 0.07;</code></pre><p id="39315921-b68f-8056-902d-da574075956b" class="" dir="auto">Q7: When should I use constants in GUI apps?<br/>A: When a value is reused but should never change.</p><p id="39315921-b68f-80e8-a829-dd0b5bb868be" class="" dir="auto">Q8: Can I store button text in a variable?<br/>A:</p><pre id="39315921-b68f-80f5-8c24-ce083c7afd49" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string buttonText = button1.Text;</code></pre><p id="39315921-b68f-80ce-ab5a-ce7a1470df50" class="" dir="auto">Q9: How do I change a label using a variable?<br/>A:</p><pre id="39315921-b68f-8088-bd7d-c471beba64a2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = name;</code></pre><p id="39315921-b68f-80ae-b9c1-d8ce51ee77c1" class="" dir="auto">Q10: Why separate UI values into variables?<br/>A: It makes logic easier to manage than reading controls repeatedly.</p></div></details><hr id="39315921-b68f-806e-9f43-e45b53632b9d" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8049-88b0-d64cd2f097eb" style="display:inline-block">Data Types (WinForms Context)</h1></summary><div class="indented"><p id="39315921-b68f-80be-a9d3-dbc03e38e415" class="" dir="auto">Q11: What data type is textbox input?<br/>A: It is always a string.</p><p id="39315921-b68f-80d1-9054-c13f88ce8783" class="" dir="auto">Q12: How do I convert textbox text to an integer?<br/>A:</p><pre id="39315921-b68f-8025-a510-e4268df878d4" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int age = int.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-80c8-afe2-c62a05eb58de" class="" dir="auto">Q13: Why do I convert strings in WinForms?<br/>A: Because math and logic need numbers, not text.</p><p id="39315921-b68f-8061-b6e7-cca558d07b3d" class="" dir="auto">Q14: What is a bool used for in GUI apps?<br/>A: It stores true/false states like checkbox status.</p><p id="39315921-b68f-8080-9cc8-d71535a0847c" class="" dir="auto">Q15: How do I read a checkbox value?<br/>A:</p><pre id="39315921-b68f-80de-92a5-e43a4e6ed45d" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool isChecked = checkBox1.Checked;</code></pre><p id="39315921-b68f-80b3-945a-c455e5e5689e" class="" dir="auto">Q16: What is a double used for?<br/>A: Decimal values like price or measurements.</p><p id="39315921-b68f-80cc-a85d-dabbe9fe0d6a" class="" dir="auto">Q17: How do I store a decimal from input?<br/>A:</p><pre id="39315921-b68f-80e5-8efc-c5736e7a6ad9" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double price = double.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-8026-82da-cf43b734ee85" class="" dir="auto">Q18: Why is string the default UI type?<br/>A: Because all UI input starts as text.</p><p id="39315921-b68f-8042-b383-d4714b854ba4" class="" dir="auto">Q19: What is the safest number type for UI?<br/>A: int or double depending on decimals.</p><p id="39315921-b68f-8007-9422-ca8c51ae43bf" class="" dir="auto">Q20: Why do types matter in GUI apps?<br/>A: They prevent wrong operations like adding text instead of numbers.</p></div></details><hr id="39315921-b68f-802e-8932-c02fca1c1073" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-805a-a399-c3822d0a7461" style="display:inline-block">Input / Output (WinForms Controls)</h1></summary><div class="indented"><p id="39315921-b68f-80d8-86a8-c9cafd2debcc" class="" dir="auto">Q21: What is output in WinForms?<br/>A: Displaying data on labels, message boxes, or textboxes.</p><p id="39315921-b68f-80e1-b08a-cad4ab278f51" class="" dir="auto">Q22: How do I show output in a label?<br/>A:</p><pre id="39315921-b68f-8090-809b-e6cf21889485" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = &quot;Hello&quot;;</code></pre><p id="39315921-b68f-80a4-85b4-c2f6277ebcac" class="" dir="auto">Q23: How do I show a popup message?<br/>A:</p><pre id="39315921-b68f-8078-abb8-cef97851dda8" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">MessageBox.Show(&quot;Hello!&quot;);</code></pre><p id="39315921-b68f-80cd-ab0f-e77eb151f627" class="" dir="auto">Q24: What is input in WinForms?<br/>A: Data the user enters into controls like textboxes.</p><p id="39315921-b68f-8099-9e91-f1e8952455dc" class="" dir="auto">Q25: How do I get input from a textbox?<br/>A:</p><pre id="39315921-b68f-8067-b14d-f2ac2fe6b6a7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string input = textBox1.Text;</code></pre><p id="39315921-b68f-8069-a1ab-e93b26a73637" class="" dir="auto">Q26: Why use MessageBox instead of console?<br/>A: GUI apps don’t use a terminal for interaction.</p><p id="39315921-b68f-8071-bc9b-f8e3daa0375f" class="" dir="auto">Q27: How do I clear a textbox?<br/>A:</p><pre id="39315921-b68f-80ca-acb5-c9d9cb9de7d5" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">textBox1.Clear();</code></pre><p id="39315921-b68f-8005-9c3a-f1402af43ae3" class="" dir="auto">Q28: How do I update UI after button click?<br/>A:</p><pre id="39315921-b68f-80e2-96f4-c07e3fc93d6c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = textBox1.Text;</code></pre><p id="39315921-b68f-8009-97b4-e382dfcd7757" class="" dir="auto">Q29: Why do buttons trigger input handling?<br/>A: Because GUI apps run on events, not loops.</p><p id="39315921-b68f-8020-80c4-f3758f1374ed" class="" dir="auto">Q30: What is event-driven input?<br/>A: Code runs only when user clicks or interacts.</p></div></details><hr id="39315921-b68f-8089-9128-f268702b8e12" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-807e-be16-c165c3088e26" style="display:inline-block">Basic Math Operations (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8056-b5dd-c1250a09d687" class="" dir="auto">Q31: How do I add two textbox numbers?<br/>A:</p><pre id="39315921-b68f-80c1-811b-cb7b0baa0618" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = int.Parse(textBox1.Text) + int.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-8086-a52c-c3fe87369397" class="" dir="auto">Q32: How do I show math result in label?<br/>A:</p><pre id="39315921-b68f-80a9-b18c-d3855fd4eba1" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = result.ToString();</code></pre><p id="39315921-b68f-806b-be26-f2887ebda859" class="" dir="auto">Q33: Why do I convert textbox values first?<br/>A: Because math cannot be done on strings.</p><p id="39315921-b68f-80bd-a930-d299151fc332" class="" dir="auto">Q34: How do I subtract in WinForms?<br/>A:</p><pre id="39315921-b68f-8049-8ece-ed662ac3d56b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-809b-bebe-da86a4e2fc3e" class="" dir="auto">Q35: How do I multiply user inputs?<br/>A:</p><pre id="39315921-b68f-80d6-945f-d4a032f86ffe" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-8065-a1d9-dbf0f3e7340e" class="" dir="auto">Q36: How do I divide safely?<br/>A:</p><pre id="39315921-b68f-805d-b6ac-e990d17355ce" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (b != 0) result = a / b;</code></pre><p id="39315921-b68f-8054-829c-f60b9f9362c8" class="" dir="auto">Q37: Why check for zero before dividing?<br/>A: To prevent crashes.</p><p id="39315921-b68f-8073-a891-ff789ad6eb8c" class="" dir="auto">Q38: How do I calculate total price?<br/>A:</p><pre id="39315921-b68f-8006-b62f-e9895675b7e8" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double total = price * quantity;</code></pre><p id="39315921-b68f-80d2-93f0-eaabb2c64e8d" class="" dir="auto">Q39: How do I increase score in GUI?<br/>A:</p><pre id="39315921-b68f-80a2-bf77-d62ee43ab938" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score += 1;</code></pre><p id="39315921-b68f-80b1-8d15-ea14f5807eae" class="" dir="auto">Q40: Why store math results in variables?<br/>A: So UI can reuse and display them easily.</p></div></details><hr id="39315921-b68f-8051-a378-eb2fcc117b46" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f5-9261-f61b6a2707e3" style="display:inline-block">Conditionals (if/else in WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8052-bbb3-f1da488522aa" class="" dir="auto">Q41: How do I check if textbox is empty?<br/>A:</p><pre id="39315921-b68f-80c5-9105-cf7f98a1a89f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (textBox1.Text == &quot;&quot;)</code></pre><p id="39315921-b68f-8027-a840-f3ffcfca3075" class="" dir="auto">Q42: Why check empty input?<br/>A: To prevent invalid calculations.</p><p id="39315921-b68f-800b-91ba-debe0df5513a" class="" dir="auto">Q43: How do I show message if input is invalid?<br/>A:</p><pre id="39315921-b68f-8086-b783-dbb1cb569098" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">MessageBox.Show(&quot;Invalid input&quot;);</code></pre><p id="39315921-b68f-8059-ad0f-dc63308f7cd1" class="" dir="auto">Q44: How do I check checkbox condition?<br/>A:</p><pre id="39315921-b68f-80a6-a143-eaa7448bfcfd" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (checkBox1.Checked)</code></pre><p id="39315921-b68f-80cf-bbb5-c40b1a9a4fa7" class="" dir="auto">Q45: When should I use if statements in GUI apps?<br/>A: When user input changes behavior.</p><p id="39315921-b68f-8037-ad01-cb3d4f0d6210" class="" dir="auto">Q46: How do I check age restriction?<br/>A:</p><pre id="39315921-b68f-800d-bda8-c32cbd6fc998" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18)</code></pre><p id="39315921-b68f-8001-aae3-da447a8ca2f8" class="" dir="auto">Q47: How do I handle multiple conditions?<br/>A:</p><pre id="39315921-b68f-80e8-915b-e7ea06f84f85" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 90) label1.Text = &quot;A&quot;;</code></pre><p id="39315921-b68f-8036-9fd1-e47463ed432c" class="" dir="auto">Q48: Why are conditionals important in UI?<br/>A: They control app behavior based on user input.</p><p id="39315921-b68f-8094-bc12-ff51b1246746" class="" dir="auto">Q49: How do I disable a button based on condition?<br/>A:</p><pre id="39315921-b68f-808c-810f-caa0f2c034eb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = false;</code></pre><p id="39315921-b68f-80c3-8c56-c47fc0b00e63" class="" dir="auto">Q50: What is UI logic?<br/>A: Decisions made based on user interaction.</p></div></details><hr id="39315921-b68f-8059-a613-da4f0bf93407" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80aa-a9a1-f596b3d3d010" style="display:inline-block">Random Numbers (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8053-b427-d43de55cc35f" class="" dir="auto">Q51: How do I generate a random number in WinForms?<br/>A:</p><pre id="39315921-b68f-80b1-8adc-e75f2878f6b7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int number = rand.Next(1, 11);</code></pre><p id="39315921-b68f-80b4-9ab5-f8e38bd5312a" class="" dir="auto">Q52: Why use random numbers in GUI apps?<br/>A: For games, simulations, and unpredictable results.</p><p id="39315921-b68f-80a1-9aa7-fa6139d50c87" class="" dir="auto">Q53: How do I show random number in label?<br/>A:</p><pre id="39315921-b68f-804f-bb11-c1fda874dceb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = number.ToString();</code></pre><p id="39315921-b68f-808f-a536-f40e0c4bbfe3" class="" dir="auto">Q54: How do I roll a dice in WinForms?<br/>A:</p><pre id="39315921-b68f-80df-8e40-c0e9be9196a2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int roll = rand.Next(1, 7);</code></pre><p id="39315921-b68f-80af-9395-dc75baab8225" class="" dir="auto">Q55: How do I generate random button behavior?<br/>A:</p><pre id="39315921-b68f-8097-b476-fc2cf4159be0" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = rand.Next(2) == 0;</code></pre><p id="39315921-b68f-8081-bd48-da5b8a79ceb2" class="" dir="auto">Q56: How do I randomize background color (logic only)?<br/>A:</p><pre id="39315921-b68f-804d-8ca4-ea004ac561f2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int value = rand.Next(256);</code></pre><p id="39315921-b68f-80b3-8736-deb39f903f17" class="" dir="auto">Q57: Why create Random once?<br/>A: To avoid repeating patterns.</p><p id="39315921-b68f-8049-ba35-dfcb061eab65" class="" dir="auto">Q58: How do I pick random text?<br/>A:</p><pre id="39315921-b68f-80d1-8219-cc391c18df4f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string[] options = { &quot;A&quot;, &quot;B&quot;, &quot;C&quot; };
+string pick = options[rand.Next(options.Length)];</code></pre><p id="39315921-b68f-8053-b1cf-fce402712495" class="" dir="auto">Q59: How do I simulate a coin flip?<br/>A:</p><pre id="39315921-b68f-80f9-973c-fc9ca8df372c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string result = rand.Next(2) == 0 ? &quot;Heads&quot; : &quot;Tails&quot;;</code></pre><p id="39315921-b68f-80f4-9a89-fd705d8c0a69" class="" dir="auto">Q60: Why are random features useful in WinForms?<br/>A: They make apps interactive and game-like instead of predictable.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d9-b43b-ce20489fcbe4" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8089-88a7-ea65a6bf6cc2" style="display:inline-block">Variables &amp; Constants (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-803e-8a5a-eb1d40586c7a" class="" dir="auto">Q1: I want to store a user&#x27;s name from a textbox.<br/>A:</p><pre id="39315921-b68f-8008-89e5-d97b2cd47ed1" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string name = textBox1.Text;</code></pre><p id="39315921-b68f-8063-af2d-e233155e5e87" class="" dir="auto">Q2: I want to store a score that updates when a button is clicked.<br/>A:</p><pre id="39315921-b68f-8024-9865-e9d3c5c29dc9" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int score = 0;</code></pre><p id="39315921-b68f-80fb-8a6a-d0cb67d89401" class="" dir="auto">Q3: I want to store a fixed tax rate for calculations.<br/>A:</p><pre id="39315921-b68f-807b-8d70-e13fd7c7d445" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const double TAX_RATE = 0.07;</code></pre><p id="39315921-b68f-8070-8e77-d50cdeeb3503" class="" dir="auto">Q4: I want to store whether a checkbox is checked.<br/>A:</p><pre id="39315921-b68f-80a7-bb85-dc39bb0d7513" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool isChecked = checkBox1.Checked;</code></pre><p id="39315921-b68f-80ae-b197-f39ec5e336fe" class="" dir="auto">Q5: I want to update a label with a variable value.<br/>A:</p><pre id="39315921-b68f-805b-b059-e9eb1788cc9b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = score.ToString();</code></pre><p id="39315921-b68f-8067-9a42-f3666255c063" class="" dir="auto">Q6: I want to increase score when a button is clicked.<br/>A:</p><pre id="39315921-b68f-80e2-ad90-fb39a177b1eb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score++;</code></pre><p id="39315921-b68f-80b6-90ac-f4d95a13e975" class="" dir="auto">Q7: I want to reset score when clicking a reset button.<br/>A:</p><pre id="39315921-b68f-8031-b5b9-e138e40ab854" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score = 0;
+label1.Text = score.ToString();</code></pre><p id="39315921-b68f-804f-9b51-e4078df85b2e" class="" dir="auto">Q8: I want to store textbox input for later use.<br/>A:</p><pre id="39315921-b68f-80d4-bc20-f16cf2511d61" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string input = textBox1.Text;</code></pre><p id="39315921-b68f-806b-83e8-f4408974f289" class="" dir="auto">Q9: I want to store a product name from input.<br/>A:</p><pre id="39315921-b68f-8097-89c6-e8942cdae45f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string productName = textBoxProduct.Text;</code></pre><p id="39315921-b68f-8081-87ba-ebb25295a493" class="" dir="auto">Q10: I want to store a constant app title.<br/>A:</p><pre id="39315921-b68f-803e-aa74-c66fee381d7c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const string APP_NAME = &quot;Calculator App&quot;;</code></pre></div></details><hr id="39315921-b68f-80af-92dd-f3bd55f36b68" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d2-b7b2-d2d7dcb7d150" style="display:inline-block">Data Types (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8081-90b0-c93b05b8223c" class="" dir="auto">Q11: I want to convert textbox text into an integer.<br/>A:</p><pre id="39315921-b68f-8067-8816-f8b314281009" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int number = int.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-8084-8425-d3f0336e8a35" class="" dir="auto">Q12: I want to convert textbox text into a decimal value.<br/>A:</p><pre id="39315921-b68f-80c0-97a7-f762ee5b4e2f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double value = double.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-809c-af37-c3fe62642e04" class="" dir="auto">Q13: I want to store true/false from a checkbox.<br/>A:</p><pre id="39315921-b68f-8037-bc8f-c93182669966" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool enabled = checkBox1.Checked;</code></pre><p id="39315921-b68f-80c7-9369-c37d2066b407" class="" dir="auto">Q14: I want to store a single character input.<br/>A:</p><pre id="39315921-b68f-803b-815f-f44b893678fc" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">char letter = textBox1.Text[0];</code></pre><p id="39315921-b68f-8098-9069-e8a2968f1b05" class="" dir="auto">Q15: I want to display number as text in a label.<br/>A:</p><pre id="39315921-b68f-80a9-b629-f3a1db06767b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = number.ToString();</code></pre><p id="39315921-b68f-80df-8607-d6875984a7fe" class="" dir="auto">Q16: I want to store large numbers.<br/>A:</p><pre id="39315921-b68f-8081-846f-c00d95bc9a20" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">long bigNumber = long.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-8075-8207-e88b936fffec" class="" dir="auto">Q17: I want to store floating point temperature.<br/>A:</p><pre id="39315921-b68f-80df-af5e-e764a9fb9da2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">float temp = float.Parse(textBox1.Text);</code></pre><p id="39315921-b68f-805e-bcf3-daa911ee3584" class="" dir="auto">Q18: I want to combine text and number for display.<br/>A:</p><pre id="39315921-b68f-80a7-adee-d5ed81da8143" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = &quot;Score: &quot; + score;</code></pre><p id="39315921-b68f-801c-a622-d2d4fd8a404e" class="" dir="auto">Q19: I want to safely store user input text.<br/>A:</p><pre id="39315921-b68f-80b2-b31b-ee1a7ecc48f3" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string text = textBox1.Text;</code></pre><p id="39315921-b68f-808b-9a0f-cd4eda285762" class="" dir="auto">Q20: I want to convert boolean logic into UI decision.<br/>A:</p><pre id="39315921-b68f-802a-af9a-c4e7a9a6db46" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = isChecked;</code></pre></div></details><hr id="39315921-b68f-80ce-bd84-e73af89e1228" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8067-85a0-f2ba37f4dbbd" style="display:inline-block">Input / Output (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8089-8208-d1147b686e93" class="" dir="auto">Q21: I want to display a popup message.<br/>A:</p><pre id="39315921-b68f-80e5-ac7a-faf436026316" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">MessageBox.Show(&quot;Hello!&quot;);</code></pre><p id="39315921-b68f-8002-98a3-eda8e0dd4bf7" class="" dir="auto">Q22: I want to show textbox input in a label.<br/>A:</p><pre id="39315921-b68f-8081-98ad-c416002ffce6" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = textBox1.Text;</code></pre><p id="39315921-b68f-8038-a0dc-eeb3beb46b16" class="" dir="auto">Q23: I want to clear a textbox when button is clicked.<br/>A:</p><pre id="39315921-b68f-806c-a2c5-c0959f019cdf" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">textBox1.Clear();</code></pre><p id="39315921-b68f-8043-a4ff-d954204fed53" class="" dir="auto">Q24: I want to get user input from textbox.<br/>A:</p><pre id="39315921-b68f-80b4-9550-ee80b22c131d" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string input = textBox1.Text;</code></pre><p id="39315921-b68f-8096-bceb-ef4ac7945bf4" class="" dir="auto">Q25: I want to show calculation result in UI.<br/>A:</p><pre id="39315921-b68f-8010-9f08-ccb3a81d8611" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = result.ToString();</code></pre><p id="39315921-b68f-80b9-8456-c9bcb3b19088" class="" dir="auto">Q26: I want to print debug info to console (WinForms debugging).<br/>A:</p><pre id="39315921-b68f-80eb-87e8-edf89317532f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Debug info&quot;);</code></pre><p id="39315921-b68f-8085-98c1-d6c318e43bed" class="" dir="auto">Q27: I want to disable a button after clicking it.<br/>A:</p><pre id="39315921-b68f-8004-8318-fecbaefb0c1e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = false;</code></pre><p id="39315921-b68f-80d4-b321-cd3a659c5f31" class="" dir="auto">Q28: I want to enable a button when input is valid.<br/>A:</p><pre id="39315921-b68f-8011-b124-f764dd43fdc5" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = true;</code></pre><p id="39315921-b68f-8057-b884-f7e07051b251" class="" dir="auto">Q29: I want to update label when checkbox changes.<br/>A:</p><pre id="39315921-b68f-8084-9733-e2a349855bce" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = checkBox1.Checked.ToString();</code></pre><p id="39315921-b68f-8085-aed2-e982443453dd" class="" dir="auto">Q30: I want to display multiple values in UI.<br/>A:</p><pre id="39315921-b68f-80f3-b5d7-c28e3632e110" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">label1.Text = &quot;Name: &quot; + name + &quot; Score: &quot; + score;</code></pre></div></details><hr id="39315921-b68f-803e-8bc1-de2f93ce1a8d" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8014-81b6-f776b84f82ed" style="display:inline-block">Basic Math Operations (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8085-b8c7-cc1d1d5ec8de" class="" dir="auto">Q31: I want to add two textbox numbers.<br/>A:</p><pre id="39315921-b68f-801a-9229-e8102f9853bf" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = int.Parse(textBox1.Text) + int.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-80c3-bf8d-dce9cff57ea9" class="" dir="auto">Q32: I want to subtract two numbers from input.<br/>A:</p><pre id="39315921-b68f-80b6-a1db-e41d2d3fc7f6" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = int.Parse(textBox1.Text) - int.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-8022-bacb-f2980ebecd03" class="" dir="auto">Q33: I want to multiply user inputs.<br/>A:</p><pre id="39315921-b68f-80ab-8e9d-f06d9d2f4322" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = int.Parse(textBox1.Text) * int.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-8038-9db6-c181ddbc8e39" class="" dir="auto">Q34: I want to divide two textbox values.<br/>A:</p><pre id="39315921-b68f-8085-a612-dcd1a3a90073" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = int.Parse(textBox1.Text) / int.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-808b-b7d8-e952c8a00cca" class="" dir="auto">Q35: I want to prevent division by zero.<br/>A:</p><pre id="39315921-b68f-8052-92a6-cee94d9260fa" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (int.Parse(textBox2.Text) != 0)
+{
+    result = a / b;
+}</code></pre><p id="39315921-b68f-807b-b791-cad3060dd287" class="" dir="auto">Q36: I want to calculate total price.<br/>A:</p><pre id="39315921-b68f-8052-8183-d4d60a415f18" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double total = double.Parse(textBox1.Text) * double.Parse(textBox2.Text);</code></pre><p id="39315921-b68f-8024-81ea-d2e78e2a1b26" class="" dir="auto">Q37: I want to increase score by 5.<br/>A:</p><pre id="39315921-b68f-806b-98ec-dc6cf7dbd385" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score += 5;</code></pre><p id="39315921-b68f-800d-b70c-ec5da6604184" class="" dir="auto">Q38: I want to decrease health.<br/>A:</p><pre id="39315921-b68f-8052-a263-cc0c27e91199" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">health -= 10;</code></pre><p id="39315921-b68f-80a9-b631-f24520908550" class="" dir="auto">Q39: I want to calculate remainder in UI app.<br/>A:</p><pre id="39315921-b68f-8035-89f9-ddbace9d12e0" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a % b;</code></pre><p id="39315921-b68f-8088-b95e-ddcd42e9d2b9" class="" dir="auto">Q40: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-803c-af90-f45fc3d2d0cb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double avg = (a + b) / 2.0;</code></pre></div></details><hr id="39315921-b68f-807b-8ad2-ce9854fbd74f" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8076-a3d5-fce1a3eb8c4f" style="display:inline-block">Conditionals (if / else in WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-806e-97d5-cbf4a2d39b70" class="" dir="auto">Q41: I want to check if textbox is empty.<br/>A:</p><pre id="39315921-b68f-80ae-a042-ea3cba9d990c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (textBox1.Text == &quot;&quot;)
+{
+    MessageBox.Show(&quot;Empty input&quot;);
+}</code></pre><p id="39315921-b68f-80f1-8519-f3261b6b3120" class="" dir="auto">Q42: I want to validate age input.<br/>A:</p><pre id="39315921-b68f-8003-909a-c7228efa5ae3" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (int.Parse(textBox1.Text) &gt;= 18)
+{
+    MessageBox.Show(&quot;Allowed&quot;);
+}</code></pre><p id="39315921-b68f-8016-a11f-d5ca3deda97b" class="" dir="auto">Q43: I want to block invalid input.<br/>A:</p><pre id="39315921-b68f-8065-8dd8-ed28d0d0f786" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (textBox1.Text == &quot;&quot;)
+{
+    button1.Enabled = false;
+}</code></pre><p id="39315921-b68f-809b-849d-e3909a0c454b" class="" dir="auto">Q44: I want to show pass/fail result.<br/>A:</p><pre id="39315921-b68f-80dd-8213-e92d13f500e9" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50)
+{
+    label1.Text = &quot;Pass&quot;;
+}
+else
+{
+    label1.Text = &quot;Fail&quot;;
+}</code></pre><p id="39315921-b68f-808a-9725-c0acf3639448" class="" dir="auto">Q45: I want to check checkbox before enabling button.<br/>A:</p><pre id="39315921-b68f-80ed-bdf4-c59dc9418a10" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = checkBox1.Checked;</code></pre><p id="39315921-b68f-8041-bc4e-f22ed5bc099c" class="" dir="auto">Q46: I want to check admin access.<br/>A:</p><pre id="39315921-b68f-8025-a54c-d59cae893b55" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (textBoxUser.Text == &quot;admin&quot;)
+{
+    MessageBox.Show(&quot;Access granted&quot;);
+}</code></pre><p id="39315921-b68f-8059-a839-faaa8115c967" class="" dir="auto">Q47: I want to handle multiple score levels.<br/>A:</p><pre id="39315921-b68f-8012-b465-fd1db0417f8b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 80)
+    label1.Text = &quot;A&quot;;
+else if (score &gt; 50)
+    label1.Text = &quot;B&quot;;
+else
+    label1.Text = &quot;C&quot;;</code></pre><p id="39315921-b68f-80f1-a9bb-ec5919a4bd2c" class="" dir="auto">Q48: I want to show error if number is negative.<br/>A:</p><pre id="39315921-b68f-80f1-909e-f0d12c987520" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (number &lt; 0)
+{
+    MessageBox.Show(&quot;Invalid number&quot;);
+}</code></pre><p id="39315921-b68f-800d-9fb8-e963a43ec800" class="" dir="auto">Q49: I want to check two conditions in UI.<br/>A:</p><pre id="39315921-b68f-80cd-9e53-fe5b5998174d" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (checkBox1.Checked &amp;&amp; score &gt; 10)
+{
+    label1.Text = &quot;OK&quot;;
+}</code></pre><p id="39315921-b68f-8083-a3d2-f238f0317cfd" class="" dir="auto">Q50: I want to disable UI when not logged in.<br/>A:</p><pre id="39315921-b68f-8022-9e29-eb5ba43c73f3" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">button1.Enabled = false;</code></pre></div></details><hr id="39315921-b68f-804d-878d-e5682ee56e10" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80a6-ad29-ca7ae4c9870b" style="display:inline-block">Random Numbers (WinForms)</h1></summary><div class="indented"><p id="39315921-b68f-8076-939c-f0a753656591" class="" dir="auto">Q51: I want to generate random number for label.<br/>A:</p><pre id="39315921-b68f-80c4-9bd4-ce247532cfb7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+label1.Text = rand.Next(1, 11).ToString();</code></pre><p id="39315921-b68f-8082-ade9-c7b0e112d220" class="" dir="auto">Q52: I want to simulate a dice roll.<br/>A:</p><pre id="39315921-b68f-8066-bf53-debc43ac88fa" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int roll = rand.Next(1, 7);
+label1.Text = roll.ToString();</code></pre><p id="39315921-b68f-8072-9eb4-daf731a8a608" class="" dir="auto">Q53: I want to randomly enable a button.<br/>A:</p><pre id="39315921-b68f-80f7-954e-eedb0ead887c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+button1.Enabled = rand.Next(2) == 0;</code></pre><p id="39315921-b68f-80bd-8e26-e0a6a29c61d9" class="" dir="auto">Q54: I want to flip a coin in UI.<br/>A:</p><pre id="39315921-b68f-8067-a94d-deea57586f32" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+label1.Text = rand.Next(2) == 0 ? &quot;Heads&quot; : &quot;Tails&quot;;</code></pre><p id="39315921-b68f-8072-8062-f063b06a7f82" class="" dir="auto">Q55: I want to randomly pick a name.<br/>A:</p><pre id="39315921-b68f-802d-a76d-cb077eb85925" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string[] names = { &quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot; };
+Random rand = new Random();
+label1.Text = names[rand.Next(names.Length)];</code></pre><p id="39315921-b68f-80c1-b26d-fb61dbf59252" class="" dir="auto">Q56: I want to generate random damage value.<br/>A:</p><pre id="39315921-b68f-8006-bae2-f03fe9f99880" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int damage = rand.Next(5, 16);</code></pre><p id="39315921-b68f-808a-b239-f6c2e19b8373" class="" dir="auto">Q57: I want to randomize score gain.<br/>A:</p><pre id="39315921-b68f-80a4-ba76-de529ebe438e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+score += rand.Next(1, 6);</code></pre><p id="39315921-b68f-8030-aeca-ed1a86ffb211" class="" dir="auto">Q58: I want to randomly change label text.<br/>A:</p><pre id="39315921-b68f-80e1-8645-ece32735d9bb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string[] texts = { &quot;Win&quot;, &quot;Lose&quot;, &quot;Try Again&quot; };
+Random rand = new Random();
+label1.Text = texts[rand.Next(texts.Length)];</code></pre><p id="39315921-b68f-80f1-b064-f1b58f729215" class="" dir="auto">Q59: I want to simulate random event trigger.<br/>A:</p><pre id="39315921-b68f-8076-b1da-ee1e0afd31ed" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+if (rand.Next(100) &lt; 30)
+{
+    MessageBox.Show(&quot;Event triggered!&quot;);
+}</code></pre><p id="39315921-b68f-8004-88a4-c0f66c45b4f3" class="" dir="auto">Q60: I want to generate random background logic trigger.<br/>A:</p><pre id="39315921-b68f-80fe-91b7-f0c462e36539" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+panel1.Enabled = rand.Next(2) == 1;</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8093-b9b1-d9462f1f1b35" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-805f-99b4-de7809045a8d" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-80b4-b84b-ea3760754df9" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80d1-9916-c1b6f9fbfab4" dir="ltr"><th id="=t|t" class="simple-table-header-color simple-table-header">Text notation</th><th id="iXcu" class="simple-table-header-color simple-table-header">Actual shape</th><th id="G\Va" class="simple-table-header-color simple-table-header">Meaning</th></tr></thead><tbody><tr id="3e315921-b68f-8030-8b85-d79735c39a47" dir="ltr"><td id="=t|t" class=""><code>([ START / END ])</code></td><td id="iXcu" class=""><strong>Oval / Terminator</strong></td><td id="G\Va" class="">Start or end</td></tr><tr id="3e315921-b68f-8076-8c11-ddfd4063efb2" dir="ltr"><td id="=t|t" class=""><code>[ Process ]</code></td><td id="iXcu" class=""><strong>Rectangle</strong></td><td id="G\Va" class="">Calculation, assignment, conversion, setup</td></tr><tr id="3e315921-b68f-801d-9999-faaec1b30765" dir="ltr"><td id="=t|t" class=""><code>[/ Input / Output /]</code></td><td id="iXcu" class=""><strong>Parallelogram</strong></td><td id="G\Va" class="">Read from or write to the UI</td></tr><tr id="3e315921-b68f-80c6-83a9-e935cf868115" dir="ltr"><td id="=t|t" class=""><code>{ Condition? }</code></td><td id="iXcu" class=""><strong>Diamond</strong></td><td id="G\Va" class="">Decision / branching</td></tr><tr id="3e315921-b68f-8006-8426-cb1be6a524ee" dir="ltr"><td id="=t|t" class=""><code>↓</code></td><td id="iXcu" class=""><strong>Arrow</strong></td><td id="G\Va" class="">Direction of execution</td></tr></tbody></table><hr id="3e315921-b68f-80f1-bf45-ec1b77824428" dir="auto"/><h1 id="3e315921-b68f-8062-92f8-ecec0bb60239" class="" dir="auto">Project 1: Simple Calculator — WinForms</h1><h3 id="3e315921-b68f-8075-9b16-f3710a019614" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-808b-bf25-feb0b0981266" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          ([ START ])
+               |
+               ↓
+      [ Button Add clicked ]
+               |
+               ↓
+ [/ Read TextBox1.Text /]
+               |
+               ↓
+ [ Convert TextBox1 input
+       to integer ]
+               |
+               ↓
+ [/ Read TextBox2.Text /]
+               |
+               ↓
+ [ Convert TextBox2 input
+       to integer ]
+               |
+               ↓
+ [ Calculate:
+   result = num1 + num2 ]
+               |
+               ↓
+ [/ Convert result to text /]
+               |
+               ↓
+ [/ Display result
+    in labelResult /]
+               |
+               ↓
+           ([ END ])</code></pre><h3 id="3e315921-b68f-802b-88d2-c552c75c36b4" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-805d-8976-ee1a777cd51c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button clicked → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80bf-a50b-ecfbab5d42c7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read <code>textBox1</code> → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80b4-b491-f18ce1769fa5" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>int.Parse()</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8083-8cf3-c6518cdb6d54" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read <code>textBox2</code> → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-808f-8657-d1f8544b3536" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>int.Parse()</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-809b-8ef2-d608292047b5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Addition → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8003-b127-f57d39badcfb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>ToString()</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8082-ae41-f689202e07a1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Update <code>labelResult</code> → <strong>Input/Output</strong></li></ul><h3 id="3e315921-b68f-8013-ac58-db03aec1ab67" class="" dir="auto">Important WinForms concept</h3><p id="3e315921-b68f-80f3-a042-f623131c037e" class="" dir="auto">The program isn&#x27;t continuously running this sequence. The <strong>button click event triggers the flow</strong>:</p><pre id="3e315921-b68f-80e1-a0fb-e7ec66d7f61a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">User clicks button
+       ↓
+buttonAdd_Click()
+       ↓
+Program logic
+       ↓
+UI updates</code></pre><hr id="3e315921-b68f-80ce-b598-fad1b7e79a70" dir="auto"/><h1 id="3e315921-b68f-8052-af82-db9f7af44011" class="" dir="auto">Project 2: Name Greeting App</h1><h3 id="3e315921-b68f-80ad-9cd1-dd1501966570" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8028-b519-c4e0584e6da8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          ([ START ])
+               |
+               ↓
+     [ Button Greet clicked ]
+               |
+               ↓
+ [/ Read name from
+    textBoxName /]
+               |
+               ↓
+ [ Create greeting message:
+   &quot;Hello, &quot; + name + &quot;!&quot; ]
+               |
+               ↓
+ [/ Store greeting
+    in message /]
+               |
+               ↓
+ [/ Display message
+    in labelGreeting /]
+               |
+               ↓
+           ([ END ])</code></pre><h3 id="3e315921-b68f-80ea-8f01-fa2af67edb5e" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-801d-9704-f4e3e1731e24" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button clicked → <strong>Process</strong></li></ul><ul id="3e315921-b68f-801a-9f88-ed1197c3dbb2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read textbox → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-803c-afb7-f1b226d3e362" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create message → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8054-8f94-ea48513b516f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store message → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80da-8dc9-cd20c162d924" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display message → <strong>Input/Output</strong></li></ul><h3 id="3e315921-b68f-8098-a723-f95b744532f6" class="" dir="auto">Core flow</h3><pre id="3e315921-b68f-8089-b5c5-de1785201eb4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">TextBox
+   ↓
+name
+   ↓
+&quot;Hello, &quot; + name + &quot;!&quot;
+   ↓
+Label</code></pre><p id="3e315921-b68f-80c2-a0f4-ee99febf5cc1" class="" dir="auto">This is essentially:</p><p id="3e315921-b68f-80d0-aeff-f8c764098a54" class="" dir="auto"><strong>UI Input → Processing → UI Output</strong></p><hr id="3e315921-b68f-8043-82d1-c3613ca3cf0d" dir="auto"/><h1 id="3e315921-b68f-80f4-9813-ff3a6faf2be9" class="" dir="auto">Project 3: Number Guessing Game</h1><h3 id="3e315921-b68f-8039-9723-e3fe117708af" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80db-8219-f0673a58512b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          ([ START ])
+               |
+               ↓
+     [ Button Guess clicked ]
+               |
+               ↓
+     [ Generate random
+       number 1–10 ]
+               |
+               ↓
+ [/ Read guess from
+    textBoxGuess /]
+               |
+               ↓
+ [ Convert guess
+       to integer ]
+               |
+               ↓
+       { guess == secretNumber? }
+             /             \
+           YES              NO
+            |                |
+            ↓                ↓
+ [/ Set labelResult to   [/ Set labelResult to
+     &quot;Correct!&quot; /]          &quot;Wrong! It was
+                             &quot; + secretNumber /]
+            |                |
+            └────────┬───────┘
+                     ↓
+                 ([ END ])</code></pre><h3 id="3e315921-b68f-80d4-ae61-f476c1bcbc7a" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8064-b52d-d05bc83d9033" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button clicked → <strong>Process</strong></li></ul><ul id="3e315921-b68f-802e-b989-edf646de912d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate random number → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80b6-a3c4-ee5f2c81ee1e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8019-bf51-dfc16868f51d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert guess → <strong>Process</strong></li></ul><ul id="3e315921-b68f-806e-b747-d2645d421950" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare values → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8005-a0dd-cb0688b51684" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display <code>&quot;Correct!&quot;</code> → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80de-bab5-cd6c6faa350b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display wrong result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-802a-9db5-f1df994571d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80e8-9b85-def21bf0a0a1" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-806b-9869-febe4a67761c" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">               ┌───────────────┐
+               │ guess ==      │
+               │ secretNumber? │
+               └───────◇───────┘
+                  YES /   \ NO
+                     /     \
+                    ↓       ↓
+               Correct     Wrong</code></pre><hr id="3e315921-b68f-80f2-8c2d-de4f13d9eeef" dir="auto"/><h1 id="3e315921-b68f-80b4-9c76-fa0f7ce62118" class="" dir="auto">Project 4: Simple Grade Checker</h1><p id="3e315921-b68f-8050-9ddb-caf44f74f5bf" class="" dir="auto">This is the most complex of the five because it introduces an <code><strong>if → else if → else</strong></code><strong> decision chain</strong>.</p><h3 id="3e315921-b68f-80e2-9426-ec71434aa115" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-800a-851a-f54a950938b3" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          ([ START ])
+               |
+               ↓
+     [ Button Check clicked ]
+               |
+               ↓
+ [/ Read score from
+    textBoxScore /]
+               |
+               ↓
+ [ Convert score
+       to integer ]
+               |
+               ↓
+       { score &gt;= 90? }
+          /         \
+        YES          NO
+         |            |
+         ↓            ↓
+ [/ Display A /]   { score &gt;= 80? }
+                        /       \
+                      YES        NO
+                       |          |
+                       ↓          ↓
+                [/ Display B /] { score &gt;= 70? }
+                                   /       \
+                                 YES        NO
+                                  |          |
+                                  ↓          ↓
+                           [/ Display C /] { score &gt;= 60? }
+                                              /       \
+                                            YES        NO
+                                             |          |
+                                             ↓          ↓
+                                      [/ Display D /] [/ Display F /]
+                                             |          |
+                                             └────┬─────┘
+                                                  ↓
+                                              ([ END ])</code></pre><h3 id="3e315921-b68f-8098-bff2-c814ef00bd3f" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80bb-83f3-cc38757feacf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button clicked → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8009-b9e6-fbe7e6e11501" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-805a-ba55-e18316c9c7e5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert score → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80f7-a0c5-eb61a702b830" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 90</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80b3-a2de-f33ed2a38517" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 80</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8028-8837-cc77b4711b37" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 70</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8032-aecc-fd397234e1d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 60</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-800c-9415-c433e6620e8c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display grade → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-800e-8406-e94c62e54ce1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80be-97f4-dc7b89fbe917" class="" dir="auto">Logic view</h3><pre id="3e315921-b68f-8028-8b65-cf46f5b92972" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">              score &gt;= 90?
+              /         \
+            YES          NO
+             ↓            ↓
+             A        score &gt;= 80?
+                       /         \
+                     YES          NO
+                      ↓            ↓
+                      B       score &gt;= 70?
+                               /        \
+                             YES         NO
+                              ↓           ↓
+                              C      score &gt;= 60?
+                                      /       \
+                                    YES        NO
+                                     ↓          ↓
+                                     D          F</code></pre><p id="3e315921-b68f-80ef-b706-e61df6b569d4" class="" dir="auto">This is a good example of how <strong>multiple diamonds can form one logical decision tree</strong>.</p><hr id="3e315921-b68f-8080-b164-e7341b7152d2" dir="auto"/><h1 id="3e315921-b68f-80f6-8892-f78d0cbe9bba" class="" dir="auto">Project 5: Dice Roller App</h1><h3 id="3e315921-b68f-80a2-98a9-c37d38e85e17" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8052-9762-fe6582ea7145" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          ([ START ])
+               |
+               ↓
+      [ Button Roll clicked ]
+               |
+               ↓
+    [ Generate random number
+          between 1–6 ]
+               |
+               ↓
+       [ Store result
+          in roll ]
+               |
+               ↓
+ [/ Create display text:
+    &quot;You rolled: &quot; + roll /]
+               |
+               ↓
+ [/ Display text
+    in labelRoll /]
+               |
+               ↓
+           ([ END ])</code></pre><h3 id="3e315921-b68f-807e-9b85-e8db809a97a1" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80e4-a36d-e97a9e568b73" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button clicked → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8075-ac7a-cf052cd9ced3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate random number → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8023-b8de-d081665fe018" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store roll → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80db-97ae-e18e4f740590" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create display text → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8017-8946-f123c5ac3d9d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Update label → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-809b-b155-fba0391d2b15" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-8085-acc8-d6fedec800da" class="" dir="auto">Core flow</h3><pre id="3e315921-b68f-8079-9c44-efac14a9b939" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Button
+   ↓
+Random Number
+   ↓
+roll
+   ↓
+&quot;You rolled: &quot; + roll
+   ↓
+Label</code></pre><hr id="3e315921-b68f-8073-ae7b-e547e86e068e" dir="auto"/><h1 id="3e315921-b68f-8045-a5fb-fecb214f6dcf" class="" dir="auto">All 5 WinForms flows together</h1><p id="3e315921-b68f-8048-a6c1-c3f4420806d0" class="" dir="auto">You can see a nice progression here:</p><pre id="3e315921-b68f-80ae-ac98-f90224acfbbf" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">PROJECT 1
+Calculator
+│
+├── UI Input
+├── Conversion
+├── Calculation
+└── UI Output
+        ↓
+PROJECT 2
+Greeting
+│
+├── UI Input
+├── String processing
+└── UI Output
+        ↓
+PROJECT 3
+Guessing Game
+│
+├── Random generation
+├── UI Input
+├── Conversion
+├── Decision
+└── UI Output
+        ↓
+PROJECT 4
+Grade Checker
+│
+├── UI Input
+├── Conversion
+├── Multiple decisions
+└── UI Output
+        ↓
+PROJECT 5
+Dice Roller
+│
+├── Button event
+├── Random generation
+├── String construction
+└── UI Output</code></pre><h3 id="3e315921-b68f-8002-87e7-dd5514666d30" class="" dir="auto">The bigger WinForms pattern</h3><p id="3e315921-b68f-80aa-b2f5-d6c78d87e764" class="" dir="auto">All five projects are basically teaching this architecture:</p><pre id="3e315921-b68f-807c-a786-c20d9ec04861" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             USER
+              │
+              ↓
+       ┌──────────────┐
+       │ UI CONTROL   │
+       │ Button/Input │
+       └──────┬───────┘
+              │
+              ↓
+       ┌──────────────┐
+       │ EVENT HANDLER│
+       │ button_Click │
+       └──────┬───────┘
+              │
+              ↓
+       ┌──────────────┐
+       │ PROGRAM      │
+       │ LOGIC        │
+       └──────┬───────┘
+              │
+              ↓
+       ┌──────────────┐
+       │ UI OUTPUT    │
+       │ Label/TextBox│
+       └──────────────┘</code></pre><p id="3e315921-b68f-80c0-b48d-f451f46ac711" class="" dir="auto">That&#x27;s probably the <strong>most important flowchart to put at the top of your WinForms notes</strong>, because it gives you the big picture before getting into individual projects.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8045-8fae-f44d15aef07d" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8089-a5a1-e70585d24ef7" style="display:inline-block">Project 1: Simple Calculator (WinForms)</h1></summary><div class="indented"><h2 id="39315921-b68f-806f-9db7-da06e08260a4" class="" dir="auto">What it does</h2><p id="39315921-b68f-808d-b86e-d0be08c93b04" class="" dir="auto">Takes two numbers from textboxes and shows sum.</p><h2 id="39315921-b68f-803a-8a3e-e6ebec3ff29e" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-807e-99f4-ff40c1cbf1bb" class="numbered-list" start="1" dir="auto"><li>Get input from TextBox1</li></ol><ol type="1" id="39315921-b68f-8016-af55-e0deb9c5284c" class="numbered-list" start="2" dir="auto"><li>Get input from TextBox2</li></ol><ol type="1" id="39315921-b68f-80be-a9f4-f643a2637456" class="numbered-list" start="3" dir="auto"><li>Convert to numbers</li></ol><ol type="1" id="39315921-b68f-8078-b255-fa2742bbe271" class="numbered-list" start="4" dir="auto"><li>Add numbers</li></ol><ol type="1" id="39315921-b68f-80bf-8a18-d37bba5661a0" class="numbered-list" start="5" dir="auto"><li>Display result in Label</li></ol><pre id="39315921-b68f-809b-94d0-d9b9b6f53e25" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+using System.Windows.Forms;
+
+public partial class Form1 : Form
+{
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void buttonAdd_Click(object sender, EventArgs e)
+    {
+        // Step 1: Get input from first textbox
+        int num1 = int.Parse(textBox1.Text);
+
+        // Step 2: Get input from second textbox
+        int num2 = int.Parse(textBox2.Text);
+
+        // Step 3: Add numbers together
+        int result = num1 + num2;
+
+        // Step 4: Show result in label
+        labelResult.Text = result.ToString();
+    }
+}</code></pre></div></details><hr id="39315921-b68f-80bb-8d31-f6ecd396a484" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8041-a694-dae08c64d913" style="display:inline-block">Project 2: Name Greeting App</h1></summary><div class="indented"><h2 id="39315921-b68f-807f-9833-c56bb05de8a4" class="" dir="auto">What it does</h2><p id="39315921-b68f-806d-b8d1-f9315df2884a" class="" dir="auto">User enters name → app greets them.</p><h2 id="39315921-b68f-80e0-ade3-dee022858706" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-808e-a004-ec2462316857" class="numbered-list" start="1" dir="auto"><li>Get name input</li></ol><ol type="1" id="39315921-b68f-80ab-8f3e-e6873b25e081" class="numbered-list" start="2" dir="auto"><li>Create greeting message</li></ol><ol type="1" id="39315921-b68f-805f-be4a-d7461864a53f" class="numbered-list" start="3" dir="auto"><li>Display message in label</li></ol><pre id="39315921-b68f-8098-9909-e200eb38dfde" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+using System.Windows.Forms;
+
+public partial class Form1 : Form
+{
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void buttonGreet_Click(object sender, EventArgs e)
+    {
+        // Step 1: Get user name from textbox
+        string name = textBoxName.Text;
+
+        // Step 2: Create greeting message
+        string message = &quot;Hello, &quot; + name + &quot;!&quot;;
+
+        // Step 3: Display message in label
+        labelGreeting.Text = message;
+    }
+}</code></pre></div></details><hr id="39315921-b68f-8085-a9dd-fc2cb002b1f6" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8005-90d2-fe35c5f7d307" style="display:inline-block">Project 3: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-80ad-85b6-f3b92735cfe6" class="" dir="auto">What it does</h2><p id="39315921-b68f-80c1-ac6a-ce99692f07a7" class="" dir="auto">User guesses a random number from 1–10.</p><h2 id="39315921-b68f-80e7-933f-cf2a49a7ebc7" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8019-a70d-c22172c411e6" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-80e2-a571-cc077f2bd901" class="numbered-list" start="2" dir="auto"><li>Get user guess</li></ol><ol type="1" id="39315921-b68f-80ec-8d1b-d8812429342a" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80ad-9bd8-da2604b2c0ab" class="numbered-list" start="4" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-807b-a4ed-f920fe19dcbd" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+using System.Windows.Forms;
+
+public partial class Form1 : Form
+{
+    Random rand = new Random();
+
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void buttonGuess_Click(object sender, EventArgs e)
+    {
+        // Step 1: Generate random number
+        int secretNumber = rand.Next(1, 11);
+
+        // Step 2: Get user guess
+        int guess = int.Parse(textBoxGuess.Text);
+
+        // Step 3: Compare numbers
+        if (guess == secretNumber)
+        {
+            labelResult.Text = &quot;Correct!&quot;;
+        }
+        else
+        {
+            labelResult.Text = &quot;Wrong! It was &quot; + secretNumber;
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-8030-89ac-fb16c59800dd" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8017-ba8a-d3e9dd5ede7f" style="display:inline-block">Project 4: Simple Grade Checker</h1></summary><div class="indented"><h2 id="39315921-b68f-80d9-8bcc-c6b8e17f7612" class="" dir="auto">What it does</h2><p id="39315921-b68f-803e-bb36-e549650d15d4" class="" dir="auto">Converts score into letter grade.</p><h2 id="39315921-b68f-8056-b2e7-d76dd46aa3df" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8043-8c70-f08b9a8c07c6" class="numbered-list" start="1" dir="auto"><li>Get score input</li></ol><ol type="1" id="39315921-b68f-8097-a110-dc3cfd125f29" class="numbered-list" start="2" dir="auto"><li>Convert to number</li></ol><ol type="1" id="39315921-b68f-80bd-b907-f696ac22c2a9" class="numbered-list" start="3" dir="auto"><li>Check range</li></ol><ol type="1" id="39315921-b68f-804d-b5c2-f5373d54d5c0" class="numbered-list" start="4" dir="auto"><li>Display grade</li></ol><pre id="39315921-b68f-8059-8599-e102685f1c51" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+using System.Windows.Forms;
+
+public partial class Form1 : Form
+{
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void buttonCheck_Click(object sender, EventArgs e)
+    {
+        // Step 1: Get score input
+        int score = int.Parse(textBoxScore.Text);
+
+        // Step 2: Determine grade
+        if (score &gt;= 90)
+        {
+            labelGrade.Text = &quot;A&quot;;
+        }
+        else if (score &gt;= 80)
+        {
+            labelGrade.Text = &quot;B&quot;;
+        }
+        else if (score &gt;= 70)
+        {
+            labelGrade.Text = &quot;C&quot;;
+        }
+        else if (score &gt;= 60)
+        {
+            labelGrade.Text = &quot;D&quot;;
+        }
+        else
+        {
+            labelGrade.Text = &quot;F&quot;;
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-808b-9207-f96f719739d3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801d-8233-f044ffbb4b40" style="display:inline-block">Project 5: Dice Roller App</h1></summary><div class="indented"><h2 id="39315921-b68f-8048-8cad-e45603fc48c2" class="" dir="auto">What it does</h2><p id="39315921-b68f-8010-b22d-e30592bc14fd" class="" dir="auto">Rolls a dice and shows result in UI.</p><h2 id="39315921-b68f-80b2-b24e-db98fdc5a5c9" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8046-9c7c-f924500efed6" class="numbered-list" start="1" dir="auto"><li>Create random generator</li></ol><ol type="1" id="39315921-b68f-8048-a16e-d21ac7bdd144" class="numbered-list" start="2" dir="auto"><li>Generate number 1–6</li></ol><ol type="1" id="39315921-b68f-80c6-a779-ed6beb4c43f5" class="numbered-list" start="3" dir="auto"><li>Display result</li></ol><pre id="39315921-b68f-805a-aced-e7d53fa451d6" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+using System.Windows.Forms;
+
+public partial class Form1 : Form
+{
+    Random rand = new Random();
+
+    public Form1()
+    {
+        InitializeComponent();
+    }
+
+    private void buttonRoll_Click(object sender, EventArgs e)
+    {
+        // Step 1: Generate dice roll (1–6)
+        int roll = rand.Next(1, 7);
+
+        // Step 2: Display result
+        labelRoll.Text = &quot;You rolled: &quot; + roll;
+    }
+}</code></pre></div></details></div></details><p id="39315921-b68f-8053-a248-f48af3f401fc" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

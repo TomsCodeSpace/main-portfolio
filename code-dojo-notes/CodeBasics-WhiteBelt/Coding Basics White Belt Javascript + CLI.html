@@ -1,0 +1,1253 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Javascript + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-80f7-ac56-ed4790aaea47" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Javascript + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-8092-8513-e75f1cad016b" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8082-a128-e87a1d85e2a4" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8078-9c30-d5a6f9aff88d" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-801b-9942-c3e666c88a03" class="" dir="auto">Q1: What is a variable?<br/>A: A variable is a named box that stores information your program can use or change.</p><p id="39315921-b68f-80c6-bd4f-d483e4810556" class="" dir="auto">Q2: When should I use a variable?<br/>A: Use a variable whenever a value might change while the program is running.</p><p id="39315921-b68f-805f-a00e-ceddfa34d13c" class="" dir="auto">Q3: What is a constant?<br/>A: A constant is a value that cannot be reassigned after it is created.</p><p id="39315921-b68f-8047-8f50-c041c1d8e008" class="" dir="auto">Q4: When should I use a constant instead of a variable?<br/>A: Use a constant for values that should always stay the same, like PI or your app&#x27;s name.</p><p id="39315921-b68f-8024-bce8-f47e66805f5c" class="" dir="auto">Q5: Why should I use meaningful variable names?<br/>A: Good names make your code much easier to read and understand.</p><p id="39315921-b68f-8092-8fef-d87a6744422e" class="" dir="auto">Q6: How do I create a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js" integrity="sha512-m3JYEI6gx5fh9jF10FjGoMzVKcV2N6nchcDcqPCdI1L3R2WQV7br2XVNR8iTLb2daOMRl3zldbcfT40xU2ntVw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-80ed-9e6a-f3de43961e8a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = 25;</code></pre><p id="39315921-b68f-80b6-a9db-dbd17edb6e15" class="" dir="auto">Q7: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-8090-9736-e0f99a3fe9fb" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const PI = 3.14159;</code></pre><p id="39315921-b68f-8032-89ff-c72e0d747f0c" class="" dir="auto">Q8: Can I change a variable later?<br/>A: Yes.</p><pre id="39315921-b68f-80ac-b406-f0d97b98fa4e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score = 10;
+score = 20;</code></pre><p id="39315921-b68f-8022-aadc-e250844a9a6e" class="" dir="auto">Q9: Can I change a constant later?<br/>A: No. Constants cannot be reassigned.</p><p id="39315921-b68f-8081-b0ed-ce4c82d30d94" class="" dir="auto">Q10: Why are variables one of the most important parts of programming?<br/>A: They let your program remember information while it runs.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-803d-b91b-d4a80a84656f" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8045-b131-f3a0a016b64a" class="" dir="auto">Q11: What is a data type?<br/>A: A data type tells JavaScript what kind of information is being stored.</p><p id="39315921-b68f-8036-acd6-c98e7137014e" class="" dir="auto">Q12: What is a number?<br/>A: A number stores whole numbers and decimal numbers.</p><pre id="39315921-b68f-804a-8d6d-ef1399320c71" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let apples = 10;
+let price = 4.99;</code></pre><p id="39315921-b68f-80a0-8456-c6348125c95e" class="" dir="auto">Q13: What is a string?<br/>A: A string stores text.</p><pre id="39315921-b68f-8062-aa37-e0234efece78" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let name = &quot;Alice&quot;;</code></pre><p id="39315921-b68f-8049-b39d-f1a0fa5eab23" class="" dir="auto">Q14: What is a boolean?<br/>A: A boolean stores either true or false.</p><pre id="39315921-b68f-80b6-8eb8-d8f0e47cc1d9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let isRunning = true;</code></pre><p id="39315921-b68f-80d6-bacb-fb55343629ed" class="" dir="auto">Q15: What is null?<br/>A: Null means a variable intentionally has no value.</p><pre id="39315921-b68f-8036-a3e7-c26aae5d7ea6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let user = null;</code></pre><p id="39315921-b68f-801d-97ce-fe245cd6045e" class="" dir="auto">Q16: What is undefined?<br/>A: Undefined means a variable has not been given a value yet.</p><pre id="39315921-b68f-80ff-b19e-c556d31365e8" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score;</code></pre><p id="39315921-b68f-8010-923c-e7ca71dbd0b6" class="" dir="auto">Q17: When should I use a number instead of a string?<br/>A: Use a number for math and a string for text.</p><p id="39315921-b68f-80e3-92dd-fe6fb58c7f86" class="" dir="auto">Q18: Why should I pick the correct data type?<br/>A: It helps prevent bugs and makes your code easier to understand.</p><p id="39315921-b68f-80bd-908b-c977e370fe1a" class="" dir="auto">Q19: Can one variable hold different data types?<br/>A: Yes, JavaScript allows it, but it&#x27;s usually better to keep one purpose per variable.</p><p id="39315921-b68f-80cf-8877-d205cb45a372" class="" dir="auto">Q20: How do I know which data type to choose?<br/>A: Ask yourself if you&#x27;re storing a number, text, or true/false.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80bd-9191-c843266f7399" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-8098-9c45-fd7055f4e01e" class="" dir="auto">Q21: What is output?<br/>A: Output is information the program shows to the user.</p><p id="39315921-b68f-80ec-a9b8-dada0f4cd276" class="" dir="auto">Q22: How do I print text?<br/>A:</p><pre id="39315921-b68f-8029-b2f4-d5a4529f4ca6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(&quot;Hello!&quot;);</code></pre><p id="39315921-b68f-802f-91f6-d3b0ab3c362e" class="" dir="auto">Q23: What is input?<br/>A: Input is information the user gives to the program.</p><p id="39315921-b68f-8074-8066-c3ee18a6a9a3" class="" dir="auto">Q24: How do I read user input in Node.js?<br/>A:</p><pre id="39315921-b68f-80e7-92b5-e7f33510c067" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const prompt = require(&quot;prompt-sync&quot;)();
+
+const name = prompt(&quot;Enter your name: &quot;);</code></pre><p id="39315921-b68f-8092-8d9f-d52de63b819d" class="" dir="auto">Q25: Why does user input start as a string?<br/>A: Everything typed on the keyboard starts as text.</p><p id="39315921-b68f-80b0-b9b1-ca1576ceaa4c" class="" dir="auto">Q26: How do I convert input into a number?<br/>A:</p><pre id="39315921-b68f-80aa-a490-f9b53c88b6f3" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = Number(prompt(&quot;Age: &quot;));</code></pre><p id="39315921-b68f-80e0-829f-eb8b661745ca" class="" dir="auto">Q27: When should I use console.log()?<br/>A: Use it whenever you want to display information in the terminal.</p><p id="39315921-b68f-8058-908c-d86b0c2c24b0" class="" dir="auto">Q28: Why should I ask users for input?<br/>A: It makes your program interactive.</p><p id="39315921-b68f-806f-8371-c421bcd7365d" class="" dir="auto">Q29: How do I print variables?<br/>A:</p><pre id="39315921-b68f-8028-be52-d0c664708a43" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(name);</code></pre><p id="39315921-b68f-8034-a1c2-cc58b396c901" class="" dir="auto">Q30: What happens if the user enters invalid data?<br/>A: Your program may behave incorrectly unless you validate the input.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8029-bd4a-d7e47af9c595" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80fd-ba8c-f4ed505d0cb4" class="" dir="auto">Q31: What math operators does JavaScript have?<br/>A: +, -, *, /, and %.</p><p id="39315921-b68f-8004-a9ba-c4d932eccbc7" class="" dir="auto">Q32: How do I add numbers?<br/>A:</p><pre id="39315921-b68f-80f5-928b-f41e3cec9f16" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let total = 5 + 3;</code></pre><p id="39315921-b68f-801e-87c6-e30b3def35bd" class="" dir="auto">Q33: How do I subtract numbers?<br/>A:</p><pre id="39315921-b68f-80b3-b1a3-f4196e6a587d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = 10 - 4;</code></pre><p id="39315921-b68f-80d9-8c12-dc2653cb041b" class="" dir="auto">Q34: How do I multiply numbers?<br/>A:</p><pre id="39315921-b68f-8006-9161-c75583301a28" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let area = 5 * 6;</code></pre><p id="39315921-b68f-8044-9974-fc9c48d03e6f" class="" dir="auto">Q35: How do I divide numbers?<br/>A:</p><pre id="39315921-b68f-805f-9ba6-e1e3fdb04eb8" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let answer = 20 / 4;</code></pre><p id="39315921-b68f-80b4-95a2-e017949c262e" class="" dir="auto">Q36: What does the % operator do?<br/>A: It gives the remainder after division.</p><pre id="39315921-b68f-8094-bce2-feaadbab65a0" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">7 % 2</code></pre><p id="39315921-b68f-8036-8393-c6dcc5b89d81" class="" dir="auto">Q37: When should I use the remainder operator?<br/>A: Use it to check if a number is even, odd, or evenly divisible.</p><p id="39315921-b68f-806b-85c6-efa4a8bc8da6" class="" dir="auto">Q38: Why should I store math results in variables?<br/>A: So you can reuse them later.</p><p id="39315921-b68f-8051-a9d1-e82ebf1bdcee" class="" dir="auto">Q39: Can I do math with variables?<br/>A: Yes.</p><pre id="39315921-b68f-80e2-8383-f383e19d5356" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let total = apples + oranges;</code></pre><p id="39315921-b68f-80e5-ad34-fc444c672627" class="" dir="auto">Q40: Why is math important in programming?<br/>A: Many programs calculate money, scores, measurements, and statistics.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8031-98f5-c4de8e864bbe" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-803f-93f0-fe4c177166e2" class="" dir="auto">Q41: What is an if statement?<br/>A: An if statement lets the program make decisions.</p><p id="39315921-b68f-806d-936b-dbe6dd9a047a" class="" dir="auto">Q42: When should I use an if statement?<br/>A: Whenever something should only happen if a condition is true.</p><p id="39315921-b68f-8078-9a02-cd55c5c89bee" class="" dir="auto">Q43: What is an else statement?<br/>A: Else runs when the if condition is false.</p><p id="39315921-b68f-80a6-b300-d52fbc8c383f" class="" dir="auto">Q44: How do I write an if statement?<br/>A:</p><pre id="39315921-b68f-80f6-a746-deddba06a648" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    console.log(&quot;Adult&quot;);
+}</code></pre><p id="39315921-b68f-80bc-acb1-e199bb026b26" class="" dir="auto">Q45: How do I use if and else together?<br/>A:</p><pre id="39315921-b68f-80a4-824d-c3e75e3f8b1d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 60) {
+    console.log(&quot;Pass&quot;);
+} else {
+    console.log(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-80cb-8f6a-e9e1e97a893d" class="" dir="auto">Q46: What is a condition?<br/>A: A condition is a question with a true or false answer.</p><p id="39315921-b68f-80da-8715-d9a0405ef33b" class="" dir="auto">Q47: What comparison operators are commonly used?<br/>A:</p><pre id="39315921-b68f-80ce-bb85-f391c69b6ac7" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">==
+===
+!=
+&lt;
+&gt;
+&lt;=
+&gt;=</code></pre><p id="39315921-b68f-8099-bfa3-f1d39408bf5b" class="" dir="auto">Q48: Why are conditionals important?<br/>A: They let your program react differently in different situations.</p><p id="39315921-b68f-80f4-acd5-dd0c41593829" class="" dir="auto">Q49: Can I check more than one condition?<br/>A: Yes.</p><pre id="39315921-b68f-8006-aa87-d5213cba909d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18 &amp;&amp; hasID) {
+    console.log(&quot;Access granted&quot;);
+}</code></pre><p id="39315921-b68f-804b-af6e-e83b46781a3b" class="" dir="auto">Q50: What is the easiest way to think about an if statement?<br/>A: Think of it as asking a yes-or-no question before doing something.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b4-9d4f-f62480aeb0d9" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8066-bacb-eea7b1a00947" class="" dir="auto">Q51: What is a random number?<br/>A: A number chosen unpredictably from a range.</p><p id="39315921-b68f-8072-be5f-fac7db6a7c6f" class="" dir="auto">Q52: When should I use random numbers?<br/>A: For games, simulations, or random choices.</p><p id="39315921-b68f-8012-a980-e1ecda73bcbb" class="" dir="auto">Q53: How do I generate a random decimal?<br/>A:</p><pre id="39315921-b68f-8038-8067-cdb0d4c6f263" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.random();</code></pre><p id="39315921-b68f-8082-8b67-d2f1b22dd825" class="" dir="auto">Q54: How do I generate a random whole number from 1 to 10?<br/>A:</p><pre id="39315921-b68f-802a-960c-d3a6f726aa33" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let number = Math.floor(Math.random() * 10) + 1;</code></pre><p id="39315921-b68f-8059-86ad-e3a20c5a09cc" class="" dir="auto">Q55: What does Math.random() return?<br/>A: A decimal from 0 (inclusive) up to 1 (exclusive).</p><p id="39315921-b68f-807c-915c-c4f054a26ebb" class="" dir="auto">Q56: Why do I use Math.floor()?<br/>A: It removes the decimal portion to create a whole number.</p><p id="39315921-b68f-8092-b767-d228f23c54a0" class="" dir="auto">Q57: Can I generate random decimal numbers?<br/>A: Yes.</p><pre id="39315921-b68f-803f-9132-c2369e66f1ef" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.random();</code></pre><p id="39315921-b68f-8067-893e-e7e5ff7d32fd" class="" dir="auto">Q58: How can I simulate rolling a die?<br/>A:</p><pre id="39315921-b68f-8095-9459-fc2ecb884c05" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let roll = Math.floor(Math.random() * 6) + 1;</code></pre><p id="39315921-b68f-803e-a76b-cdd7163188d5" class="" dir="auto">Q59: How can I randomly choose between true and false?<br/>A:</p><pre id="39315921-b68f-8062-a1b8-f79c73f59202" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = Math.random() &lt; 0.5;</code></pre><p id="39315921-b68f-805c-bf15-dc212f26099b" class="" dir="auto">Q60: Why are random numbers useful?<br/>A: They make programs less predictable and more interesting by creating different results each time.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8091-b8df-c5227867c0d2" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e4-8c05-cca52a7def72" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-80df-8d61-ccda113e7138" class="" dir="auto">Q1: I want to store a player&#x27;s name in my program.<br/>A:</p><pre id="39315921-b68f-80ee-a482-d32b462affe9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let playerName = &quot;John&quot;;</code></pre><p id="39315921-b68f-80db-9f45-dbe6d46ec5b2" class="" dir="auto">Q2: I want to store a score that will change during the game.<br/>A:</p><pre id="39315921-b68f-807f-9e81-e4548f4bf606" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score = 0;</code></pre><p id="39315921-b68f-80f0-9508-eacdcdfc2182" class="" dir="auto">Q3: I want to store the value of PI that should never change.<br/>A:</p><pre id="39315921-b68f-80f6-8a18-cff7bb7cc5ff" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const PI = 3.14159;</code></pre><p id="39315921-b68f-8095-8a7c-f48fe0e16da4" class="" dir="auto">Q4: I want to store whether a player is alive or dead.<br/>A:</p><pre id="39315921-b68f-804d-b298-f1aa68a3d598" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let isAlive = true;</code></pre><p id="39315921-b68f-8047-bc83-d557d5609f35" class="" dir="auto">Q5: I want to store a fixed game title.<br/>A:</p><pre id="39315921-b68f-8056-b472-e8ca2ce1387f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const gameTitle = &quot;Space Battle&quot;;</code></pre><p id="39315921-b68f-8073-85fb-d9487c959591" class="" dir="auto">Q6: I want to increase a score by 10.<br/>A:</p><pre id="39315921-b68f-80ad-93e0-f76c43e14c5a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += 10;</code></pre><p id="39315921-b68f-80f3-bbb7-e6a8f39b37aa" class="" dir="auto">Q7: I want to reset a score to zero.<br/>A:</p><pre id="39315921-b68f-8071-bc97-c1fba4396811" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score = 0;</code></pre><p id="39315921-b68f-8050-949d-c4b5a6457209" class="" dir="auto">Q8: I want to store a player&#x27;s age.<br/>A:</p><pre id="39315921-b68f-809d-b998-e067e34aa1bc" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = 25;</code></pre><p id="39315921-b68f-808e-857a-cc686f8cc18d" class="" dir="auto">Q9: I want to store a decimal health value.<br/>A:</p><pre id="39315921-b68f-80b7-9a58-f771daa3cc63" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let health = 75.5;</code></pre><p id="39315921-b68f-80d9-9bf5-d0a5769d5a00" class="" dir="auto">Q10: I want to update a player&#x27;s name.<br/>A:</p><pre id="39315921-b68f-80fb-963e-cc56707c9756" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">playerName = &quot;Alex&quot;;</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-807c-a221-c3431061844b" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8020-8505-e84706f1e06c" class="" dir="auto">Q11: I want to store whole numbers only.<br/>A:</p><pre id="39315921-b68f-80bb-bbda-f023db819957" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let level = 1;</code></pre><p id="39315921-b68f-80a6-91fa-ca30779a2ab8" class="" dir="auto">Q12: I want to store text entered by the user.<br/>A:</p><pre id="39315921-b68f-8080-8e81-fe48148fdf45" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let input = prompt(&quot;Enter text:&quot;);</code></pre><p id="39315921-b68f-802c-ab2a-f1689cb37002" class="" dir="auto">Q13: I want to store a yes/no value.<br/>A:</p><pre id="39315921-b68f-80c0-8738-c3357b529b29" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let hasKey = false;</code></pre><p id="39315921-b68f-80d4-95da-ea8e82db3945" class="" dir="auto">Q14: I want to store a decimal number.<br/>A:</p><pre id="39315921-b68f-80f5-8929-da21d05f9901" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let price = 19.99;</code></pre><p id="39315921-b68f-80e6-b953-f14ad94b3b86" class="" dir="auto">Q15: I want to convert text into a number.<br/>A:</p><pre id="39315921-b68f-8000-9ca3-d4283ad0d2e4" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = Number(prompt(&quot;Enter age:&quot;));</code></pre><p id="39315921-b68f-8021-97f0-db61fcd545f3" class="" dir="auto">Q16: I want to store a very large number.<br/>A:</p><pre id="39315921-b68f-80e2-aaf4-cae37e54a7a6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let distance = 1000000000;</code></pre><p id="39315921-b68f-8057-8c57-e8420ee0cee1" class="" dir="auto">Q17: I want to store multiple words.<br/>A:</p><pre id="39315921-b68f-80b9-8d9d-d7d6ccc57ecf" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let message = &quot;Hello World&quot;;</code></pre><p id="39315921-b68f-8058-afcf-f817e1d9ef77" class="" dir="auto">Q18: I want to store whether a door is open.<br/>A:</p><pre id="39315921-b68f-805c-acc1-c530d4944ada" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let isOpen = true;</code></pre><p id="39315921-b68f-80a7-96ba-c90ce748b766" class="" dir="auto">Q19: I want to store a player&#x27;s username.<br/>A:</p><pre id="39315921-b68f-80c2-884d-f99d4dffe88b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let username = &quot;Player1&quot;;</code></pre><p id="39315921-b68f-807e-b630-f1f05eff81b8" class="" dir="auto">Q20: I want to convert a string into a decimal number.<br/>A:</p><pre id="39315921-b68f-803c-880c-f64edf346870" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let price = parseFloat(prompt(&quot;Enter price:&quot;));</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8042-8ca0-d643760fcb50" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-80ca-ac8d-e56e00f3a05b" class="" dir="auto">Q21: I want to print a message to the terminal.<br/>A:</p><pre id="39315921-b68f-80a3-baae-fd9d55024a01" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(&quot;Hello Player&quot;);</code></pre><p id="39315921-b68f-804f-9a71-f0e0009344b9" class="" dir="auto">Q22: I want to ask the user for their name.<br/>A:</p><pre id="39315921-b68f-80e7-9a71-fb35d7c40900" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let name = prompt(&quot;Enter your name:&quot;);</code></pre><p id="39315921-b68f-80dc-9d76-c6153ade8180" class="" dir="auto">Q23: I want to display the user&#x27;s name.<br/>A:</p><pre id="39315921-b68f-80a0-a8d3-dbbe66308974" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(name);</code></pre><p id="39315921-b68f-807a-99da-c9b528208d6c" class="" dir="auto">Q24: I want to ask for a number.<br/>A:</p><pre id="39315921-b68f-80ea-b628-f044d2e549c9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let number = Number(prompt(&quot;Enter a number:&quot;));</code></pre><p id="39315921-b68f-8046-9d17-dd2460bcf201" class="" dir="auto">Q25: I want to display a score.<br/>A:</p><pre id="39315921-b68f-8028-b98e-ed6413d4a791" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(&quot;Score:&quot;, score);</code></pre><p id="39315921-b68f-8084-8aad-c56795fa053a" class="" dir="auto">Q26: I want to display text and a variable together.<br/>A:</p><pre id="39315921-b68f-80e8-a5d6-e2cf31777f07" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(&quot;Hello&quot;, name);</code></pre><p id="39315921-b68f-807c-84a9-e50b058b6203" class="" dir="auto">Q27: I want to print a blank line.<br/>A:</p><pre id="39315921-b68f-8018-a564-ea5e63c7cb1b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log();</code></pre><p id="39315921-b68f-80d9-9f4e-ef9686011460" class="" dir="auto">Q28: I want to display a welcome message.<br/>A:</p><pre id="39315921-b68f-80a1-9056-de8e7c87ed64" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(&quot;Welcome to the game!&quot;);</code></pre><p id="39315921-b68f-8003-a5a8-d5e6906348d6" class="" dir="auto">Q29: I want to show the value of two variables.<br/>A:</p><pre id="39315921-b68f-80af-9e6f-ea82711d1733" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">console.log(name, score);</code></pre><p id="39315921-b68f-80e7-923b-f240c62d912f" class="" dir="auto">Q30: I want to ask for two numbers.<br/>A:</p><pre id="39315921-b68f-80bd-a701-dd1986ee1f29" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let num1 = Number(prompt(&quot;First number:&quot;));
+let num2 = Number(prompt(&quot;Second number:&quot;));</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b6-91fc-c25f9c73353c" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80d3-a7db-eb2118e16ded" class="" dir="auto">Q31: I want to add two numbers.<br/>A:</p><pre id="39315921-b68f-80e7-b8bf-f808ebc5b0e9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a + b;</code></pre><p id="39315921-b68f-8070-9360-e8f92b0e0759" class="" dir="auto">Q32: I want to subtract two numbers.<br/>A:</p><pre id="39315921-b68f-80c7-8ab5-c6fd787d9182" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a - b;</code></pre><p id="39315921-b68f-80e4-b94f-c718f9a45da7" class="" dir="auto">Q33: I want to multiply two numbers.<br/>A:</p><pre id="39315921-b68f-80c8-9a80-f865e4ad389f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a * b;</code></pre><p id="39315921-b68f-8078-b670-dd6f18e9b9d0" class="" dir="auto">Q34: I want to divide two numbers.<br/>A:</p><pre id="39315921-b68f-80c6-964d-f8f5ed9fd60c" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a / b;</code></pre><p id="39315921-b68f-8097-bf73-d5eb8d819a83" class="" dir="auto">Q35: I want to find the remainder after division.<br/>A:</p><pre id="39315921-b68f-805f-a95f-e628e95c14f2" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let remainder = a % b;</code></pre><p id="39315921-b68f-8025-b864-f5857b52b0cc" class="" dir="auto">Q36: I want to increase a variable by 1.<br/>A:</p><pre id="39315921-b68f-807e-be03-c6dada3169c3" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count++;</code></pre><p id="39315921-b68f-8032-bc2b-eeb1e52c6160" class="" dir="auto">Q37: I want to decrease a variable by 1.<br/>A:</p><pre id="39315921-b68f-80b7-94d8-cf3fea9bbe40" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count--;</code></pre><p id="39315921-b68f-8018-81bb-ea073b9ca964" class="" dir="auto">Q38: I want to add 5 to a score.<br/>A:</p><pre id="39315921-b68f-8016-bbbe-cee97bc2c70b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += 5;</code></pre><p id="39315921-b68f-8084-bcb6-e2843f2ca81d" class="" dir="auto">Q39: I want to double a value.<br/>A:</p><pre id="39315921-b68f-8002-b0dd-ef762d53df3b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">value *= 2;</code></pre><p id="39315921-b68f-8097-b433-d8573313d564" class="" dir="auto">Q40: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-80fe-a485-e0bbfc55d332" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let average = (a + b) / 2;</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80da-bf26-fca19cb63929" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-80fa-b459-e16db7f97526" class="" dir="auto">Q41: I want to check if a player is old enough.<br/>A:</p><pre id="39315921-b68f-808e-9b26-fe2773fa88d7" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    console.log(&quot;Allowed&quot;);
+}</code></pre><p id="39315921-b68f-8088-a08c-d8f067eaf337" class="" dir="auto">Q42: I want to block underage users.<br/>A:</p><pre id="39315921-b68f-8081-8d2a-c1fb9b9cca4d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &lt; 18) {
+    console.log(&quot;Blocked&quot;);
+}</code></pre><p id="39315921-b68f-806c-adb3-e169766a066b" class="" dir="auto">Q43: I want to handle both pass and fail.<br/>A:</p><pre id="39315921-b68f-802d-8973-d63bb066f482" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50) {
+    console.log(&quot;Pass&quot;);
+} else {
+    console.log(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-803b-abab-c0e4ded502f0" class="" dir="auto">Q44: I want to check if a number equals 10.<br/>A:</p><pre id="39315921-b68f-8074-8498-da0c5fcf9c7e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (number === 10) {
+    console.log(&quot;Match&quot;);
+}</code></pre><p id="39315921-b68f-804e-ac26-c714d9b0d0fe" class="" dir="auto">Q45: I want to check if two conditions are true.<br/>A:</p><pre id="39315921-b68f-80f7-a588-f494d76c6eda" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (hasKey &amp;&amp; doorLocked) {
+    console.log(&quot;Open door&quot;);
+}</code></pre><p id="39315921-b68f-8001-b540-ece9086201bf" class="" dir="auto">Q46: I want to check if either condition is true.<br/>A:</p><pre id="39315921-b68f-80f1-8625-c6b3024ef98a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (isAdmin || isModerator) {
+    console.log(&quot;Access granted&quot;);
+}</code></pre><p id="39315921-b68f-80dc-98de-dc4507003548" class="" dir="auto">Q47: I want to check if a number is not zero.<br/>A:</p><pre id="39315921-b68f-8061-bae3-ecdb2e965d2f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (number !== 0) {
+    console.log(&quot;Valid&quot;);
+}</code></pre><p id="39315921-b68f-8035-973e-f8453e8c9451" class="" dir="auto">Q48: I want to handle multiple conditions.<br/>A:</p><pre id="39315921-b68f-808d-b3c4-f0308f0ab5fb" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 80) {
+    console.log(&quot;A&quot;);
+} else if (score &gt; 50) {
+    console.log(&quot;B&quot;);
+} else {
+    console.log(&quot;C&quot;);
+}</code></pre><p id="39315921-b68f-80b9-bd5e-def7025a46c4" class="" dir="auto">Q49: I want to check if a user is logged in.<br/>A:</p><pre id="39315921-b68f-8067-bdab-e4088b101629" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (isLoggedIn) {
+    console.log(&quot;Welcome&quot;);
+}</code></pre><p id="39315921-b68f-80fb-942d-e23d1635a62b" class="" dir="auto">Q50: I want to stop empty input.<br/>A:</p><pre id="39315921-b68f-80d6-93fb-eed5fcc4fa6b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (input === &quot;&quot;) {
+    console.log(&quot;Invalid input&quot;);
+}</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8089-9503-d0e110de37ca" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-806c-a7d6-ec719d5c0ca6" class="" dir="auto">Q51: I want to generate a random number between 1 and 10.<br/>A:</p><pre id="39315921-b68f-80a9-a3d3-d08190a7da39" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let number = Math.floor(Math.random() * 10) + 1;</code></pre><p id="39315921-b68f-803b-8308-ffd7e9125cd3" class="" dir="auto">Q52: I want to simulate rolling a die.<br/>A:</p><pre id="39315921-b68f-80f2-b4e0-dfde3c7ed945" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let roll = Math.floor(Math.random() * 6) + 1;</code></pre><p id="39315921-b68f-8012-b8eb-e7866d374da6" class="" dir="auto">Q53: I want to randomly pick true or false.<br/>A:</p><pre id="39315921-b68f-8027-a550-d06254bb32f0" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = Math.random() &lt; 0.5;</code></pre><p id="39315921-b68f-808b-afc7-d2968055eba6" class="" dir="auto">Q54: I want to generate a random decimal.<br/>A:</p><pre id="39315921-b68f-80c5-9b97-e4aafe2c3a64" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.random();</code></pre><p id="39315921-b68f-8080-93ce-cb19aa2b52a0" class="" dir="auto">Q55: I want to generate a random number between 50 and 100.<br/>A:</p><pre id="39315921-b68f-803a-ab99-f394408d2b94" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.floor(Math.random() * 51) + 50;</code></pre><p id="39315921-b68f-80c2-8188-ced2c818ec40" class="" dir="auto">Q56: I want to simulate a coin flip.<br/>A:</p><pre id="39315921-b68f-8041-8456-ff9a0552b7a2" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let flip = Math.random() &lt; 0.5 ? &quot;Heads&quot; : &quot;Tails&quot;;</code></pre><p id="39315921-b68f-80d0-8a36-ec62feea84cd" class="" dir="auto">Q57: I want to randomly increase score by 1 or 2.<br/>A:</p><pre id="39315921-b68f-8066-b9e6-d4271c319e9a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += Math.floor(Math.random() * 2) + 1;</code></pre><p id="39315921-b68f-8024-b6c7-c893df4e6560" class="" dir="auto">Q58: I want to randomly choose a name.<br/>A:</p><pre id="39315921-b68f-80d2-bffb-e70555cebd98" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let names = [&quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot;];
+let pick = names[Math.floor(Math.random() * names.length)];</code></pre><p id="39315921-b68f-80af-b7f2-d9afbbc2c193" class="" dir="auto">Q59: I want to generate a random damage value.<br/>A:</p><pre id="39315921-b68f-8027-96e7-fc4bea55b9d5" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let damage = Math.floor(Math.random() * 11) + 5;</code></pre><p id="39315921-b68f-80df-8103-ff477ef00666" class="" dir="auto">Q60: I want to randomly decide if an attack hits.<br/>A:</p><pre id="39315921-b68f-807d-8a38-ee5a88b60063" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let hit = Math.random() &lt; 0.75;</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8022-8918-fb2afdc43fd0" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-80b6-a7e6-ed3098bf94e9" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-80bc-a9d3-d1d069fe2cab" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80a6-9484-cddd9b0ddbab" dir="ltr"><th id="~Cur" class="simple-table-header-color simple-table-header">Text notation</th><th id=":&lt;g}" class="simple-table-header-color simple-table-header">Actual flowchart shape</th><th id="]Fiq" class="simple-table-header-color simple-table-header">Purpose</th></tr></thead><tbody><tr id="3e315921-b68f-80a3-b5ed-c25459fb1f92" dir="ltr"><td id="~Cur" class=""><code>([ START / END ])</code></td><td id=":&lt;g}" class=""><strong>Oval / Terminator</strong></td><td id="]Fiq" class="">Start or end</td></tr><tr id="3e315921-b68f-807a-89e3-ddc3f40ebfa1" dir="ltr"><td id="~Cur" class=""><code>[ Process ]</code></td><td id=":&lt;g}" class=""><strong>Rectangle</strong></td><td id="]Fiq" class="">Calculation, assignment, setup</td></tr><tr id="3e315921-b68f-800c-9aec-fffec5dc76f3" dir="ltr"><td id="~Cur" class=""><code>[/ Input / Output /]</code></td><td id=":&lt;g}" class=""><strong>Parallelogram</strong></td><td id="]Fiq" class="">User input or console output</td></tr><tr id="3e315921-b68f-8042-b6c2-f709a978c193" dir="ltr"><td id="~Cur" class=""><code>{ Condition? }</code></td><td id=":&lt;g}" class=""><strong>Diamond</strong></td><td id="]Fiq" class="">Decision / branching</td></tr><tr id="3e315921-b68f-80a3-b4a5-cfeaee5139b7" dir="ltr"><td id="~Cur" class=""><code>↓</code></td><td id=":&lt;g}" class=""><strong>Arrow</strong></td><td id="]Fiq" class="">Direction of execution</td></tr></tbody></table><hr id="3e315921-b68f-807e-bd83-fc438a17fb19" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ae-b09f-ccfd013a487f" style="display:inline-block">Project 1: Simple Calculator</h1></summary><div class="indented"><h3 id="3e315921-b68f-809c-bdcf-dffbfaa30e4a" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8080-8bc1-f3ed81fe65df" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+      [ Import prompt-sync ]
+                  |
+                  ↓
+       [/ Ask for first number /]
+                  |
+                  ↓
+       [/ Read user input /]
+                  |
+                  ↓
+       [ Convert input to Number ]
+                  |
+                  ↓
+       [/ Ask for second number /]
+                  |
+                  ↓
+       [/ Read user input /]
+                  |
+                  ↓
+       [ Convert input to Number ]
+                  |
+                  ↓
+       [ Calculate addition
+         add = num1 + num2 ]
+                  |
+                  ↓
+       [ Calculate subtraction
+         subtract = num1 - num2 ]
+                  |
+                  ↓
+       [ Calculate multiplication
+         multiply = num1 * num2 ]
+                  |
+                  ↓
+       [ Calculate division
+         divide = num1 / num2 ]
+                  |
+                  ↓
+       [/ Display addition /]
+                  |
+                  ↓
+       [/ Display subtraction /]
+                  |
+                  ↓
+       [/ Display multiplication /]
+                  |
+                  ↓
+       [/ Display division /]
+                  |
+                  ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-803c-a117-c38774fab934" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-808c-968a-f34084033b68" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Import library → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80d5-aa34-e433e45bb4f1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask user → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8038-971b-ca78862860e3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read input → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8094-92bf-e71be18c0212" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>Number()</code> conversion → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80e3-9405-cd587a431d6b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Math calculations → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80a5-aeca-d61a3bc60060" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>console.log()</code> → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80ff-88e4-c5042b96b44a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-800e-918c-cabc04462915" class="" dir="auto">Core structure</h3><pre id="3e315921-b68f-80b7-964b-de219f8a7bea" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Input
+  ↓
+Convert
+  ↓
+Calculate
+  ↓
+Output</code></pre></div></details><hr id="3e315921-b68f-805a-8e83-c48d454504f9" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-807b-97aa-dbb118c04abf" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-802c-b11b-d6fbda552ea5" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8013-a378-c8b82a334f7a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Import prompt-sync ]
+                  |
+                  ↓
+       [ Generate random number
+             between 1–10 ]
+                  |
+                  ↓
+       [/ Ask user for guess /]
+                  |
+                  ↓
+       [/ Read user input /]
+                  |
+                  ↓
+       [ Convert guess to Number ]
+                  |
+                  ↓
+        { guess === secret? }
+             /           \
+           YES            NO
+            |              |
+            ↓              ↓
+    [/ Display          [/ Display
+       &quot;Correct!&quot; /]       &quot;Wrong!&quot;
+                            + secret /]
+            |              |
+            └───────┬──────┘
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-807c-a673-d235585bd7b9" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80f2-b313-d3b6ec8ffcb5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Import <code>prompt-sync</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80d7-9acd-fbbd0708549d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate random number → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8060-930e-fe5792d6f1e2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80ed-980f-dbe624a784c0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-803a-a044-f98b42d64d59" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert guess → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8083-9a39-faca60645051" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare guess → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80b5-9f66-e5074cc908eb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-804c-a6f7-e69f663f4430" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80dc-a89c-c0cd9c7f95ba" class="" dir="auto">Core structure</h3><pre id="3e315921-b68f-8068-be56-d06bbdb94cca" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Generate random number
+        ↓
+    Get input
+        ↓
+    Compare
+     /     \
+ Correct   Wrong</code></pre><p id="3e315921-b68f-8031-a83f-e6e842b9acac" class="" dir="auto">This is your basic JavaScript:</p><pre id="3e315921-b68f-802a-b081-e126835ccfce" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">if
+else</code></pre><p id="3e315921-b68f-806f-8295-e815fa390013" class="" dir="auto">pattern.</p></div></details><hr id="3e315921-b68f-8047-bf7f-ef29b626fdf0" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8088-9c5b-d19cd33819ce" style="display:inline-block">Project 3: Login Checker</h1></summary><div class="indented"><h3 id="3e315921-b68f-805a-91f1-c0b8ce4ac4dd" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80a5-9657-d89e602028d4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Import prompt-sync ]
+                  |
+                  ↓
+       [ Store correct
+         username/password ]
+                  |
+                  ↓
+       [/ Ask for username /]
+                  |
+                  ↓
+       [/ Read username /]
+                  |
+                  ↓
+       [/ Ask for password /]
+                  |
+                  ↓
+       [/ Read password /]
+                  |
+                  ↓
+       { Username correct
+         AND
+         Password correct? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+ [/ Display &quot;Access     [/ Display &quot;Access
+      Granted&quot; /]             Denied&quot; /]
+            |             |
+            └──────┬──────┘
+                   ↓
+               ([ END ])</code></pre><h3 id="3e315921-b68f-8016-9683-f79611a8b9e9" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8060-af82-c94cd6bc3775" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Import library → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80de-b1ef-d411aea73bb8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store credentials → <strong>Process</strong></li></ul><ul id="3e315921-b68f-802e-8a82-eb7a736ff077" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read username → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80bc-9116-e466e63653cb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read password → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8011-b921-fc40228e5d95" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare credentials → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8051-be4c-c4eafa49e5ba" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display access result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80bc-b193-efa309691765" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80be-8b87-e43c48465c4e" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-8042-9f38-fe323da5108e" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Username matches?
+       +
+Password matches?
+       ↓
+      &amp;&amp;
+       ↓
+   Both true?
+    /     \
+  YES      NO
+   ↓        ↓
+Granted   Denied</code></pre><p id="3e315921-b68f-8079-ad8b-f0e12360c579" class="" dir="auto">The important programming concept here is the JavaScript <strong>logical AND operator</strong>:</p><pre id="3e315921-b68f-8003-a210-e7adad95a2f5" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">username===correctUsername&amp;&amp;password===correctPassword</code></pre></div></details><hr id="3e315921-b68f-80ef-9249-e41d5010e6de" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80d3-bbf5-ff577691bc7c" style="display:inline-block">Project 4: Grade Calculator</h1></summary><div class="indented"><p id="3e315921-b68f-8091-a353-e9fd08c68137" class="" dir="auto">This one demonstrates an <code><strong>if → else if → else</strong></code><strong> decision chain</strong>.</p><h3 id="3e315921-b68f-800d-8faf-cf9dce160a9e" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8069-8096-e6b72c6559a0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Import prompt-sync ]
+                  |
+                  ↓
+       [/ Ask for score /]
+                  |
+                  ↓
+       [/ Read user input /]
+                  |
+                  ↓
+       [ Convert input to Number ]
+                  |
+                  ↓
+           { score &gt;= 90? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+     [/ Display A /]   { score &gt;= 80? }
+                           /        \
+                         YES         NO
+                          |           |
+                          ↓           ↓
+                   [/ Display B /] { score &gt;= 70? }
+                                      /       \
+                                    YES        NO
+                                     |          |
+                                     ↓          ↓
+                              [/ Display C /] { score &gt;= 60? }
+                                                 /      \
+                                               YES       NO
+                                                |         |
+                                                ↓         ↓
+                                         [/ Display D /] [/ Display F /]
+                                                |         |
+                                                └────┬────┘
+                                                     ↓
+                                                 ([ END ])</code></pre><h3 id="3e315921-b68f-801e-9b80-e5dbec3d57eb" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-805a-809c-dd21cb9afe16" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Import library → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80e6-aba9-d2fbbdff3782" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80e4-82fc-e5ef1a75db3d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80d1-8252-da99793eb940" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert to Number → <strong>Process</strong></li></ul><ul id="3e315921-b68f-803b-8b27-cbdba26f613a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Each <code>score &gt;= X</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80e6-8152-d81b932ba215" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display grade → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80e5-9305-f17694bb4631" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80e5-984e-f5eb85474b4e" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-80cf-84d8-c6ca74192a2a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">score &gt;= 90?
+   │
+   ├── YES → A
+   │
+   └── NO
+        ↓
+     score &gt;= 80?
+        │
+        ├── YES → B
+        │
+        └── NO
+             ↓
+          score &gt;= 70?
+             │
+             ├── YES → C
+             │
+             └── NO
+                  ↓
+               score &gt;= 60?
+                  │
+                  ├── YES → D
+                  │
+                  └── NO → F</code></pre><p id="3e315921-b68f-8087-9fe3-da5e6c6ea6b7" class="" dir="auto">This is a good visual representation of <strong>multiple mutually exclusive conditions</strong>.</p></div></details><hr id="3e315921-b68f-803d-9041-df9963ec6abf" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-801a-8b59-d8952a3266e7" style="display:inline-block">Project 5: Dice Battle</h1></summary><div class="indented"><h3 id="3e315921-b68f-80e2-a441-ce91330e556b" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-801a-9e13-c374205938b3" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Generate Player 1
+         random roll 1–6 ]
+                  |
+                  ↓
+       [ Generate Player 2
+         random roll 1–6 ]
+                  |
+                  ↓
+       [/ Display Player 1 roll /]
+                  |
+                  ↓
+       [/ Display Player 2 roll /]
+                  |
+                  ↓
+        { player1 &gt; player2? }
+             /           \
+           YES            NO
+            |              |
+            ↓              ↓
+ [/ Display &quot;Player 1   { player2 &gt; player1? }
+       Wins!&quot; /]             /          \
+                            YES           NO
+                             |             |
+                             ↓             ↓
+                    [/ Display &quot;Player 2  [/ Display
+                         Wins!&quot; /]          &quot;It&#x27;s a Tie!&quot; /]
+                             |             |
+                             └──────┬──────┘
+                                    |
+                    ┌───────────────┘
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-8017-858d-f6c7e33c24b3" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-807d-897e-f8056d337f36" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate Player 1 roll → <strong>Process</strong></li></ul><ul id="3e315921-b68f-806d-8793-e1024bd85b95" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate Player 2 roll → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8004-a445-f7a77a50de53" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display rolls → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8078-9948-da96e59ab4a0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare Player 1 &gt; Player 2 → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80c6-b143-d51ca9785afa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare Player 2 &gt; Player 1 → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8000-8001-da795164f36e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display winner/tie → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80c4-be5b-e7960299f843" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-805e-928f-d8bca24c37d1" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-8026-9986-cd2008e54469" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        Player 1 &gt; Player 2?
+             /          \
+           YES           NO
+            ↓             ↓
+       Player 1 wins   Player 2 &gt; Player 1?
+                           /          \
+                         YES           NO
+                          ↓             ↓
+                    Player 2 wins      Tie</code></pre><p id="3e315921-b68f-80f1-8d5e-dcaf14ce2da1" class="" dir="auto">This demonstrates an <code><strong>if → else if → else</strong></code><strong> decision tree</strong>.</p></div></details><hr id="3e315921-b68f-8003-aef6-c8f335e4f6bc" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80c5-a0f0-e109de9463f1" style="display:inline-block">All 5 Projects — Complexity Progression</h1></summary><div class="indented"><p id="3e315921-b68f-8035-b0f3-ec2b8d265470" class="" dir="auto">These five actually form a nice progression for your JavaScript project breakdown system:</p><pre id="3e315921-b68f-800e-921e-dc21aad29c9d" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">PROJECT 1
+Simple Calculator
+        ↓
+Sequential Logic
+        ↓
+Input → Process → Output
+        ↓
+PROJECT 2
+Number Guessing
+        ↓
+Basic Decision
+        ↓
+Input → Process → Decision → Output
+        ↓
+PROJECT 3
+Login Checker
+        ↓
+Boolean Logic
+        ↓
+Input → AND Condition → Output
+        ↓
+PROJECT 4
+Grade Calculator
+        ↓
+Decision Chain
+        ↓
+if → else if → else
+        ↓
+PROJECT 5
+Dice Battle
+        ↓
+Multiple Decisions
+        ↓
+Random Data → Decision Tree → Output</code></pre><h3 id="3e315921-b68f-8088-9fb1-f4800f392a3c" class="" dir="auto">The universal pattern</h3><p id="3e315921-b68f-8064-870b-cb78abc5d510" class="" dir="auto">You can also boil nearly every one of these beginner projects down to:</p><pre id="3e315921-b68f-8030-b067-feed80612835" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+             INPUT
+        [/ Input /]
+                  |
+                  ↓
+            PROCESS
+          [ Process ]
+                  |
+                  ↓
+           DECISION?
+          { Condition? }
+             /     \
+           YES      NO
+            |        |
+            ↓        ↓
+         OUTPUT    OUTPUT
+     [/ Output /] [/ Output /]
+            \        /
+             \      /
+              ↓    ↓
+             ([ END ])</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8011-8cac-d93631609e1b" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8072-8445-ff442d6861aa" style="display:inline-block">Project 1: Simple Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-802f-b6ab-e8a5de1382ce" class="" dir="auto">What it does</h2><p id="39315921-b68f-80d8-b7ac-da6ef03258d1" class="" dir="auto">Asks the user for two numbers, then displays the results of basic math operations.</p><h2 id="39315921-b68f-8009-952d-d97dbf700ed0" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-8010-8f64-e406567be040" class="numbered-list" start="1" dir="auto"><li>Import the prompt-sync library.</li></ol><ol type="1" id="39315921-b68f-807d-80e7-ef6c82459531" class="numbered-list" start="2" dir="auto"><li>Ask the user for the first number.</li></ol><ol type="1" id="39315921-b68f-80ad-b1ba-e097464589aa" class="numbered-list" start="3" dir="auto"><li>Ask the user for the second number.</li></ol><ol type="1" id="39315921-b68f-804c-a092-e35a6bd92e2e" class="numbered-list" start="4" dir="auto"><li>Perform addition, subtraction, multiplication, and division.</li></ol><ol type="1" id="39315921-b68f-80eb-b885-fd90be4e8aa9" class="numbered-list" start="5" dir="auto"><li>Display each result.</li></ol><pre id="39315921-b68f-8047-9994-edea323841fd" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">// Step 1: Import prompt-sync so we can read user input
+const prompt = require(&quot;prompt-sync&quot;)();
+
+// Step 2: Ask the user for the first number
+let num1 = Number(prompt(&quot;Enter the first number: &quot;));
+
+// Step 3: Ask the user for the second number
+let num2 = Number(prompt(&quot;Enter the second number: &quot;));
+
+// Step 4: Perform the calculations
+let add = num1 + num2;
+let subtract = num1 - num2;
+let multiply = num1 * num2;
+let divide = num1 / num2;
+
+// Step 5: Display the results
+console.log(&quot;Addition:&quot;, add);
+console.log(&quot;Subtraction:&quot;, subtract);
+console.log(&quot;Multiplication:&quot;, multiply);
+console.log(&quot;Division:&quot;, divide);</code></pre></div></details><hr id="39315921-b68f-80fa-a2cc-d1bfa0c38388" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8063-922c-df711a8ca16d" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-80cb-887d-f3738368f833" class="" dir="auto">What it does</h2><p id="39315921-b68f-805d-ac27-c1d1e3e40cd4" class="" dir="auto">The computer picks a random number from 1–10. The user tries to guess it.</p><h2 id="39315921-b68f-80d4-a6e6-eb8f0503a077" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-80f0-9e6c-fc9694f7db65" class="numbered-list" start="1" dir="auto"><li>Import the prompt-sync library.</li></ol><ol type="1" id="39315921-b68f-8049-befd-c35669100fa3" class="numbered-list" start="2" dir="auto"><li>Generate a random number.</li></ol><ol type="1" id="39315921-b68f-80f9-abaf-fd59eb152166" class="numbered-list" start="3" dir="auto"><li>Ask the user for a guess.</li></ol><ol type="1" id="39315921-b68f-8088-b2cd-e9cfe09ab879" class="numbered-list" start="4" dir="auto"><li>Compare the guess to the random number.</li></ol><ol type="1" id="39315921-b68f-8042-8ffa-d9bb0eda21ce" class="numbered-list" start="5" dir="auto"><li>Display whether the guess was correct.</li></ol><pre id="39315921-b68f-803d-a407-ef5ebfdf6a2f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">// Step 1: Import prompt-sync
+const prompt = require(&quot;prompt-sync&quot;)();
+
+// Step 2: Generate a random number between 1 and 10
+let secret = Math.floor(Math.random() * 10) + 1;
+
+// Step 3: Ask the user for a guess
+let guess = Number(prompt(&quot;Guess a number (1-10): &quot;));
+
+// Step 4: Compare the guess to the secret number
+if (guess === secret)
+{
+    // Step 5A: User guessed correctly
+    console.log(&quot;Correct!&quot;);
+}
+else
+{
+    // Step 5B: User guessed incorrectly
+    console.log(&quot;Wrong! The number was&quot;, secret);
+}</code></pre></div></details><hr id="39315921-b68f-8008-b669-fc870a4b3a4b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8012-99cd-c26fa9afce2b" style="display:inline-block">Project 3: Login Checker</h1></summary><div class="indented"><h2 id="39315921-b68f-8082-a968-df8c6cd2a261" class="" dir="auto">What it does</h2><p id="39315921-b68f-80f4-9fe7-e7c5999c6011" class="" dir="auto">Checks whether the username and password match the stored values.</p><h2 id="39315921-b68f-80bf-9092-d9cf799cecd8" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-806d-b3f6-c03c70ea078a" class="numbered-list" start="1" dir="auto"><li>Import the prompt-sync library.</li></ol><ol type="1" id="39315921-b68f-805f-b946-cf2dd4bfe57a" class="numbered-list" start="2" dir="auto"><li>Store the correct username and password.</li></ol><ol type="1" id="39315921-b68f-8012-abfb-e32a1193e021" class="numbered-list" start="3" dir="auto"><li>Ask the user for their username.</li></ol><ol type="1" id="39315921-b68f-8072-a9cc-cbdbabf95060" class="numbered-list" start="4" dir="auto"><li>Ask the user for their password.</li></ol><ol type="1" id="39315921-b68f-803b-a7c5-d7c87243efa6" class="numbered-list" start="5" dir="auto"><li>Compare both values.</li></ol><ol type="1" id="39315921-b68f-807f-a6f0-ddd87ffaee85" class="numbered-list" start="6" dir="auto"><li>Display whether login succeeded.</li></ol><pre id="39315921-b68f-80c5-aea5-e3db3a896ca0" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">// Step 1: Import prompt-sync
+const prompt = require(&quot;prompt-sync&quot;)();
+
+// Step 2: Store the correct login information
+const correctUsername = &quot;admin&quot;;
+const correctPassword = &quot;1234&quot;;
+
+// Step 3: Ask for the username
+let username = prompt(&quot;Username: &quot;);
+
+// Step 4: Ask for the password
+let password = prompt(&quot;Password: &quot;);
+
+// Step 5: Compare both values
+if (username === correctUsername &amp;&amp; password === correctPassword)
+{
+    // Step 6A: Login successful
+    console.log(&quot;Access Granted&quot;);
+}
+else
+{
+    // Step 6B: Login failed
+    console.log(&quot;Access Denied&quot;);
+}</code></pre></div></details><hr id="39315921-b68f-80bd-a581-f0dcc8a35f2a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-808c-b2a4-eb2cc340c52d" style="display:inline-block">Project 4: Grade Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-808f-91fe-fcc2ece1d203" class="" dir="auto">What it does</h2><p id="39315921-b68f-808d-a344-d928841b453f" class="" dir="auto">Converts a numeric score into a letter grade.</p><h2 id="39315921-b68f-8092-8e22-fffcfbc7c811" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-8018-9419-d3e08617afab" class="numbered-list" start="1" dir="auto"><li>Import the prompt-sync library.</li></ol><ol type="1" id="39315921-b68f-80a2-91ae-f845987b031a" class="numbered-list" start="2" dir="auto"><li>Ask the user for a score.</li></ol><ol type="1" id="39315921-b68f-803e-a97d-e880afb4c5d9" class="numbered-list" start="3" dir="auto"><li>Convert the input into a number.</li></ol><ol type="1" id="39315921-b68f-8031-9b97-ebfb4414bacf" class="numbered-list" start="4" dir="auto"><li>Determine the correct letter grade.</li></ol><ol type="1" id="39315921-b68f-8062-a78a-d1cca7022c17" class="numbered-list" start="5" dir="auto"><li>Display the grade.</li></ol><pre id="39315921-b68f-80a1-9765-df48d2ce5b92" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">// Step 1: Import prompt-sync
+const prompt = require(&quot;prompt-sync&quot;)();
+
+// Step 2: Ask for the student&#x27;s score
+let score = Number(prompt(&quot;Enter score (0-100): &quot;));
+
+// Step 3 &amp; 4: Determine the letter grade
+if (score &gt;= 90)
+{
+    console.log(&quot;Grade: A&quot;);
+}
+else if (score &gt;= 80)
+{
+    console.log(&quot;Grade: B&quot;);
+}
+else if (score &gt;= 70)
+{
+    console.log(&quot;Grade: C&quot;);
+}
+else if (score &gt;= 60)
+{
+    console.log(&quot;Grade: D&quot;);
+}
+else
+{
+    console.log(&quot;Grade: F&quot;);
+}</code></pre></div></details><hr id="39315921-b68f-809d-8afb-da0aa1fc0f8d" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-808e-8765-d2e28822a135" style="display:inline-block">Project 5: Dice Battle</h1></summary><div class="indented"><h2 id="39315921-b68f-80f4-8855-f07e6b26173f" class="" dir="auto">What it does</h2><p id="39315921-b68f-8015-85a7-dd723f0fba78" class="" dir="auto">Two players roll a six-sided die. The higher roll wins.</p><h2 id="39315921-b68f-802b-a651-f45c4b31ec9f" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-804d-9ef8-ea33805850ef" class="numbered-list" start="1" dir="auto"><li>Generate Player 1&#x27;s roll.</li></ol><ol type="1" id="39315921-b68f-806f-b3f4-e1952c5eb104" class="numbered-list" start="2" dir="auto"><li>Generate Player 2&#x27;s roll.</li></ol><ol type="1" id="39315921-b68f-8084-9272-e1af3ea442be" class="numbered-list" start="3" dir="auto"><li>Display both rolls.</li></ol><ol type="1" id="39315921-b68f-80d4-82a9-f90ee407087c" class="numbered-list" start="4" dir="auto"><li>Compare the rolls.</li></ol><ol type="1" id="39315921-b68f-8035-9323-c11b3bfa4ccd" class="numbered-list" start="5" dir="auto"><li>Announce the winner.</li></ol><pre id="39315921-b68f-80c9-a925-f30a48f6377d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">// Step 1: Generate Player 1&#x27;s dice roll
+let player1 = Math.floor(Math.random() * 6) + 1;
+
+// Step 2: Generate Player 2&#x27;s dice roll
+let player2 = Math.floor(Math.random() * 6) + 1;
+
+// Step 3: Display both rolls
+console.log(&quot;Player 1 rolled:&quot;, player1);
+console.log(&quot;Player 2 rolled:&quot;, player2);
+
+// Step 4: Compare the rolls
+if (player1 &gt; player2)
+{
+    // Step 5A: Player 1 wins
+    console.log(&quot;Player 1 Wins!&quot;);
+}
+else if (player2 &gt; player1)
+{
+    // Step 5B: Player 2 wins
+    console.log(&quot;Player 2 Wins!&quot;);
+}
+else
+{
+    // Step 5C: Tie game
+    console.log(&quot;It&#x27;s a Tie!&quot;);
+}</code></pre></div></details></div></details><p id="39315921-b68f-8001-a30d-d092340d3983" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

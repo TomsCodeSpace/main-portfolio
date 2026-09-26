@@ -1,0 +1,992 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Python + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-8026-920d-db1bf83e1a68" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Python + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39215921-b68f-80dc-8e17-e2c509a78c0f" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80c9-ad3b-d2dbecb773f3" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80fa-8471-c77df8aa248a" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><h3 id="39215921-b68f-805e-8a5b-db2722e7943a" class="" dir="auto">1. What is a variable?</h3><p id="39215921-b68f-80bf-bbe9-de74609265a0" class="" dir="auto">A variable is a box that stores information that can change.</p><h3 id="39215921-b68f-80c3-8e2b-f814093cffbe" class="" dir="auto">2. When should I use a variable?</h3><p id="39215921-b68f-8003-998a-d3763513f230" class="" dir="auto">Use it when the value will change later (like score or health).</p><h3 id="39215921-b68f-8004-91e1-fcbffe5ac777" class="" dir="auto">3. Why use a variable?</h3><p id="39215921-b68f-80c3-b311-c13294caf938" class="" dir="auto">Because apps need to remember and update information.</p><h3 id="39215921-b68f-807c-af50-c4cd0016ecec" class="" dir="auto">4. How do I create a variable in Kotlin?</h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js" integrity="sha512-nLUQ1JXk2Kj5a8FlfriL+WmiGbAq3W/dQirx3IlVfkpU7byrzLD19pJnYsG8vPTDvsRMpQDVSezvzkKUNcqUSw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39215921-b68f-8082-8a91-ee62f6eaff36" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var score = 0</code></pre><h3 id="39215921-b68f-805a-9c8e-fefe4ff34de0" class="" dir="auto">5. What is a constant?</h3><p id="39215921-b68f-8087-826e-dd7476efa618" class="" dir="auto">A constant is a value that cannot change after it is set.</p><h3 id="39215921-b68f-805d-8cd3-cb00138510bc" class="" dir="auto">6. When should I use a constant?</h3><p id="39215921-b68f-8093-8493-c8659205e7a5" class="" dir="auto">When the value should stay the same (like app name).</p><h3 id="39215921-b68f-80ad-bfb9-f3abf4d9854a" class="" dir="auto">7. Why use a constant?</h3><p id="39215921-b68f-8006-b6b2-c61b5f304058" class="" dir="auto">To prevent accidental changes in important values.</p><h3 id="39215921-b68f-8019-9c71-c0e6757e661d" class="" dir="auto">8. How do I create a constant in Kotlin?</h3><pre id="39215921-b68f-8002-81ef-e95b2a6c5da4" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val appName = &quot;MyApp&quot;</code></pre><h3 id="39215921-b68f-804b-9075-fae48f6b6246" class="" dir="auto">9. What is the difference between var and val?</h3><p id="39215921-b68f-80d3-902d-f16aca6fa23c" class="" dir="auto">var = changeable, val = unchangeable.</p><h3 id="39215921-b68f-8074-95ff-c5437b9d8262" class="" dir="auto">10. Why is val preferred?</h3><p id="39215921-b68f-807d-8af6-c8ca2c73c5f4" class="" dir="auto">Because it makes code safer and easier to understand.</p></div></details><hr id="39215921-b68f-80f5-8502-d44097820dbb" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-806e-a3b9-fbe81c153d37" style="display:inline-block">Data Types</h1></summary><div class="indented"><h3 id="39215921-b68f-805c-9c0b-e7b00138043c" class="" dir="auto">11. What is a data type?</h3><p id="39215921-b68f-8084-9a52-d4d9810bfb40" class="" dir="auto">A rule that tells Kotlin what kind of data something is.</p><h3 id="39215921-b68f-80ca-b2ea-c49337ed7058" class="" dir="auto">12. What is an Int?</h3><p id="39215921-b68f-800b-95c4-e1901fe259b2" class="" dir="auto">A whole number (like 1, 5, 100).</p><h3 id="39215921-b68f-80cc-9850-f3863e2bc780" class="" dir="auto">13. When do I use Int?</h3><p id="39215921-b68f-808d-bba2-f197e3be5eca" class="" dir="auto">For counting, scores, and ages.</p><h3 id="39215921-b68f-80a6-8f27-d94962301cf9" class="" dir="auto">14. What is a String?</h3><p id="39215921-b68f-80b6-98c7-ec94d9ad6a76" class="" dir="auto">Text like words or sentences.</p><h3 id="39215921-b68f-80cc-b407-e42bd04440be" class="" dir="auto">15. When do I use String?</h3><p id="39215921-b68f-802a-8c4d-fcfeed28f385" class="" dir="auto">For names, messages, or labels.</p><h3 id="39215921-b68f-804a-b450-c2211ba43321" class="" dir="auto">16. What is a Boolean?</h3><p id="39215921-b68f-80f9-a96d-da00f5227fd2" class="" dir="auto">A value that is only true or false.</p><h3 id="39215921-b68f-8015-91d6-eeac06f7e0f4" class="" dir="auto">17. When do I use Boolean?</h3><p id="39215921-b68f-8032-bebb-df366c5e7937" class="" dir="auto">For yes/no or on/off situations.</p><h3 id="39215921-b68f-8092-9d52-fe08a381b2dd" class="" dir="auto">18. What is a Double?</h3><p id="39215921-b68f-809d-8f97-ebcab086b1bb" class="" dir="auto">A number with decimals.</p><h3 id="39215921-b68f-8070-beeb-d911edc8b618" class="" dir="auto">19. When do I use Double?</h3><p id="39215921-b68f-8092-a68e-e76fb11a2487" class="" dir="auto">For money or precise measurements.</p><h3 id="39215921-b68f-80d0-b263-cd4f4b29305c" class="" dir="auto">20. Why are data types important?</h3><p id="39215921-b68f-807a-be83-c38ee76ae41f" class="" dir="auto">They help prevent mistakes in calculations and logic.</p></div></details><hr id="39215921-b68f-800d-92b6-db5d9a2cca41" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-809c-afe7-c5747538f7e7" style="display:inline-block">Input / Output</h1></summary><div class="indented"><h3 id="39215921-b68f-803d-9cd4-eff9c5d82197" class="" dir="auto">21. What is input?</h3><p id="39215921-b68f-80f6-ac52-e992ed552668" class="" dir="auto">Data the user gives to the app.</p><h3 id="39215921-b68f-806a-bd05-f4086c1d1d27" class="" dir="auto">22. What is output?</h3><p id="39215921-b68f-80f0-af62-c74103f124f7" class="" dir="auto">Data the app shows to the user.</p><h3 id="39215921-b68f-8058-8f90-e35be3ee8a69" class="" dir="auto">23. What is an EditText?</h3><p id="39215921-b68f-8010-a005-dc007af2c279" class="" dir="auto">A box where the user types input.</p><h3 id="39215921-b68f-80c2-b026-cfbdcea7a598" class="" dir="auto">24. When do I use EditText?</h3><p id="39215921-b68f-8035-b09f-faee006d0eaa" class="" dir="auto">When I need user input like name or number.</p><h3 id="39215921-b68f-8025-81c9-dffc4eb6f8fb" class="" dir="auto">25. What is a TextView?</h3><p id="39215921-b68f-801d-8b13-ee2b1a62d6e2" class="" dir="auto">A box that shows text output.</p><h3 id="39215921-b68f-8043-a0e9-ff85d815d4e3" class="" dir="auto">26. When do I use TextView?</h3><p id="39215921-b68f-80a5-ae78-f5336d5f1265" class="" dir="auto">When I want to display results.</p><h3 id="39215921-b68f-802b-a521-ca0ac3df5489" class="" dir="auto">27. How do I get text from EditText?</h3><pre id="39215921-b68f-80a0-899e-d38acf6da616" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val name = editText.text.toString()</code></pre><h3 id="39215921-b68f-803d-8d70-eb7a622fea61" class="" dir="auto">28. Why do we use <code>.toString()</code>?</h3><p id="39215921-b68f-8078-8e7d-eaa8c63009a2" class="" dir="auto">Because EditText data must be converted into normal text.</p><h3 id="39215921-b68f-80d4-92e6-f6a4516734b4" class="" dir="auto">29. How do I show text in TextView?</h3><pre id="39215921-b68f-8064-b45b-dfbdb7958f7c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textView.text = &quot;Hello&quot;</code></pre><h3 id="39215921-b68f-80f3-bd67-dda2ce3b39c9" class="" dir="auto">30. Why is input/output important?</h3><p id="39215921-b68f-8076-ad5c-cd431dc17789" class="" dir="auto">Because apps need to talk to the user.</p></div></details><hr id="39215921-b68f-80cf-9b4e-f9b6090b8fc6" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8016-a564-fa9de4d9083d" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><h3 id="39215921-b68f-80e6-9fd9-cac9ceac1fc8" class="" dir="auto">31. What is basic math in programming?</h3><p id="39215921-b68f-801b-8615-e91472710dc7" class="" dir="auto">Using code to calculate numbers.</p><h3 id="39215921-b68f-8055-803f-c3a6c4a8eef1" class="" dir="auto">32. What does + do?</h3><p id="39215921-b68f-80f0-886f-c1c75c33c279" class="" dir="auto">Adds numbers together.</p><h3 id="39215921-b68f-8056-b293-c2d35fd59a0c" class="" dir="auto">33. What does - do?</h3><p id="39215921-b68f-80dd-b8d9-e142a3673791" class="" dir="auto">Subtracts numbers.</p><h3 id="39215921-b68f-80af-8c89-ce1c5ad1369a" class="" dir="auto">34. What does * do?</h3><p id="39215921-b68f-800f-9eb3-d3345fc3ea78" class="" dir="auto">Multiplies numbers.</p><h3 id="39215921-b68f-80fa-8bd3-fa67d96e64b5" class="" dir="auto">35. What does / do?</h3><p id="39215921-b68f-802c-a310-ffe060785bfd" class="" dir="auto">Divides numbers.</p><h3 id="39215921-b68f-8036-83a4-e2f3aff0685d" class="" dir="auto">36. What does % do?</h3><p id="39215921-b68f-8019-b2ec-fb792cb7c477" class="" dir="auto">Gives the remainder after division.</p><h3 id="39215921-b68f-8084-a7aa-eaf3a9b3d2fd" class="" dir="auto">37. When do I use %?</h3><p id="39215921-b68f-80bd-8349-cbc624fae242" class="" dir="auto">To check even or odd numbers.</p><h3 id="39215921-b68f-8035-ae29-e2a33b3f795f" class="" dir="auto">38. What does ++ mean?</h3><p id="39215921-b68f-8010-bb14-ecd65114fc15" class="" dir="auto">Increase a number by 1.</p><h3 id="39215921-b68f-8080-96bc-ee8aa4b534c2" class="" dir="auto">39. What does -- mean?</h3><p id="39215921-b68f-8060-949e-e3199cf1d70c" class="" dir="auto">Decrease a number by 1.</p><h3 id="39215921-b68f-809b-831c-c42c4caa8b32" class="" dir="auto">40. Why is math used in apps?</h3><p id="39215921-b68f-8089-817e-e82836037edb" class="" dir="auto">For scores, money, physics, games, and logic.</p></div></details><hr id="39215921-b68f-80eb-bd0d-c6cd7e8e5d73" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-807e-8c81-ffc379ad0e1a" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><h3 id="39215921-b68f-8073-9248-de25a20cb0f2" class="" dir="auto">41. What is a conditional?</h3><p id="39215921-b68f-8070-8546-d6bd5a7eb19f" class="" dir="auto">A way for a program to make decisions.</p><h3 id="39215921-b68f-805c-bfb0-da6b6739509a" class="" dir="auto">42. What is an if statement?</h3><p id="39215921-b68f-80e8-88a4-d4327ff75909" class="" dir="auto">Code that runs only if something is true.</p><h3 id="39215921-b68f-800f-a203-f1ed8fce7164" class="" dir="auto">43. When do I use if?</h3><p id="39215921-b68f-8056-93a3-c9fe293f821c" class="" dir="auto">When I need different outcomes based on conditions.</p><h3 id="39215921-b68f-80ff-b62e-f2eedaba7038" class="" dir="auto">44. What is else?</h3><p id="39215921-b68f-80b1-a8ac-cab4dac6c6de" class="" dir="auto">Code that runs when if is false.</p><h3 id="39215921-b68f-80d4-8a9b-e3a9905e5bcb" class="" dir="auto">45. When do I use else?</h3><p id="39215921-b68f-805b-a50e-c47118298d72" class="" dir="auto">When I need a fallback option.</p><h3 id="39215921-b68f-803f-a270-ec8f6020045a" class="" dir="auto">46. What does == mean?</h3><p id="39215921-b68f-80bb-a581-db2e2e3b9b2b" class="" dir="auto">Checks if two values are equal.</p><h3 id="39215921-b68f-80af-a8ca-ce152996b36c" class="" dir="auto">47. What does &gt; mean?</h3><p id="39215921-b68f-806b-bf2f-cd589c7a0880" class="" dir="auto">Checks if something is bigger.</p><h3 id="39215921-b68f-80f9-9bba-d65bb8a0b8e9" class="" dir="auto">48. What does &lt; mean?</h3><p id="39215921-b68f-807a-bb9a-f4cd5c93bc39" class="" dir="auto">Checks if something is smaller.</p><h3 id="39215921-b68f-804f-ab58-c5858bbbb836" class="" dir="auto">49. Why use conditionals?</h3><p id="39215921-b68f-80b2-b67a-d9cd24978890" class="" dir="auto">To make apps respond differently to situations.</p><h3 id="39215921-b68f-805b-a3bc-e583e0045636" class="" dir="auto">50. What happens without conditionals?</h3><p id="39215921-b68f-8086-b3e1-cfddea477c0a" class="" dir="auto">The app would always do the same thing.</p></div></details><hr id="39215921-b68f-80b1-b555-c7b32a260883" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80de-8df0-f0867293069b" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><h3 id="39215921-b68f-8012-877c-e8a4454bc0d4" class="" dir="auto">51. What is a random number?</h3><p id="39215921-b68f-8085-9e23-ff3f8ae7f42f" class="" dir="auto">A number the computer picks unpredictably.</p><h3 id="39215921-b68f-8085-840f-ecf7b8d4481a" class="" dir="auto">52. When do I use random numbers?</h3><p id="39215921-b68f-801a-9521-d668fa01129b" class="" dir="auto">For games, dice, loot, or guessing.</p><h3 id="39215921-b68f-80f6-bed4-e408c3db1a1a" class="" dir="auto">53. Why use randomness?</h3><p id="39215921-b68f-80e0-bae7-e1e9a59d8034" class="" dir="auto">To make apps feel more real and fun.</p><h3 id="39215921-b68f-80f9-a8d0-d93e0ac254b1" class="" dir="auto">54. How do I generate a random number in Kotlin?</h3><pre id="39215921-b68f-80c1-811a-c75a6a0867fa" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val num = (1..10).random()</code></pre><h3 id="39215921-b68f-80ce-9356-cd6a2b214f1c" class="" dir="auto">55. How do I simulate a dice roll?</h3><pre id="39215921-b68f-800e-8071-df8b2a840e87" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val roll = (1..6).random()</code></pre><h3 id="39215921-b68f-807f-a3e9-de1d9f45aa67" class="" dir="auto">56. How do I generate a random Boolean?</h3><pre id="39215921-b68f-8045-80b6-e815c87910ef" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val value = kotlin.random.Random.nextBoolean()</code></pre><h3 id="39215921-b68f-8067-b86a-c25264aeb1fd" class="" dir="auto">57. What is a range in Kotlin?</h3><p id="39215921-b68f-8095-bcd9-f43a30c24c50" class="" dir="auto">A set of numbers like 1..10.</p><h3 id="39215921-b68f-80ff-abe0-e0e6d326b13b" class="" dir="auto">58. Why use ranges?</h3><p id="39215921-b68f-8017-b737-d78429b2c93d" class="" dir="auto">They make random number limits easy.</p><h3 id="39215921-b68f-8029-98b9-d42f1c45a679" class="" dir="auto">59. How do I show a random number in TextView?</h3><pre id="39215921-b68f-80e0-b286-c8b3b3d3f297" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textView.text = (1..100).random().toString()</code></pre><h3 id="39215921-b68f-80cb-8a21-c8ae46ddd1cd" class="" dir="auto">60. Why is randomness important in programming?</h3><p id="39215921-b68f-80c0-a071-fc75b255f37d" class="" dir="auto">It adds unpredictability and makes apps more engaging.</p><pre id="39215921-b68f-808a-880e-cc1d23a3d417" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all"></code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80ad-8476-f72eedfc935e" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80fe-ab3b-e950aec7ef1d" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39215921-b68f-80bc-90a2-f0ac4be12284" class="" dir="auto">Q1:<br/>How do I create a variable that stores a player&#x27;s score?</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js" integrity="sha512-AKaNmg8COK0zEbjTdMHJAPJ0z6VeNqvRvH4/d5M4sHJbQQUToMBtodq4HaV4fa+WV2UTfoperElm66c9/8cKmQ==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39215921-b68f-8039-9699-de5095796add" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score = 0</code></pre><p id="39215921-b68f-800e-bb7f-db961ed527b6" class="" dir="auto">Q2:<br/>How do I create a constant for an app name?</p><pre id="39215921-b68f-8077-96b6-e003ca188cb4" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">APP_NAME = &quot;My CLI App&quot;</code></pre><p id="39215921-b68f-80bd-96ad-e0f3291a3d27" class="" dir="auto">Q3:<br/>How do I store a user&#x27;s name?</p><pre id="39215921-b68f-801c-a4c5-c8e83724b0f7" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">name = &quot;John&quot;</code></pre><p id="39215921-b68f-806d-aec4-e5f40d828b9a" class="" dir="auto">Q4:<br/>How do I update a score variable?</p><pre id="39215921-b68f-80fc-8abc-d3c54b28f6dc" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score = score + 1</code></pre><p id="39215921-b68f-8080-907e-c97811a99e1d" class="" dir="auto">Q5:<br/>How do I reset a variable to zero?</p><pre id="39215921-b68f-801c-94ba-e9aa1986c6f6" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score = 0</code></pre><p id="39215921-b68f-8018-bfe2-d672d1836a06" class="" dir="auto">Q6:<br/>How do I copy one variable into another?</p><pre id="39215921-b68f-8023-8e4c-de34cfbbeec3" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">backup = score</code></pre><p id="39215921-b68f-80b2-8461-c51bf2282e75" class="" dir="auto">Q7:<br/>How do I store a game status as a variable?</p><pre id="39215921-b68f-8058-9ab2-d26c64a82770" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">is_running = True</code></pre><p id="39215921-b68f-8063-8f3e-fab6dd0d8ceb" class="" dir="auto">Q8:<br/>How do I change a variable based on condition later?</p><pre id="39215921-b68f-80f0-953f-d6fbaad3c9ce" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score = score + 10</code></pre><p id="39215921-b68f-80fe-afd7-c7c9bebf11a8" class="" dir="auto">Q9:<br/>How do I store a message in a variable?</p><pre id="39215921-b68f-806a-ad7b-ea6704f816d3" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">message = &quot;Hello Player&quot;</code></pre><p id="39215921-b68f-8066-9be4-e0eeef9dccec" class="" dir="auto">Q10:<br/>How do I define a constant for max score?</p><pre id="39215921-b68f-8045-889b-daf901b1c058" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">MAX_SCORE = 100</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-809d-8853-ce4291b53959" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39215921-b68f-80a0-b820-cebb5b25adf7" class="" dir="auto">Q11:<br/>How do I store an integer number?</p><pre id="39215921-b68f-801e-bb53-f7d3dd79190b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">age = 25</code></pre><p id="39215921-b68f-80f4-bb29-cfd1b5223ec4" class="" dir="auto">Q12:<br/>How do I store a decimal number?</p><pre id="39215921-b68f-80bc-bbb6-eb3a00764c0e" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">price = 9.99</code></pre><p id="39215921-b68f-806c-a930-fe7d188488e1" class="" dir="auto">Q13:<br/>How do I store text?</p><pre id="39215921-b68f-8050-a2e3-c3fc5f350e5b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">name = &quot;Alice&quot;</code></pre><p id="39215921-b68f-8015-94c5-cc3aa31282d0" class="" dir="auto">Q14:<br/>How do I store a true/false value?</p><pre id="39215921-b68f-8087-ac77-ed0d78cacd21" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">is_alive = True</code></pre><p id="39215921-b68f-8038-992c-e64c72156957" class="" dir="auto">Q15:<br/>How do I convert input into an integer?</p><pre id="39215921-b68f-8013-9094-fcb562e12388" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">number = int(input())</code></pre><p id="39215921-b68f-8001-af0b-c9b3cc33dc6a" class="" dir="auto">Q16:<br/>How do I convert input into a float?</p><pre id="39215921-b68f-80b6-8817-dcafb52a9218" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">number = float(input())</code></pre><p id="39215921-b68f-80d9-8074-d250b35f73d0" class="" dir="auto">Q17:<br/>How do I store multiple words in a string?</p><pre id="39215921-b68f-80c5-a8f6-f792a9134182" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">message = &quot;Hello World&quot;</code></pre><p id="39215921-b68f-80a5-82eb-e0b1cda6bf38" class="" dir="auto">Q18:<br/>How do I check a variable type?</p><pre id="39215921-b68f-8026-8a30-c34c596a5511" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">type(score)</code></pre><p id="39215921-b68f-80e2-920a-ddccab63cabc" class="" dir="auto">Q19:<br/>How do I store a negative number?</p><pre id="39215921-b68f-80d3-b8a6-db31baf3841c" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">value = -5</code></pre><p id="39215921-b68f-80a4-96d7-d1fdfcbeddd0" class="" dir="auto">Q20:<br/>How do I convert number to string?</p><pre id="39215921-b68f-80ef-b8d1-f56ce3f7f75b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">str(score)</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8007-9fcc-d205411830a3" style="display:inline-block">Input / Output</h1></summary><div class="indented"><p id="39215921-b68f-804d-a3bc-d8c8f798958d" class="" dir="auto">Q21:<br/>How do I print a message?</p><pre id="39215921-b68f-803e-9d34-ff667b96ab50" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(&quot;Hello World&quot;)</code></pre><p id="39215921-b68f-80b8-a57a-e754c676aef8" class="" dir="auto">Q22:<br/>How do I print a variable?</p><pre id="39215921-b68f-80d2-a07a-e4f9e0535e5a" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(score)</code></pre><p id="39215921-b68f-802b-92d4-db1973cceb6c" class="" dir="auto">Q23:<br/>How do I get user input?</p><pre id="39215921-b68f-8043-aba7-e4f5b8cfb67a" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">input(&quot;Enter your name: &quot;)</code></pre><p id="39215921-b68f-8085-9171-dca699abcab3" class="" dir="auto">Q24:<br/>How do I store user input?</p><pre id="39215921-b68f-8014-b740-c8e5d8da06f8" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">name = input(&quot;Enter name: &quot;)</code></pre><p id="39215921-b68f-80c6-82d7-d89bc5502dff" class="" dir="auto">Q25:<br/>How do I display two values?</p><pre id="39215921-b68f-8010-a188-c7c9e8d84e3b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(name, score)</code></pre><p id="39215921-b68f-8022-a511-c2ce07a18181" class="" dir="auto">Q26:<br/>How do I display text with a variable?</p><pre id="39215921-b68f-8082-aba4-c0391df1ca1e" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(f&quot;Hello {name}&quot;)</code></pre><p id="39215921-b68f-803f-9e0d-fd560168421c" class="" dir="auto">Q27:<br/>How do I clear a console (conceptually)?</p><pre id="39215921-b68f-8072-8045-c5b5aa6cf1a3" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(&quot;\n&quot; * 50)</code></pre><p id="39215921-b68f-80e6-8030-fe9aedc594fc" class="" dir="auto">Q28:<br/>How do I print multiple lines?</p><pre id="39215921-b68f-804a-ada5-ea093864119c" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(&quot;Line 1\nLine 2&quot;)</code></pre><p id="39215921-b68f-804c-bad3-c179766d9ca2" class="" dir="auto">Q29:<br/>How do I print a formatted message?</p><pre id="39215921-b68f-80a8-8d4c-d2bb75b15e3d" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(f&quot;Score: {score}&quot;)</code></pre><p id="39215921-b68f-80a6-b856-f48500ef68cf" class="" dir="auto">Q30:<br/>How do I repeat output?</p><pre id="39215921-b68f-806c-903d-d65bceea87cd" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">print(&quot;Hello&quot; * 3)</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80b4-97cf-e39abe883f6d" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39215921-b68f-802a-a4be-dbbec34844f9" class="" dir="auto">Q31:<br/>How do I add two numbers?</p><pre id="39215921-b68f-8011-a55a-e118c7f4050e" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a + b</code></pre><p id="39215921-b68f-800e-9316-f223630eef59" class="" dir="auto">Q32:<br/>How do I subtract numbers?</p><pre id="39215921-b68f-80a4-bf27-eca5c5e9e5ec" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a - b</code></pre><p id="39215921-b68f-8010-8cbd-f7c01182ef8a" class="" dir="auto">Q33:<br/>How do I multiply numbers?</p><pre id="39215921-b68f-8088-ab8b-d7b5cb0ca1f2" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a * b</code></pre><p id="39215921-b68f-807a-a33c-f5aa74c5d189" class="" dir="auto">Q34:<br/>How do I divide numbers?</p><pre id="39215921-b68f-8055-97e2-c4cb04defade" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a / b</code></pre><p id="39215921-b68f-80fa-8472-d3736f4847a7" class="" dir="auto">Q35:<br/>How do I get remainder?</p><pre id="39215921-b68f-80fb-b9c7-d6a284f1e220" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a % b</code></pre><p id="39215921-b68f-808b-9d71-ff0acac1f171" class="" dir="auto">Q36:<br/>How do I increase a number by 1?</p><pre id="39215921-b68f-80d2-befc-f626d77770d9" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score += 1</code></pre><p id="39215921-b68f-80e8-b5d1-df9610bbac5c" class="" dir="auto">Q37:<br/>How do I decrease a number by 1?</p><pre id="39215921-b68f-80a6-bd48-ea1b6197d038" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">score -= 1</code></pre><p id="39215921-b68f-80b1-9b2e-e36dfe42f763" class="" dir="auto">Q38:<br/>How do I double a value?</p><pre id="39215921-b68f-8072-8fd2-fb4e4e893a2e" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">value *= 2</code></pre><p id="39215921-b68f-8091-8350-d7dd5654ec99" class="" dir="auto">Q39:<br/>How do I calculate average?</p><pre id="39215921-b68f-8027-9e62-cd4885f6271d" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">avg = (a + b) / 2</code></pre><p id="39215921-b68f-8083-8d98-f6b764847636" class="" dir="auto">Q40:<br/>How do I square a number?</p><pre id="39215921-b68f-809a-a130-dcb74a2097af" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">result = a * a</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8040-a28c-ed7fdd5ef8ec" style="display:inline-block">Conditionals</h1></summary><div class="indented"><p id="39215921-b68f-808b-8869-dc8e23526a22" class="" dir="auto">Q41:<br/>How do I check if a number is greater than 10?</p><pre id="39215921-b68f-80bd-b32b-effd96ff5063" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if number &gt; 10:
+    print(&quot;Big number&quot;)</code></pre><p id="39215921-b68f-8086-933d-f0ae064c1380" class="" dir="auto">Q42:<br/>How do I check equality?</p><pre id="39215921-b68f-80b9-a255-ea93f38a1aba" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if a == b:
+    print(&quot;Equal&quot;)</code></pre><p id="39215921-b68f-80c7-b24b-e47c5011b9d8" class="" dir="auto">Q43:<br/>How do I check if a number is even?</p><pre id="39215921-b68f-8051-9af2-ebca73250264" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if number % 2 == 0:
+    print(&quot;Even&quot;)</code></pre><p id="39215921-b68f-80da-8bff-e020f5ab7f7a" class="" dir="auto">Q44:<br/>How do I check if a number is odd?</p><pre id="39215921-b68f-80a8-af06-c9e6a0cf342f" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if number % 2 != 0:
+    print(&quot;Odd&quot;)</code></pre><p id="39215921-b68f-80e1-b437-c56a667c1c00" class="" dir="auto">Q45:<br/>How do I use else?</p><pre id="39215921-b68f-8013-9aa6-d1c9aebaa1e0" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if age &gt;= 18:
+    print(&quot;Adult&quot;)
+else:
+    print(&quot;Minor&quot;)</code></pre><p id="39215921-b68f-80c5-a6f1-dcbeb70f76af" class="" dir="auto">Q46:<br/>How do I check multiple conditions?</p><pre id="39215921-b68f-803d-9199-eaaaa1cf8bbe" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if age &gt; 10 and age &lt; 20:
+    print(&quot;Teen&quot;)</code></pre><p id="39215921-b68f-8042-8d1d-e2e68ac57771" class="" dir="auto">Q47:<br/>How do I use or condition?</p><pre id="39215921-b68f-80ee-9372-d3a14558034b" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if a == 1 or a == 2:
+    print(&quot;Match&quot;)</code></pre><p id="39215921-b68f-8022-bab8-e9e5aea1a946" class="" dir="auto">Q48:<br/>How do I check if input is empty?</p><pre id="39215921-b68f-8047-a4dc-e8deb07cd348" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if name == &quot;&quot;:
+    print(&quot;Empty input&quot;)</code></pre><p id="39215921-b68f-8049-97a7-c7cdffc0e2bd" class="" dir="auto">Q49:<br/>How do I check if a number is positive?</p><pre id="39215921-b68f-80a0-80e9-c446c45bc97d" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if number &gt; 0:
+    print(&quot;Positive&quot;)</code></pre><p id="39215921-b68f-80b4-8cf8-d201419b1b6b" class="" dir="auto">Q50:<br/>How do I nest conditions?</p><pre id="39215921-b68f-8092-881d-c8ad3aa53543" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">if age &gt; 0:
+    if age &lt; 18:
+        print(&quot;Minor&quot;)</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80a7-bbc6-fbadf875dfe6" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39215921-b68f-8038-922b-e72f548b0a53" class="" dir="auto">Q51:<br/>How do I generate a random number 1–10?</p><pre id="39215921-b68f-8012-a87c-c240f1b8979c" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.randint(1, 10)</code></pre><p id="39215921-b68f-80a2-bef8-cdbe2492b751" class="" dir="auto">Q52:<br/>How do I generate a random dice roll?</p><pre id="39215921-b68f-8044-8b1d-ec43ff2d6a54" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.randint(1, 6)</code></pre><p id="39215921-b68f-80ee-8607-edbf778942e6" class="" dir="auto">Q53:<br/>How do I generate a random float?</p><pre id="39215921-b68f-8019-9850-e214f00ace61" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.random()</code></pre><p id="39215921-b68f-802f-b6b2-ed5e29bf249e" class="" dir="auto">Q54:<br/>How do I pick random True/False?</p><pre id="39215921-b68f-80a2-a14e-fe4336b8b365" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.choice([True, False])</code></pre><p id="39215921-b68f-8057-b122-f3de5fd0ad88" class="" dir="auto">Q55:<br/>How do I pick a random item from a list?</p><pre id="39215921-b68f-8041-b99a-ca26eb54f7b4" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.choice([&quot;A&quot;, &quot;B&quot;, &quot;C&quot;])</code></pre><p id="39215921-b68f-8042-a6a5-eaa438ab6ee6" class="" dir="auto">Q56:<br/>How do I simulate coin flip?</p><pre id="39215921-b68f-8011-8fb8-ce44a64dd554" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.choice([&quot;Heads&quot;, &quot;Tails&quot;])</code></pre><p id="39215921-b68f-80f5-b5fb-db40ccc2494c" class="" dir="auto">Q57:<br/>How do I generate a number between 50 and 100?</p><pre id="39215921-b68f-80d1-8d7f-f9045f4b5f41" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+random.randint(50, 100)</code></pre><p id="39215921-b68f-8066-bd65-f30ea5f7e333" class="" dir="auto">Q58:<br/>How do I generate multiple random numbers?</p><pre id="39215921-b68f-80ca-9a05-edfbfe40053f" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+a = random.randint(1, 10)
+b = random.randint(1, 10)</code></pre><p id="39215921-b68f-80cf-bc87-d7237f976654" class="" dir="auto">Q59:<br/>How do I use randomness in a condition?</p><pre id="39215921-b68f-800b-b67f-cefff7e131c6" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+if random.randint(1, 10) == 1:
+    print(&quot;Lucky!&quot;)</code></pre><p id="39215921-b68f-803a-83ba-fc6677f1b21e" class="" dir="auto">Q60:<br/>How do I run a random event in CLI game?</p><pre id="39215921-b68f-808b-9a1d-e4dd04f13b73" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+event = random.choice([&quot;Fight&quot;, &quot;Loot&quot;, &quot;Nothing&quot;])
+print(event)</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ed-9d03-e2caa9fbcb92" style="display:inline-block">Flowcharts for Sample Projects + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-806b-b8d2-c9bfe0c6f57c" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-809d-8213-c8d7feb81b1a" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-8069-be76-f987cd367f91" dir="ltr"><th id="Gp@Q" class="simple-table-header-color simple-table-header">Shape</th><th id="H~op" class="simple-table-header-color simple-table-header">Meaning</th></tr></thead><tbody><tr id="3e315921-b68f-8052-ba3b-d5a9acc1c836" dir="ltr"><td id="Gp@Q" class=""><code>([ START ])</code></td><td id="H~op" class=""><strong>Terminator</strong> — Start/End</td></tr><tr id="3e315921-b68f-8091-9e55-d1727f837b93" dir="ltr"><td id="Gp@Q" class=""><code>[ Process ]</code></td><td id="H~op" class=""><strong>Rectangle</strong> — Action/process</td></tr><tr id="3e315921-b68f-8074-a319-dea8dcfb68c5" dir="ltr"><td id="Gp@Q" class=""><code>[/ Input /]</code></td><td id="H~op" class=""><strong>Parallelogram</strong> — User input/output</td></tr><tr id="3e315921-b68f-804d-9358-e6a973df8e0a" dir="ltr"><td id="Gp@Q" class=""><code>{ Decision? }</code></td><td id="H~op" class=""><strong>Diamond</strong> — Yes/No decision</td></tr><tr id="3e315921-b68f-8084-81cf-dca3a85ae07f" dir="ltr"><td id="Gp@Q" class=""><code>↓</code></td><td id="H~op" class=""><strong>Arrow</strong> — Flow direction</td></tr></tbody></table><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80e4-b41c-ce5ebf965a4f" style="display:inline-block">PROJECT 1 — Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-8082-99ec-c0e58c1b0c0b" class="" dir="auto">Text Flowchart</h3><pre id="3e315921-b68f-8044-a930-d035ef9ff42f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        ([ START ])
+             |
+             ↓
+   [ Generate random number
+       between 1 and 10 ]
+             |
+             ↓
+   [/ Ask user for a guess /]
+             |
+             ↓
+      { Guess == Secret? }
+          /          \
+       YES            NO
+        |              |
+        ↓              ↓
+[/ Print &quot;You      [/ Print &quot;Wrong!
+   guessed it!&quot; /]      The number was
+                        [secret number]&quot; /]
+        |              |
+        ↓              ↓
+        └──────┬───────┘
+               ↓
+          ([ END ])</code></pre><h3 id="3e315921-b68f-8006-b262-f82c6941c6c7" class="" dir="auto">Shape breakdown</h3><ol type="1" id="3e315921-b68f-80c0-b14c-f19af9ee5191" class="numbered-list" start="1" dir="auto"><li><strong>START</strong> → Terminator</li></ol><ol type="1" id="3e315921-b68f-80a8-ba10-fc507cf990e3" class="numbered-list" start="2" dir="auto"><li>Generate random number → Process</li></ol><ol type="1" id="3e315921-b68f-80bd-a7cc-c41fdaf5bcb3" class="numbered-list" start="3" dir="auto"><li>Ask for guess → Input/Output</li></ol><ol type="1" id="3e315921-b68f-80c9-812a-fd5582b6181e" class="numbered-list" start="4" dir="auto"><li>Compare guess to secret → Decision</li></ol><ol type="1" id="3e315921-b68f-805b-a598-ce04bc78e069" class="numbered-list" start="5" dir="auto"><li>Print &quot;You guessed it!&quot; → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8068-a571-f53107c73e5e" class="numbered-list" start="6" dir="auto"><li>Print correct answer → Input/Output</li></ol><ol type="1" id="3e315921-b68f-80f6-8bd0-e6d0af939a23" class="numbered-list" start="7" dir="auto"><li><strong>END</strong> → Terminator</li></ol></div></details><hr id="3e315921-b68f-8061-a537-fae2684be61e" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80fb-b3a9-ee5067f0fa62" style="display:inline-block">PROJECT 2 — Simple Calculator</h1></summary><div class="indented"><h3 id="3e315921-b68f-8083-a95d-e9677589bd99" class="" dir="auto">Text Flowchart</h3><pre id="3e315921-b68f-80ea-9b23-c160e2061e8e" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        ([ START ])
+             |
+             ↓
+   [/ Get first number /]
+             |
+             ↓
+  [/ Get second number /]
+             |
+             ↓
+      [ Add num1 + num2
+          → result ]
+             |
+             ↓
+    [/ Display result /]
+             |
+             ↓
+          ([ END ])</code></pre><h3 id="3e315921-b68f-80f0-b921-caae9e46b959" class="" dir="auto">Shape breakdown</h3><ol type="1" id="3e315921-b68f-80fe-8415-def0c4df470d" class="numbered-list" start="1" dir="auto"><li><strong>START</strong> → Terminator</li></ol><ol type="1" id="3e315921-b68f-80a2-9a6f-da11f804c41f" class="numbered-list" start="2" dir="auto"><li>Get first number → Input/Output</li></ol><ol type="1" id="3e315921-b68f-80b5-a1e8-dabee436125a" class="numbered-list" start="3" dir="auto"><li>Get second number → Input/Output</li></ol><ol type="1" id="3e315921-b68f-805f-8eed-db85f7210598" class="numbered-list" start="4" dir="auto"><li>Add numbers → Process</li></ol><ol type="1" id="3e315921-b68f-80dd-a96d-c62ccc25ad00" class="numbered-list" start="5" dir="auto"><li>Display result → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8076-9656-f7b3ce807a89" class="numbered-list" start="6" dir="auto"><li><strong>END</strong> → Terminator</li></ol></div></details><hr id="3e315921-b68f-80cb-8d4f-f1f47e55cfb2" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80e6-9a7b-fdb3f6eafe66" style="display:inline-block">PROJECT 3 — Even or Odd Checker</h1></summary><div class="indented"><h3 id="3e315921-b68f-80c3-a1dc-e4de11f253d0" class="" dir="auto">Text Flowchart</h3><pre id="3e315921-b68f-80bc-be2e-f9aa910c6c3a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        ([ START ])
+             |
+             ↓
+      [/ Get number /]
+             |
+             ↓
+     { number % 2 == 0? }
+          /         \
+       YES           NO
+        |             |
+        ↓             ↓
+ [/ Print &quot;Even&quot; /] [/ Print &quot;Odd&quot; /]
+        |             |
+        └──────┬──────┘
+               ↓
+          ([ END ])</code></pre><h3 id="3e315921-b68f-80f5-954d-e444610c8a59" class="" dir="auto">Shape breakdown</h3><ol type="1" id="3e315921-b68f-80f4-918a-ebaabf27e14c" class="numbered-list" start="1" dir="auto"><li><strong>START</strong> → Terminator</li></ol><ol type="1" id="3e315921-b68f-80e2-a7f9-ffd15928c500" class="numbered-list" start="2" dir="auto"><li>Get number → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8013-8a19-cf1af315c643" class="numbered-list" start="3" dir="auto"><li>Check <code>number % 2 == 0</code> → Decision</li></ol><ol type="1" id="3e315921-b68f-80d5-8ff8-e5e3a9934aab" class="numbered-list" start="4" dir="auto"><li>Print &quot;Even&quot; → Input/Output</li></ol><ol type="1" id="3e315921-b68f-806a-90ad-fbc735038a0d" class="numbered-list" start="5" dir="auto"><li>Print &quot;Odd&quot; → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8099-86e2-dc412e7f337e" class="numbered-list" start="6" dir="auto"><li><strong>END</strong> → Terminator</li></ol></div></details><hr id="3e315921-b68f-80f8-bfd4-c0f159138e88" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-805e-aaaf-fcebb41b2692" style="display:inline-block">PROJECT 4 — Mini Login System</h1></summary><div class="indented"><p id="3e315921-b68f-806b-8711-d610a4f4fcea" class="" dir="auto">This one has a slightly more interesting decision because you&#x27;re checking <strong>two conditions at once</strong>.</p><h3 id="3e315921-b68f-80da-8eb0-ff7b143e69c0" class="" dir="auto">Text Flowchart</h3><pre id="3e315921-b68f-800f-b91b-c6eecef11799" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        ([ START ])
+             |
+             ↓
+   [ Set correct username
+     and correct password ]
+             |
+             ↓
+   [/ Ask for username /]
+             |
+             ↓
+   [/ Ask for password /]
+             |
+             ↓
+ { Username matches AND
+   password matches? }
+        /          \
+      YES           NO
+       |             |
+       ↓             ↓
+[/ Print &quot;Login    [/ Print &quot;Login
+    successful&quot; /]      failed&quot; /]
+       |             |
+       └──────┬──────┘
+              ↓
+         ([ END ])</code></pre><h3 id="3e315921-b68f-8019-b7b4-d3bf90726810" class="" dir="auto">Shape breakdown</h3><ol type="1" id="3e315921-b68f-8087-b68d-f8bfd5c4d682" class="numbered-list" start="1" dir="auto"><li><strong>START</strong> → Terminator</li></ol><ol type="1" id="3e315921-b68f-8029-a1a1-e53d245ab91e" class="numbered-list" start="2" dir="auto"><li>Set correct username/password → Process</li></ol><ol type="1" id="3e315921-b68f-80de-912c-df2d3d008b23" class="numbered-list" start="3" dir="auto"><li>Ask for username → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8016-bbd9-dc7a4a5616aa" class="numbered-list" start="4" dir="auto"><li>Ask for password → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8031-b827-eab01c7a5ced" class="numbered-list" start="5" dir="auto"><li>Check both credentials → Decision</li></ol><ol type="1" id="3e315921-b68f-8052-bfb2-c9a44eb08dda" class="numbered-list" start="6" dir="auto"><li>Print successful → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8023-837d-fd2eb1321de5" class="numbered-list" start="7" dir="auto"><li>Print failed → Input/Output</li></ol><ol type="1" id="3e315921-b68f-802c-947b-fe8655365ec0" class="numbered-list" start="8" dir="auto"><li><strong>END</strong> → Terminator</li></ol><h3 id="3e315921-b68f-8063-a57a-df4fd3f63708" class="" dir="auto">The important logic</h3><pre id="3e315921-b68f-8099-9d98-ff47796ba3e0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Username correct?
+       +
+Password correct?
+       ↓
+     AND
+       ↓
+   Login?</code></pre><p id="3e315921-b68f-8009-b790-ea79cc36c562" class="" dir="auto">So the diamond represents:</p><pre id="3e315921-b68f-802e-bf6d-f4bc2e5dfc09" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">username == correct_username
+AND
+password == correct_password</code></pre></div></details><hr id="3e315921-b68f-806b-bbe9-f7d2b1179e99" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80fc-a5b7-edbce12e6d74" style="display:inline-block">PROJECT 5 — Dice Roll Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-8010-8ab1-c9ae6a8fcefd" class="" dir="auto">Text Flowchart</h3><pre id="3e315921-b68f-8037-8e1a-da84718a5260" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">        ([ START ])
+             |
+             ↓
+    [ Generate random
+       number 1-6 ]
+             |
+             ↓
+    [/ Display dice roll /]
+             |
+             ↓
+       { Dice == 6? }
+          /       \
+       YES         NO
+        |           |
+        ↓           ↓
+[/ Print &quot;Critical [/ Print &quot;Try
+     Roll!&quot; /]         again!&quot; /]
+        |           |
+        └─────┬─────┘
+              ↓
+         ([ END ])</code></pre><h3 id="3e315921-b68f-809f-85f1-c2ba82f9fcd5" class="" dir="auto">Shape breakdown</h3><ol type="1" id="3e315921-b68f-80cd-8ab6-f5ee9eca6dd5" class="numbered-list" start="1" dir="auto"><li><strong>START</strong> → Terminator</li></ol><ol type="1" id="3e315921-b68f-807c-b846-c5f0c18515f3" class="numbered-list" start="2" dir="auto"><li>Generate random dice number → Process</li></ol><ol type="1" id="3e315921-b68f-8039-9f2a-fcaf23997c41" class="numbered-list" start="3" dir="auto"><li>Display dice roll → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8088-b82f-d2660b76b8c4" class="numbered-list" start="4" dir="auto"><li>Check <code>dice == 6</code> → Decision</li></ol><ol type="1" id="3e315921-b68f-80a8-bf17-f07182ae9c1f" class="numbered-list" start="5" dir="auto"><li>Print &quot;Critical Roll!&quot; → Input/Output</li></ol><ol type="1" id="3e315921-b68f-808d-b202-efb69ea15186" class="numbered-list" start="6" dir="auto"><li>Print &quot;Try again!&quot; → Input/Output</li></ol><ol type="1" id="3e315921-b68f-8066-9af0-dd665dc20af4" class="numbered-list" start="7" dir="auto"><li><strong>END</strong> → Terminator</li></ol></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80e7-aa83-da48b2f8bd67" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80c8-b3b5-ff170c9749c1" style="display:inline-block">PROJECT 1: Number Guessing Game</h1></summary><div class="indented"><pre id="39215921-b68f-80f5-9a11-fcd988d1ed58" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+
+# Step 1: Generate a random number between 1 and 10
+secret_number = random.randint(1, 10)
+
+# Step 2: Ask the user for a guess
+guess = int(input(&quot;Guess a number (1-10): &quot;))
+
+# Step 3: Compare guess to secret number
+if guess == secret_number:
+    # Step 4: If correct, print win message
+    print(&quot;You guessed it!&quot;)
+else:
+    # Step 5: If wrong, show correct answer
+    print(&quot;Wrong! The number was&quot;, secret_number)</code></pre></div></details><hr id="39215921-b68f-8078-b703-d73e9a1fde4c" dir="auto"/><p id="3e315921-b68f-80e8-9e5c-f7af7768e72f" class="" dir="auto">
+</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80d6-a8c2-edca25625f3f" style="display:inline-block">PROJECT 2: Simple Calculator (Add Only)</h1></summary><div class="indented"><pre id="39215921-b68f-800f-a865-d0230583cc65" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all"># Step 1: Get first number from user
+num1 = int(input(&quot;Enter first number: &quot;))
+
+# Step 2: Get second number from user
+num2 = int(input(&quot;Enter second number: &quot;))
+
+# Step 3: Add numbers together
+result = num1 + num2
+
+# Step 4: Display result
+print(&quot;Result:&quot;, result)</code></pre></div></details><hr id="39215921-b68f-80cd-8d7e-d6fc7e456892" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80e7-b518-d4b108b7bb9c" style="display:inline-block">PROJECT 3: Even or Odd Checker</h1></summary><div class="indented"><pre id="39215921-b68f-801f-9fd1-e7b34f0b975d" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all"># Step 1: Get number from user
+number = int(input(&quot;Enter a number: &quot;))
+
+# Step 2: Check if number is even
+if number % 2 == 0:
+    # Step 3: Print even message
+    print(&quot;Even&quot;)
+else:
+    # Step 4: Print odd message
+    print(&quot;Odd&quot;)</code></pre></div></details><hr id="39215921-b68f-803f-9514-f5d08464b608" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80af-ab4c-e1d08d31a5b1" style="display:inline-block">PROJECT 4: Mini Login System</h1></summary><div class="indented"><pre id="39215921-b68f-800b-883c-d6aed1cd5946" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all"># Step 1: Set correct username and password
+correct_username = &quot;admin&quot;
+correct_password = &quot;1234&quot;
+
+# Step 2: Ask user for username
+username = input(&quot;Username: &quot;)
+
+# Step 3: Ask user for password
+password = input(&quot;Password: &quot;)
+
+# Step 4: Check if both match
+if username == correct_username and password == correct_password:
+    # Step 5: Success message
+    print(&quot;Login successful&quot;)
+else:
+    # Step 6: Failure message
+    print(&quot;Login failed&quot;)</code></pre></div></details><hr id="39215921-b68f-8037-bbd8-e4253b51f49c" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-803f-98bd-d80ba6cea1a2" style="display:inline-block">PROJECT 5: Dice Roll Game</h1></summary><div class="indented"><pre id="39215921-b68f-80b3-9f73-fb16fb0f4f29" class="code code-wrap" data-notion-code-syntax="python"><code class="language-python" style="white-space:pre-wrap;word-break:break-all">import random
+
+# Step 1: Roll a dice (1 to 6)
+dice = random.randint(1, 6)
+
+# Step 2: Show result
+print(&quot;You rolled:&quot;, dice)
+
+# Step 3: Check if user rolled the highest number
+if dice == 6:
+    # Step 4: Special message
+    print(&quot;Critical Roll!&quot;)
+else:
+    # Step 5: Normal message
+    print(&quot;Try again!&quot;)</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,1274 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Java + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-809b-9f91-e9c8d8012be9" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Java + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-80f2-b3a2-fb2993de6c5a" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8087-86ed-e3220f23b15f" style="display:inline-block">Key Concepts </h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801b-b822-d12c359c7d08" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-8059-9b6b-caf716945ece" class="" dir="auto">Q1: What is a variable in Java?<br/>A: A variable is a named container that stores data your program can use or change.</p><p id="39315921-b68f-800b-be8c-d64757caf026" class="" dir="auto">Q2: When should I use a variable?<br/>A: Use it when a value will change while the program runs.</p><p id="39315921-b68f-8042-b0aa-cf894d2a5386" class="" dir="auto">Q3: How do I create a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js" integrity="sha512-xKcnbsdT0KMoA4yrozkqZM1XJVTrPsjdQwvigxlAlxEDu8YDvC/jl+LfVqn0fY3Vs6m2y4a89JCHEIA/Z9zpmQ==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-803e-bc36-e195ea279476" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int score = 10;</code></pre><p id="39315921-b68f-80dc-b210-f283df9e92c4" class="" dir="auto">Q4: What is a constant in Java?<br/>A: A constant is a value that cannot change after it is set.</p><p id="39315921-b68f-8079-b0e9-ddbc8bc4e9a9" class="" dir="auto">Q5: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-80a1-9414-f46394ecfed9" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">final int MAX_SCORE = 100;</code></pre><p id="39315921-b68f-80fa-bf09-d38740121269" class="" dir="auto">Q6: When should I use a constant?<br/>A: When the value should never change, like limits or settings.</p><p id="39315921-b68f-800a-86dd-c9d63f934d06" class="" dir="auto">Q7: Why use variables instead of hardcoding values?<br/>A: So your program is flexible and easier to update.</p><p id="39315921-b68f-8081-a989-d7eaeb8602e6" class="" dir="auto">Q8: Can variables change in Java?<br/>A: Yes, unless marked final.</p><p id="39315921-b68f-801d-a94f-cd405c2458c8" class="" dir="auto">Q9: What does final mean?<br/>A: It locks a value so it cannot change.</p><p id="39315921-b68f-8098-9ba6-d1f4870bf536" class="" dir="auto">Q10: Why are variables important?<br/>A: They let programs remember information.</p></div></details><hr id="39315921-b68f-80ee-9842-d30ccf07c3ed" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800c-8222-de2e9d4d4219" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-80a3-9116-dfc0c217a448" class="" dir="auto">Q11: What is a data type?<br/>A: It tells Java what kind of data is stored.</p><p id="39315921-b68f-80c5-ad49-d6cff00ad58f" class="" dir="auto">Q12: What is an int?<br/>A:</p><pre id="39315921-b68f-8031-b972-f0af668eb617" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int age = 20;</code></pre><p id="39315921-b68f-80c5-b9b5-e90177c1f44b" class="" dir="auto">Q13: What is a double?<br/>A:</p><pre id="39315921-b68f-808d-8dc3-e66823d4fab5" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">double price = 4.99;</code></pre><p id="39315921-b68f-80fa-a457-e0403bb9cd47" class="" dir="auto">Q14: What is a String?<br/>A:</p><pre id="39315921-b68f-8002-b365-c344bcdd17b6" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">String name = &quot;Alex&quot;;</code></pre><p id="39315921-b68f-8000-a8bd-f458d45bad55" class="" dir="auto">Q15: What is a boolean?<br/>A:</p><pre id="39315921-b68f-80ce-a49f-c94192db6812" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">boolean isAlive = true;</code></pre><p id="39315921-b68f-803a-b81e-dc470cbd1d74" class="" dir="auto">Q16: When should I use int vs double?<br/>A: int for whole numbers, double for decimals.</p><p id="39315921-b68f-8073-8c92-d70bf483d0d3" class="" dir="auto">Q17: Why do data types matter?<br/>A: They prevent wrong operations.</p><p id="39315921-b68f-80b5-a00e-f40381db9e8c" class="" dir="auto">Q18: Can Java change types automatically?<br/>A: Sometimes, but it can cause errors.</p><p id="39315921-b68f-8023-81cf-f6f52401bd3d" class="" dir="auto">Q19: What is char?<br/>A:</p><pre id="39315921-b68f-8028-bc40-f9f2ac8a2212" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-80e0-b4d5-f4a14ff13a92" class="" dir="auto">Q20: Why use correct data types?<br/>A: To keep code predictable and safe.</p></div></details><hr id="39315921-b68f-8053-875b-de1556612db5" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80fb-8cec-d668fcb27c80" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-808b-b3db-fbfc58c411f0" class="" dir="auto">Q21: How do I print text in Java?<br/>A:</p><pre id="39315921-b68f-8099-a3d7-eb6df510b90d" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;Hello&quot;);</code></pre><p id="39315921-b68f-80f7-98a1-e3e0968c6510" class="" dir="auto">Q22: What is output?<br/>A: Information shown to the user.</p><p id="39315921-b68f-8037-b5bc-ffc5058c0b52" class="" dir="auto">Q23: What is input in Java CLI?<br/>A: Data the user types in the terminal.</p><p id="39315921-b68f-8046-a1e9-e57187c7654d" class="" dir="auto">Q24: How do I read input?<br/>A:</p><pre id="39315921-b68f-8096-94a4-daed7ba7da8a" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Scanner;
+
+Scanner sc = new Scanner(System.in);
+String name = sc.nextLine();</code></pre><p id="39315921-b68f-80b9-90b6-d5f9e82a2b11" class="" dir="auto">Q25: Why use Scanner?<br/>A: It lets Java read user input.</p><p id="39315921-b68f-80e4-a354-f67d7cabfd4d" class="" dir="auto">Q26: How do I read numbers?<br/>A:</p><pre id="39315921-b68f-808f-8589-d9d053bc31ea" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int num = sc.nextInt();</code></pre><p id="39315921-b68f-8076-ac73-e5ba1c2545fa" class="" dir="auto">Q27: Why convert input?<br/>A: Because input is text by default.</p><p id="39315921-b68f-80bc-89eb-ca1c4639b532" class="" dir="auto">Q28: What happens if input is wrong type?<br/>A: The program crashes.</p><p id="39315921-b68f-8006-9a7f-d668e2873a9c" class="" dir="auto">Q29: How do I print variables?<br/>A:</p><pre id="39315921-b68f-80ef-8812-ea80d6010d63" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(name);</code></pre><p id="39315921-b68f-805a-854f-d3b9c4535ec7" class="" dir="auto">Q30: Why use CLI input?<br/>A: To make programs interactive.</p></div></details><hr id="39315921-b68f-8012-99b5-f75d081fe60f" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80bf-8f47-f03b8c0ec1ca" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-802c-9a9a-e924efcf3f7a" class="" dir="auto">Q31: How do I add numbers in Java?<br/>A:</p><pre id="39315921-b68f-807d-ae3d-fcf872b1816b" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int sum = a + b;</code></pre><p id="39315921-b68f-80e2-9516-e3f2afc12abb" class="" dir="auto">Q32: How do I subtract?<br/>A:</p><pre id="39315921-b68f-80c1-b89b-e8771430e278" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-80df-857f-fc14d2f1dc3c" class="" dir="auto">Q33: How do I multiply?<br/>A:</p><pre id="39315921-b68f-80b1-a50c-f24653b75be1" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-8020-9b44-dca05f4ea0f4" class="" dir="auto">Q34: How do I divide?<br/>A:</p><pre id="39315921-b68f-80cd-a230-eef3195925eb" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a / b;</code></pre><p id="39315921-b68f-8077-b72b-e444c4f59c68" class="" dir="auto">Q35: What is modulus?<br/>A:</p><pre id="39315921-b68f-8046-8ef7-f0a993eaab4a" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int r = a % b;</code></pre><p id="39315921-b68f-800c-aab3-f4b71f8ac536" class="" dir="auto">Q36: When should I use modulus?<br/>A: To find remainders or even/odd checks.</p><p id="39315921-b68f-807d-8109-d1d5d75849eb" class="" dir="auto">Q37: Why store math results?<br/>A: So they can be reused later.</p><p id="39315921-b68f-80c4-ad1a-ceaf9ead23d0" class="" dir="auto">Q38: What happens when dividing integers?<br/>A: Decimal part is removed.</p><p id="39315921-b68f-8056-9ceb-e925629d5393" class="" dir="auto">Q39: How to get accurate division?<br/>A:</p><pre id="39315921-b68f-8023-99d1-e3e1300b505d" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">double result = (double)a / b;</code></pre><p id="39315921-b68f-80de-b0d9-ecf301e37b66" class="" dir="auto">Q40: Why is math important?<br/>A: Many programs calculate data.</p></div></details><hr id="39315921-b68f-8060-bbbd-c52bcf0932c0" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8056-beaa-f34c2c3d9f4a" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-80fa-bdd1-cfab1f3f01b3" class="" dir="auto">Q41: What is an if statement?<br/>A: A decision maker in code.</p><p id="39315921-b68f-8018-bef1-c525f6ef1725" class="" dir="auto">Q42: When should I use if?<br/>A: When something depends on a condition.</p><p id="39315921-b68f-8008-90ae-ed46fa0176ea" class="" dir="auto">Q43: How do I write if?<br/>A:</p><pre id="39315921-b68f-80f9-ba4f-dd2c68ba2d89" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    System.out.println(&quot;Adult&quot;);
+}</code></pre><p id="39315921-b68f-8073-a241-c55295e890d1" class="" dir="auto">Q44: What is else?<br/>A: What happens when if is false.</p><p id="39315921-b68f-80cd-ba7d-e5f2ca247c28" class="" dir="auto">Q45: How do I use else?<br/>A:</p><pre id="39315921-b68f-8004-a268-c0962eacb6d6" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50) {
+    System.out.println(&quot;Pass&quot;);
+} else {
+    System.out.println(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-801b-bd81-d20691125780" class="" dir="auto">Q46: What is a condition?<br/>A: A true/false question.</p><p id="39315921-b68f-80b0-843b-feb1bc06bd99" class="" dir="auto">Q47: What are comparison operators?<br/>A:</p><pre id="39315921-b68f-8050-9490-fa44e0eff1d6" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">== != &lt; &gt; &lt;= &gt;=</code></pre><p id="39315921-b68f-807d-a8c5-f9687b978a55" class="" dir="auto">Q48: Why use conditions?<br/>A: To make decisions in programs.</p><p id="39315921-b68f-80ca-bd00-d701177f23e3" class="" dir="auto">Q49: Can I use multiple conditions?<br/>A:</p><pre id="39315921-b68f-8044-930b-c895c12b5b36" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (age &gt; 18 &amp;&amp; hasID)</code></pre><p id="39315921-b68f-802a-a439-daf10d3e9f84" class="" dir="auto">Q50: What does &amp;&amp; mean?<br/>A: Both conditions must be true.</p></div></details><hr id="39315921-b68f-80bc-a943-f2866b151339" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8065-9af0-fef8d18d5837" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8038-a57f-ca9231a5268e" class="" dir="auto">Q51: How do I generate random numbers in Java?<br/>A:</p><pre id="39315921-b68f-803b-9a5c-caf3c696ae20" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Random;
+
+Random rand = new Random();
+int num = rand.nextInt(10);</code></pre><p id="39315921-b68f-802b-a92a-d5afc09b0bb1" class="" dir="auto">Q52: What does nextInt(10) mean?<br/>A: Random number from 0–9.</p><p id="39315921-b68f-8034-b5d7-f8cca77190a6" class="" dir="auto">Q53: How do I get 1–10 instead of 0–9?<br/>A:</p><pre id="39315921-b68f-80d5-bb93-f511bbd31877" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int num = rand.nextInt(10) + 1;</code></pre><p id="39315921-b68f-8087-a054-eb5e46ffeb44" class="" dir="auto">Q54: When should I use random numbers?<br/>A: Games, simulations, randomness.</p><p id="39315921-b68f-8077-8bf9-e4e88a113db9" class="" dir="auto">Q55: Why use Random class?<br/>A: It generates unpredictable values.</p><p id="39315921-b68f-80f4-bd48-d5d932b7d29f" class="" dir="auto">Q56: How do I simulate a dice roll?<br/>A:</p><pre id="39315921-b68f-80b3-92bc-eba6ef9c7c12" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int roll = rand.nextInt(6) + 1;</code></pre><p id="39315921-b68f-80e8-96dd-dd4493c98b23" class="" dir="auto">Q57: How do I pick true/false randomly?<br/>A:</p><pre id="39315921-b68f-80d8-8965-cdf1a36256ac" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">boolean b = rand.nextBoolean();</code></pre><p id="39315921-b68f-801b-aa1c-cf77b7cc0efc" class="" dir="auto">Q58: Why not use Math.random for everything?<br/>A: Random class is more flexible.</p><p id="39315921-b68f-8060-acdc-e8a6cae8dacb" class="" dir="auto">Q59: How do I randomize decisions?<br/>A:</p><pre id="39315921-b68f-8010-ab24-ea450ca150a8" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (rand.nextInt(100) &lt; 50)</code></pre><p id="39315921-b68f-80c7-b176-eb8cc5b2125b" class="" dir="auto">Q60: Why is randomness useful?<br/>A: It makes programs less predictable and more interactive.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8056-be87-c6570efc991e" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8083-8c99-cc11830d70db" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-8022-8ccc-d56cc89ba700" class="" dir="auto">Q1: I want to store a player&#x27;s name.<br/>A:</p><pre id="39315921-b68f-8029-8c49-f549a448c474" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">String playerName = &quot;Alex&quot;;</code></pre><p id="39315921-b68f-80bd-91c9-fb1d6d53f3ce" class="" dir="auto">Q2: I want to store a score that changes during the game.<br/>A:</p><pre id="39315921-b68f-8013-91b2-e59ff609efa8" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int score = 0;</code></pre><p id="39315921-b68f-80af-bae2-d5a1bb95f680" class="" dir="auto">Q3: I want to store a fixed max value that never changes.<br/>A:</p><pre id="39315921-b68f-805b-a0a3-fe5d1a4ee148" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">final int MAX = 100;</code></pre><p id="39315921-b68f-8030-86e2-cf4735548abc" class="" dir="auto">Q4: I want to update a player&#x27;s score.<br/>A:</p><pre id="39315921-b68f-8062-a8a2-e11a0e49646a" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">score += 10;</code></pre><p id="39315921-b68f-803d-8c24-d50753995d01" class="" dir="auto">Q5: I want to reset a score.<br/>A:</p><pre id="39315921-b68f-802e-9c0b-d5b6a6472d83" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">score = 0;</code></pre><p id="39315921-b68f-80ae-a144-c790e985737e" class="" dir="auto">Q6: I want to store a player&#x27;s health.<br/>A:</p><pre id="39315921-b68f-8004-abc8-fd15a6b915c0" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int health = 100;</code></pre><p id="39315921-b68f-8025-a484-e893a3bbb804" class="" dir="auto">Q7: I want to store whether a player is alive.<br/>A:</p><pre id="39315921-b68f-8076-aa01-ff99bfb87a48" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">boolean isAlive = true;</code></pre><p id="39315921-b68f-8045-8d65-d5c3e309269f" class="" dir="auto">Q8: I want to store a decimal price.<br/>A:</p><pre id="39315921-b68f-8086-b983-c9a04278df54" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">double price = 19.99;</code></pre><p id="39315921-b68f-8036-a6ae-e6d820ec9051" class="" dir="auto">Q9: I want to store a single character grade.<br/>A:</p><pre id="39315921-b68f-80cd-a6d2-fe22ec5242b1" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-80c1-a0e7-c0301cababce" class="" dir="auto">Q10: I want to update a username.<br/>A:</p><pre id="39315921-b68f-8084-a6e1-f811efd8a4dd" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">playerName = &quot;Jordan&quot;;</code></pre></div></details><hr id="39315921-b68f-80cd-8843-eab7b378c3e3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80de-8b1a-e2c97a50fc9e" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-8032-b7c7-d88703efa1db" class="" dir="auto">Q11: I want to print a message to the console.<br/>A:</p><pre id="39315921-b68f-80dd-89e7-ed1c2c280389" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;Hello World&quot;);</code></pre><p id="39315921-b68f-80e5-bc21-c8d57282d7c0" class="" dir="auto">Q12: I want to ask the user for input.<br/>A:</p><pre id="39315921-b68f-8080-981b-e493ce27bebc" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">Scanner sc = new Scanner(System.in);
+String name = sc.nextLine();</code></pre><p id="39315921-b68f-80d5-809b-ede03ca64007" class="" dir="auto">Q13: I want to read a number from user input.<br/>A:</p><pre id="39315921-b68f-8023-ad67-d6994d52f5ff" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int age = sc.nextInt();</code></pre><p id="39315921-b68f-800e-b8d9-eac8da9eefcc" class="" dir="auto">Q14: I want to display a variable.<br/>A:</p><pre id="39315921-b68f-80f0-8852-c5d386ab76cb" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(score);</code></pre><p id="39315921-b68f-80a4-8056-f112181d6669" class="" dir="auto">Q15: I want to combine text and variables in output.<br/>A:</p><pre id="39315921-b68f-80c1-a998-c5f401788392" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;Score: &quot; + score);</code></pre><p id="39315921-b68f-80d1-9b9c-f0311e852048" class="" dir="auto">Q16: I want to clear a line conceptually in CLI (simulate).<br/>A:</p><pre id="39315921-b68f-809d-a716-fbba8d481818" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;\n\n&quot;);</code></pre><p id="39315921-b68f-8084-babd-ec74298619c6" class="" dir="auto">Q17: I want to pause for input.<br/>A:</p><pre id="39315921-b68f-800f-a2fc-e9a9df0df310" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">sc.nextLine();</code></pre><p id="39315921-b68f-8021-b79e-df39e6f7c2c9" class="" dir="auto">Q18: I want to show a welcome message.<br/>A:</p><pre id="39315921-b68f-801b-9d84-ca434f7a6c7c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;Welcome!&quot;);</code></pre><p id="39315921-b68f-80b6-8ea7-cba3f86cb360" class="" dir="auto">Q19: I want to ask for two inputs.<br/>A:</p><pre id="39315921-b68f-80e5-a2d7-de25de8c5763" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int a = sc.nextInt();
+int b = sc.nextInt();</code></pre><p id="39315921-b68f-80f7-a0f4-ce2c0fcc997e" class="" dir="auto">Q20: I want to display both inputs.<br/>A:</p><pre id="39315921-b68f-80a8-87d3-eacbe645cc98" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(a + &quot; &quot; + b);</code></pre></div></details><hr id="39315921-b68f-803d-ba59-c0a45f10e323" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f5-99c6-de76ca6abdb7" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-804c-93ad-f565ba57d395" class="" dir="auto">Q21: I want to add two numbers.<br/>A:</p><pre id="39315921-b68f-80d6-a0c1-e753e047762c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a + b;</code></pre><p id="39315921-b68f-803a-a17c-c1999eb4401a" class="" dir="auto">Q22: I want to subtract two numbers.<br/>A:</p><pre id="39315921-b68f-8011-8347-d7993985a2aa" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-8027-8c36-d2bd1948c6fc" class="" dir="auto">Q23: I want to multiply two numbers.<br/>A:</p><pre id="39315921-b68f-804e-bfa6-de61d029f793" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-801f-bcdf-f79d7bba0801" class="" dir="auto">Q24: I want to divide two numbers.<br/>A:</p><pre id="39315921-b68f-8075-9766-de4563350f3e" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int result = a / b;</code></pre><p id="39315921-b68f-80a3-ba7b-f7b238d0b33a" class="" dir="auto">Q25: I want to get remainder.<br/>A:</p><pre id="39315921-b68f-808e-89bb-f45271640560" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int r = a % b;</code></pre><p id="39315921-b68f-8075-9b8e-e318b5e9598c" class="" dir="auto">Q26: I want to increase a value by 1.<br/>A:</p><pre id="39315921-b68f-8089-8093-c1c630c24b5a" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">score++;</code></pre><p id="39315921-b68f-800d-8b73-cd9b21426c02" class="" dir="auto">Q27: I want to decrease a value by 1.<br/>A:</p><pre id="39315921-b68f-80b5-b32b-c2e70c61db08" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">score--;</code></pre><p id="39315921-b68f-8038-8f06-cddfdee1ea37" class="" dir="auto">Q28: I want to double a number.<br/>A:</p><pre id="39315921-b68f-807a-88ea-e5e230549753" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">value *= 2;</code></pre><p id="39315921-b68f-80f8-8b53-ec42dcbdae6d" class="" dir="auto">Q29: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-80d5-a083-cbb0df1b18e4" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">double avg = (a + b) / 2.0;</code></pre><p id="39315921-b68f-8029-a46d-c854446c9d94" class="" dir="auto">Q30: I want to calculate total cost.<br/>A:</p><pre id="39315921-b68f-80d5-bfda-d8a7da5416be" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">double total = price * quantity;</code></pre></div></details><hr id="39315921-b68f-80d5-ae75-d05b88cc136b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8095-a2f1-c3986e54cf58" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-80cd-b612-c00b4d058fba" class="" dir="auto">Q31: I want to check if someone is an adult.<br/>A:</p><pre id="39315921-b68f-800c-b303-ee0f4cd7ed40" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    System.out.println(&quot;Adult&quot;);
+}</code></pre><p id="39315921-b68f-80b5-9943-e6f8f4debf62" class="" dir="auto">Q32: I want to block underage users.<br/>A:</p><pre id="39315921-b68f-80ed-a1b3-f23f557ed1aa" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (age &lt; 18) {
+    System.out.println(&quot;Blocked&quot;);
+}</code></pre><p id="39315921-b68f-809b-a05d-ea26fffeaf12" class="" dir="auto">Q33: I want to check pass/fail.<br/>A:</p><pre id="39315921-b68f-807e-9a47-f1b7f95cc81b" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50) {
+    System.out.println(&quot;Pass&quot;);
+} else {
+    System.out.println(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-80d9-8bf4-e1691ba1ccb4" class="" dir="auto">Q34: I want to check equality.<br/>A:</p><pre id="39315921-b68f-8044-9a35-d6c40b343f00" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (a == b) {
+    System.out.println(&quot;Equal&quot;);
+}</code></pre><p id="39315921-b68f-8052-bbae-fdd521ad24ce" class="" dir="auto">Q35: I want to check not equal.<br/>A:</p><pre id="39315921-b68f-80f8-9bcd-e4baf40e837c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (a != b) {
+    System.out.println(&quot;Not equal&quot;);
+}</code></pre><p id="39315921-b68f-8078-9ec1-dd9b5e0cdc7d" class="" dir="auto">Q36: I want to check greater than.<br/>A:</p><pre id="39315921-b68f-8085-a7ce-d811b9d9752b" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 80) {
+    System.out.println(&quot;High score&quot;);
+}</code></pre><p id="39315921-b68f-8016-a111-e08d53640ec8" class="" dir="auto">Q37: I want to check multiple conditions.<br/>A:</p><pre id="39315921-b68f-808c-a434-efb1804d9bd4" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (age &gt; 18 &amp;&amp; hasID) {
+    System.out.println(&quot;Allowed&quot;);
+}</code></pre><p id="39315921-b68f-80a8-b141-ce9ec7b9b6c9" class="" dir="auto">Q38: I want to check either condition.<br/>A:</p><pre id="39315921-b68f-8073-bed1-d72418f22456" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (isAdmin || isMod) {
+    System.out.println(&quot;Access&quot;);
+}</code></pre><p id="39315921-b68f-80be-9eed-ed11f284d552" class="" dir="auto">Q39: I want to assign grade A/B/C.<br/>A:</p><pre id="39315921-b68f-8029-aa63-fd1435f223ec" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 90) {
+    System.out.println(&quot;A&quot;);
+} else if (score &gt;= 80) {
+    System.out.println(&quot;B&quot;);
+} else {
+    System.out.println(&quot;C&quot;);
+}</code></pre><p id="39315921-b68f-80ed-b6cb-c1a340e99676" class="" dir="auto">Q40: I want to handle invalid input.<br/>A:</p><pre id="39315921-b68f-8023-87b7-cff60ee3351e" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (input.isEmpty()) {
+    System.out.println(&quot;Invalid&quot;);
+}</code></pre></div></details><hr id="39315921-b68f-80d5-ad5d-ee69be24407c" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80a9-ad60-dbd329028f65" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8049-b74f-c995403b2abf" class="" dir="auto">Q41: I want to generate a random number 1–10.<br/>A:</p><pre id="39315921-b68f-8070-b52b-f60172bcf735" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int num = rand.nextInt(10) + 1;</code></pre><p id="39315921-b68f-80e3-bf77-f8d08ebd5b41" class="" dir="auto">Q42: I want to simulate a dice roll.<br/>A:</p><pre id="39315921-b68f-80af-a5e6-c7d99162c881" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int roll = rand.nextInt(6) + 1;</code></pre><p id="39315921-b68f-8034-a61f-c46c2ae70e43" class="" dir="auto">Q43: I want a random true/false.<br/>A:</p><pre id="39315921-b68f-8022-9f8e-e647209d06f1" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">boolean b = rand.nextBoolean();</code></pre><p id="39315921-b68f-805e-9b99-f4f9c0e12a64" class="" dir="auto">Q44: I want to randomly increase score.<br/>A:</p><pre id="39315921-b68f-80b8-8e97-f541a0dac52b" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">score += rand.nextInt(5);</code></pre><p id="39315921-b68f-80fa-b944-f6a9bbc13a1a" class="" dir="auto">Q45: I want to randomly pick between two outcomes.<br/>A:</p><pre id="39315921-b68f-809a-8fa6-cf9fc61bdd61" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (rand.nextInt(2) == 0) {
+    System.out.println(&quot;Heads&quot;);
+} else {
+    System.out.println(&quot;Tails&quot;);
+}</code></pre><p id="39315921-b68f-807b-b5e3-ff2c2fd5418f" class="" dir="auto">Q46: I want to generate random damage.<br/>A:</p><pre id="39315921-b68f-800d-af37-c578b008a057" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int damage = rand.nextInt(10) + 5;</code></pre><p id="39315921-b68f-801b-bb10-c51cf8c23989" class="" dir="auto">Q47: I want to simulate chance (50%).<br/>A:</p><pre id="39315921-b68f-8055-9bd4-f427c0098e9c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (rand.nextInt(100) &lt; 50)</code></pre><p id="39315921-b68f-800b-8e07-fa647f6b71ff" class="" dir="auto">Q48: I want to pick a random number range 50–100.<br/>A:</p><pre id="39315921-b68f-807b-b4ce-fd35193b7eb9" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int num = rand.nextInt(51) + 50;</code></pre><p id="39315921-b68f-80a7-9322-f936ca9b92c1" class="" dir="auto">Q49: I want to randomly choose a name.<br/>A:</p><pre id="39315921-b68f-8030-9b81-dfe882d6b413" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">String[] names = {&quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot;};
+String pick = names[rand.nextInt(names.length)];</code></pre><p id="39315921-b68f-80f6-98e0-dc02612a9715" class="" dir="auto">Q50: I want to simulate a critical hit chance.<br/>A:</p><pre id="39315921-b68f-8035-b460-e3ad8c23e3e9" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">boolean crit = rand.nextInt(100) &lt; 25;</code></pre></div></details><hr id="39315921-b68f-8097-82bb-ddcadae49381" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f0-b4c1-f67c73fa042d" style="display:inline-block">Mixed CLI Logic</h1></summary><div class="indented"><p id="39315921-b68f-80c9-b1f6-f5639e608add" class="" dir="auto">Q51: I want to ask for a name and greet the user.<br/>A:</p><pre id="39315921-b68f-805c-bb13-f2e88b3bf4b3" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(&quot;Hello &quot; + sc.nextLine());</code></pre><p id="39315921-b68f-8022-afeb-cdab2bb76cbd" class="" dir="auto">Q52: I want to add two user inputs.<br/>A:</p><pre id="39315921-b68f-8055-b041-e7d850b3eccd" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">int sum = sc.nextInt() + sc.nextInt();</code></pre><p id="39315921-b68f-80ea-b109-c2b036224030" class="" dir="auto">Q53: I want to check if input is positive.<br/>A:</p><pre id="39315921-b68f-8095-975b-d7caa2daa237" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (num &gt; 0) {
+    System.out.println(&quot;Positive&quot;);
+}</code></pre><p id="39315921-b68f-80a6-9022-e6b64f26f20d" class="" dir="auto">Q54: I want to prevent division by zero.<br/>A:</p><pre id="39315921-b68f-80d1-b2af-e0117ba18124" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (b != 0) {
+    System.out.println(a / b);
+}</code></pre><p id="39315921-b68f-8050-9f0c-c3d08e068690" class="" dir="auto">Q55: I want to repeat an action conditionally.<br/>A:</p><pre id="39315921-b68f-801a-94a8-c76769dea050" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 100) {
+    score = 100;
+}</code></pre><p id="39315921-b68f-80af-8356-db9ba201bb0e" class="" dir="auto">Q56: I want to display both name and score.<br/>A:</p><pre id="39315921-b68f-80d5-91f4-f8aeb5f21f2c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(name + &quot;: &quot; + score);</code></pre><p id="39315921-b68f-8056-9b0e-f23d6ef8a70d" class="" dir="auto">Q57: I want to check login success.<br/>A:</p><pre id="39315921-b68f-8022-b33d-e582fe03cf91" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (user.equals(&quot;admin&quot;) &amp;&amp; pass.equals(&quot;1234&quot;))</code></pre><p id="39315921-b68f-8059-a409-e1a41eb4e11d" class="" dir="auto">Q58: I want to fail empty input.<br/>A:</p><pre id="39315921-b68f-80c2-9720-f666b396dd04" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (input == null || input.isEmpty())</code></pre><p id="39315921-b68f-8034-9ca7-d2e1a86569d5" class="" dir="auto">Q59: I want to compare two numbers safely.<br/>A:</p><pre id="39315921-b68f-8031-a4a9-e4821377fd4c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">System.out.println(Math.max(a, b));</code></pre><p id="39315921-b68f-80ed-a81c-c3e83cc22b1c" class="" dir="auto">Q60: I want to generate a random event trigger.<br/>A:</p><pre id="39315921-b68f-80d6-bd72-fbbb12885e21" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">if (rand.nextInt(100) &lt; 10) {
+    System.out.println(&quot;Event triggered!&quot;);
+}</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-801d-ab49-e5c65395c594" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-805d-a92c-e06ed9ab0115" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-80a0-8fb7-e5b3fd6d98c4" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80ee-a6ed-d71ea0cc73a4" dir="ltr"><th id="rUTR" class="simple-table-header-color simple-table-header">Text notation</th><th id="YS`d" class="simple-table-header-color simple-table-header">Actual flowchart shape</th><th id="l[&gt;y" class="simple-table-header-color simple-table-header">Meaning</th></tr></thead><tbody><tr id="3e315921-b68f-80e1-b29f-dd6ff6248bef" dir="ltr"><td id="rUTR" class=""><code>([ START / END ])</code></td><td id="YS`d" class=""><strong>Oval / Terminator</strong></td><td id="l[&gt;y" class="">Program beginning or ending</td></tr><tr id="3e315921-b68f-80e5-a2cf-c56fac797533" dir="ltr"><td id="rUTR" class=""><code>[ Process ]</code></td><td id="YS`d" class=""><strong>Rectangle</strong></td><td id="l[&gt;y" class="">Calculation, assignment, object creation, etc.</td></tr><tr id="3e315921-b68f-8098-bf45-e3797cba48e9" dir="ltr"><td id="rUTR" class=""><code>[/ Input / Output /]</code></td><td id="YS`d" class=""><strong>Parallelogram</strong></td><td id="l[&gt;y" class="">User input or printed output</td></tr><tr id="3e315921-b68f-80e1-88f0-c6cfb663d4fa" dir="ltr"><td id="rUTR" class=""><code>{ Condition? }</code></td><td id="YS`d" class=""><strong>Diamond</strong></td><td id="l[&gt;y" class="">Decision / branching</td></tr><tr id="3e315921-b68f-8068-b64d-e90950c6b1a1" dir="ltr"><td id="rUTR" class=""><code>↓</code></td><td id="YS`d" class=""><strong>Arrow</strong></td><td id="l[&gt;y" class="">Direction of program flow</td></tr></tbody></table><hr id="3e315921-b68f-8076-8c84-d233c2ba7d15" dir="auto"/><h1 id="3e315921-b68f-804b-af45-fe0495c7caf8" class="" dir="auto">Project 1: Simple CLI Calculator</h1><p id="3e315921-b68f-80ef-be9c-c63787f0b75e" class="" dir="auto">One extra detail here: your Java code contains a <strong>ternary operator</strong> to prevent division by zero:</p><pre id="3e315921-b68f-8057-8b11-eaa558170a4c" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">(b != 0) ? (a/b) : 0</code></pre><p id="3e315921-b68f-8098-a6f1-f00a7b7a935f" class="" dir="auto">So I&#x27;ll represent that as a decision in the flowchart.</p><h3 id="3e315921-b68f-8088-9190-ff5a2106bbe5" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8087-9117-f89148d9e3e5" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Scanner object ]
+                  |
+                  ↓
+       [/ Ask for first number /]
+                  |
+                  ↓
+       [/ Read integer a /]
+                  |
+                  ↓
+       [/ Ask for second number /]
+                  |
+                  ↓
+       [/ Read integer b /]
+                  |
+                  ↓
+       [ Calculate addition
+             add = a + b ]
+                  |
+                  ↓
+       [ Calculate subtraction
+             sub = a - b ]
+                  |
+                  ↓
+       [ Calculate multiplication
+             mul = a * b ]
+                  |
+                  ↓
+             { b != 0? }
+              /       \
+            YES        NO
+             |          |
+             ↓          ↓
+       [ div = a / b ] [ div = 0 ]
+             |          |
+             └────┬─────┘
+                  ↓
+       [/ Print addition result /]
+                  |
+                  ↓
+       [/ Print subtraction result /]
+                  |
+                  ↓
+       [/ Print multiplication result /]
+                  |
+                  ↓
+       [/ Print division result /]
+                  |
+                  ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-8096-88fe-eba08c3127dc" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8002-996c-e6796b2d0760" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Scanner</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80e8-9ebc-ddcf84ec6f3e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for number → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8078-90fa-c198567c3546" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read number → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8044-839d-dfba1b868684" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Addition/subtraction/multiplication → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8067-afd7-d2dd61e99acb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>b != 0</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8016-a071-c8d24e2e2c19" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Calculate division → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8081-a4f2-d15ee922e6cf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print results → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8032-8904-f4abef911e5c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-805b-985b-cb50f8101561" class="" dir="auto">Core concept</h3><pre id="3e315921-b68f-8087-9d73-d611e2394208" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Input
+  ↓
+Process
+  ↓
+Decision
+  ↓
+Process
+  ↓
+Output</code></pre><hr id="3e315921-b68f-80b8-b6a2-d6776d529c6c" dir="auto"/><h1 id="3e315921-b68f-8079-b6eb-ffef19feff9a" class="" dir="auto">Project 2: Number Guessing Game</h1><h3 id="3e315921-b68f-8075-b79b-fcc0758d0c56" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-807a-9785-f80b989123aa" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Scanner object ]
+                  |
+                  ↓
+       [ Create Random object ]
+                  |
+                  ↓
+       [ Generate secret number
+             between 1–10 ]
+                  |
+                  ↓
+       [/ Ask user for guess /]
+                  |
+                  ↓
+       [/ Read integer guess /]
+                  |
+                  ↓
+          { guess == secret? }
+             /            \
+           YES             NO
+            |               |
+            ↓               ↓
+ [/ Print &quot;Correct!&quot; /] [/ Print &quot;Wrong!&quot;
+                          + secret /]
+            |               |
+            └───────┬───────┘
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-80c0-9acf-de001a0bad8d" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8093-814a-fe02562fcb59" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Scanner</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8062-b014-ddafae777e10" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Random</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8078-b436-ecf00c32b694" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate secret → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8000-ad6f-de594720457d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8015-8ea1-db771694bbd5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare values → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-808f-a30f-f58bd19ebe5e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80dc-8be8-c20c4842f0bb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80b3-be3e-dc0464fac391" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-80bf-9c73-cdf6c17dcd46" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Generate Random
+      ↓
+Get Guess
+      ↓
+{ Guess == Secret? }
+    /          \
+  YES           NO
+   ↓             ↓
+Correct         Wrong</code></pre><hr id="3e315921-b68f-80df-bf48-cb134b6187bc" dir="auto"/><h1 id="3e315921-b68f-80e1-afae-f7387d1c7406" class="" dir="auto">Project 3: Login System</h1><h3 id="3e315921-b68f-800f-99b7-fcf2557d5033" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80cf-94a4-fabc535f3028" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Scanner object ]
+                  |
+                  ↓
+       [ Store correct username
+         and correct password ]
+                  |
+                  ↓
+       [/ Ask for username /]
+                  |
+                  ↓
+       [/ Read username /]
+                  |
+                  ↓
+       [/ Ask for password /]
+                  |
+                  ↓
+       [/ Read password /]
+                  |
+                  ↓
+       { Username matches
+         AND
+         Password matches? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+ [/ Print &quot;Access       [/ Print &quot;Access
+       Granted&quot; /]           Denied&quot; /]
+            |             |
+            └──────┬──────┘
+                   ↓
+               ([ END ])</code></pre><h3 id="3e315921-b68f-803e-9559-e282b7d26929" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-801a-8504-e64973911491" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Scanner</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80aa-a195-f2c331300df4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store credentials → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8053-b2f4-d1949d508d7d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for username → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80bb-8e78-eca5880fe340" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read username → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80f0-a722-ea48c8fd0619" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for password → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8072-9c32-fcf9317a5010" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read password → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8072-8105-d365b4935dbc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare credentials → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80cc-9448-f0b41b341fb5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8019-915d-d5c664830a88" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-8080-958d-ed1b638227cd" class="" dir="auto">Core logic</h3><p id="3e315921-b68f-8020-a8ef-fef83b57f8e0" class="" dir="auto">The diamond represents:</p><pre id="3e315921-b68f-8094-81fd-dac375461dbd" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">user.equals(correctUser)&amp;&amp;pass.equals(correctPass)</code></pre><p id="3e315921-b68f-8081-a82e-e9eb96d1ce72" class="" dir="auto">Visually:</p><pre id="3e315921-b68f-807f-8561-e052245779d4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Username correct?
+       +
+Password correct?
+       ↓
+      AND
+       ↓
+  Both true?
+   /      \
+ YES       NO
+  ↓         ↓
+Granted   Denied</code></pre><hr id="3e315921-b68f-806e-9109-caee4106da22" dir="auto"/><h1 id="3e315921-b68f-80cd-a7d9-e080ec7432fc" class="" dir="auto">Project 4: Grade Calculator</h1><p id="3e315921-b68f-8051-a59f-eeaaf4198205" class="" dir="auto">This is your <strong>multi-condition decision tree</strong>.</p><h3 id="3e315921-b68f-80fe-b8dd-e65d25f810d6" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80c2-a852-e7e1bf18dec9" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Scanner object ]
+                  |
+                  ↓
+          [/ Ask for score /]
+                  |
+                  ↓
+          [/ Read score /]
+                  |
+                  ↓
+          { score &gt;= 90? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+        [/ Print A /] { score &gt;= 80? }
+                          /        \
+                        YES         NO
+                         |           |
+                         ↓           ↓
+                   [/ Print B /] { score &gt;= 70? }
+                                    /       \
+                                  YES        NO
+                                   |          |
+                                   ↓          ↓
+                             [/ Print C /] { score &gt;= 60? }
+                                                /       \
+                                              YES        NO
+                                               |          |
+                                               ↓          ↓
+                                         [/ Print D /] [/ Print F /]
+                                               |          |
+                                               └────┬─────┘
+                                                    ↓
+                                                ([ END ])</code></pre><h3 id="3e315921-b68f-80bb-8f05-de0eeb148eed" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-805f-8171-d5110377ae8b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Scanner</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-803b-9a9a-f3f96d586efa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8079-a45f-c2a1cca75b5f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 90</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-808a-a2bb-cc6fe97a2160" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 80</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80d9-bb48-ecbb3d51405d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 70</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80b8-a9e2-f3005514d5e3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 60</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80c9-909c-cb3e3af73ad7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print grade → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-801b-9951-e4c6a67a80ba" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80df-8337-c5829c9fb182" class="" dir="auto">Logic tree</h3><pre id="3e315921-b68f-80d7-9d16-e9c45e8fa1ea" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">score &gt;= 90?
+   │
+   ├── YES → A
+   │
+   └── NO
+        ↓
+     score &gt;= 80?
+        │
+        ├── YES → B
+        │
+        └── NO
+             ↓
+          score &gt;= 70?
+             │
+             ├── YES → C
+             │
+             └── NO
+                  ↓
+               score &gt;= 60?
+                  │
+                  ├── YES → D
+                  │
+                  └── NO → F</code></pre><p id="3e315921-b68f-80d9-b3a3-fb6c25a511f3" class="" dir="auto">This is a good example of <strong>sequentially narrowing down a set of possibilities</strong>.</p><hr id="3e315921-b68f-80ba-b05c-ebbc8f3d4ae3" dir="auto"/><h1 id="3e315921-b68f-80d4-a034-ea0d1fe9d43f" class="" dir="auto">Project 5: Dice Battle Simulator</h1><h3 id="3e315921-b68f-806b-9338-da656916a187" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-802a-a464-fc7799e7bf69" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Random object ]
+                  |
+                  ↓
+       [ Generate Player 1 roll
+             between 1–6 ]
+                  |
+                  ↓
+       [ Generate Player 2 roll
+             between 1–6 ]
+                  |
+                  ↓
+       [/ Print Player 1 roll /]
+                  |
+                  ↓
+       [/ Print Player 2 roll /]
+                  |
+                  ↓
+          { p1 &gt; p2? }
+             /       \
+           YES        NO
+            |          |
+            ↓          ↓
+ [/ Print &quot;Player 1   { p2 &gt; p1? }
+       Wins!&quot; /]         /      \
+                        YES       NO
+                         |         |
+                         ↓         ↓
+                 [/ Print &quot;Player 2  [/ Print &quot;Tie!&quot; /]
+                       Wins!&quot; /]          |
+                         |                |
+                         └────────┬───────┘
+                                  ↓
+                              ([ END ])</code></pre><h3 id="3e315921-b68f-80ed-a006-f406b5764de2" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80f1-9a27-c0f53519d313" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Random</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8010-9e9c-f9ae4b8200b1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate P1 roll → <strong>Process</strong></li></ul><ul id="3e315921-b68f-809a-89d0-e39bf44dfb50" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate P2 roll → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8086-87fd-c7c779a266af" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print rolls → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-806d-859a-f2fcb483e56e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>p1 &gt; p2</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80da-b3b1-c02d1ed75c99" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>p2 &gt; p1</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8023-9239-f7ac6cab72fe" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Print winner/tie → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8073-b7bf-fb1b52507ca2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80c7-b718-f77216965ff5" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-806e-836e-f269932de8f6" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          p1 &gt; p2?
+          /     \
+        YES      NO
+         ↓        ↓
+     P1 Wins    p2 &gt; p1?
+                /      \
+              YES       NO
+               ↓         ↓
+           P2 Wins      Tie</code></pre><hr id="3e315921-b68f-8008-90d1-c9f28a747844" dir="auto"/><h1 id="3e315921-b68f-80dd-a772-d691b2a3304f" class="" dir="auto">All 5 Java projects — progression</h1><p id="3e315921-b68f-80db-9291-e1711757e713" class="" dir="auto">These line up nicely as a beginner Java progression:</p><pre id="3e315921-b68f-8017-a327-eb93e933e795" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">PROJECT 1
+Simple Calculator
+        ↓
+Sequential Processing
+        ↓
+Input → Process → Output
+        ↓
+PROJECT 2
+Number Guessing
+        ↓
+Basic if/else
+        ↓
+Input → Random → Decision → Output
+        ↓
+PROJECT 3
+Login System
+        ↓
+Boolean Logic
+        ↓
+Condition A AND Condition B
+        ↓
+PROJECT 4
+Grade Calculator
+        ↓
+Multiple Conditions
+        ↓
+if → else if → else
+        ↓
+PROJECT 5
+Dice Battle
+        ↓
+Multiple Branches
+        ↓
+if → else if → else</code></pre><h2 id="3e315921-b68f-80cd-995c-d8b4e3dd07b5" class="" dir="auto">Master flowchart for these Java projects</h2><pre id="3e315921-b68f-805e-bb4f-daa6389261b3" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">                  ([ START ])
+                       |
+                       ↓
+               [ SETUP PROGRAM ]
+                       |
+                       ↓
+                 [/ GET INPUT /]
+                       |
+                       ↓
+                  [ PROCESS ]
+                       |
+                       ↓
+                 { DECISION? }
+                   /       \
+                 YES        NO
+                  |          |
+                  ↓          ↓
+             [ PROCESS ] [ PROCESS ]
+                  |          |
+                  └────┬─────┘
+                       ↓
+                [/ OUTPUT /]
+                       |
+                       ↓
+                   ([ END ])</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8046-89b2-f21326a24fb1" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8020-96bf-dc27525fc5a1" style="display:inline-block">Project 1: Simple CLI Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-80a3-a769-c1698bde0262" class="" dir="auto">What it does</h2><p id="39315921-b68f-808d-9b75-ff22ba3a84f0" class="" dir="auto">Takes two numbers from the user and performs math operations.</p><h2 id="39315921-b68f-80fd-b0dd-f626ad787b56" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-803d-a6cd-fc08574df70f" class="numbered-list" start="1" dir="auto"><li>Create Scanner</li></ol><ol type="1" id="39315921-b68f-80e8-81f7-f7569d4a546f" class="numbered-list" start="2" dir="auto"><li>Ask for first number</li></ol><ol type="1" id="39315921-b68f-8031-8917-c1e8295b9e44" class="numbered-list" start="3" dir="auto"><li>Ask for second number</li></ol><ol type="1" id="39315921-b68f-8085-8461-e41c9af47d16" class="numbered-list" start="4" dir="auto"><li>Perform math</li></ol><ol type="1" id="39315921-b68f-8065-bbf3-c83315115a19" class="numbered-list" start="5" dir="auto"><li>Print results</li></ol><pre id="39315921-b68f-80d2-8d9e-ecbbb25a1e79" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Scanner;
+
+public class Calculator {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Step 1: Ask for first number
+        System.out.print(&quot;Enter first number: &quot;);
+        int a = sc.nextInt();
+
+        // Step 2: Ask for second number
+        System.out.print(&quot;Enter second number: &quot;);
+        int b = sc.nextInt();
+
+        // Step 3: Perform calculations
+        int add = a + b;
+        int sub = a - b;
+        int mul = a * b;
+        int div = (b != 0) ? (a / b) : 0;
+
+        // Step 4: Output results
+        System.out.println(&quot;Add: &quot; + add);
+        System.out.println(&quot;Subtract: &quot; + sub);
+        System.out.println(&quot;Multiply: &quot; + mul);
+        System.out.println(&quot;Divide: &quot; + div);
+    }
+}</code></pre></div></details><hr id="39315921-b68f-8084-8216-c77e2191b43a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c3-945f-dfef595ffb39" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-80f1-9347-c20964829506" class="" dir="auto">What it does</h2><p id="39315921-b68f-8051-80c6-f4113dee080a" class="" dir="auto">User guesses a random number 1–10.</p><h2 id="39315921-b68f-80a9-9b1e-ec5d038e79a7" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8079-b862-c8a79bf2d0f3" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-801c-91ae-e81e1fae1671" class="numbered-list" start="2" dir="auto"><li>Ask user for guess</li></ol><ol type="1" id="39315921-b68f-803f-a028-c990a4858336" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80fc-8178-c3b79b960c6b" class="numbered-list" start="4" dir="auto"><li>Print result</li></ol><pre id="39315921-b68f-806b-a3ff-ed9394b49b84" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Scanner;
+import java.util.Random;
+
+public class GuessGame {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Random rand = new Random();
+
+        // Step 1: Generate random number
+        int secret = rand.nextInt(10) + 1;
+
+        // Step 2: Ask user for guess
+        System.out.print(&quot;Guess (1-10): &quot;);
+        int guess = sc.nextInt();
+
+        // Step 3: Compare values
+        if (guess == secret) {
+            System.out.println(&quot;Correct!&quot;);
+        } else {
+            System.out.println(&quot;Wrong! It was &quot; + secret);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-803a-8fc9-ce826b767de3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c4-a7f8-f6af55001f61" style="display:inline-block">Project 3: Login System</h1></summary><div class="indented"><h2 id="39315921-b68f-80cc-b759-c52f9cfadfcf" class="" dir="auto">What it does</h2><p id="39315921-b68f-8085-81b9-d0dedd28ce1d" class="" dir="auto">Checks username and password in CLI.</p><h2 id="39315921-b68f-80d1-baae-cb73b281575e" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80f2-8067-dcad69d78564" class="numbered-list" start="1" dir="auto"><li>Store correct credentials</li></ol><ol type="1" id="39315921-b68f-805a-8e65-f7e67b87e0e5" class="numbered-list" start="2" dir="auto"><li>Ask for username</li></ol><ol type="1" id="39315921-b68f-80cc-b248-dd5d4b0a3280" class="numbered-list" start="3" dir="auto"><li>Ask for password</li></ol><ol type="1" id="39315921-b68f-80bd-93a1-d7fa4b82f0b5" class="numbered-list" start="4" dir="auto"><li>Compare</li></ol><ol type="1" id="39315921-b68f-80f2-aa2c-ff035e9346f5" class="numbered-list" start="5" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-80a5-a36b-d3846e055603" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Scanner;
+
+public class Login {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Step 1: Stored credentials
+        String correctUser = &quot;admin&quot;;
+        String correctPass = &quot;1234&quot;;
+
+        // Step 2: Ask user input
+        System.out.print(&quot;Username: &quot;);
+        String user = sc.nextLine();
+
+        System.out.print(&quot;Password: &quot;);
+        String pass = sc.nextLine();
+
+        // Step 3: Compare
+        if (user.equals(correctUser) &amp;&amp; pass.equals(correctPass)) {
+            System.out.println(&quot;Access Granted&quot;);
+        } else {
+            System.out.println(&quot;Access Denied&quot;);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-80fc-91f2-fa45e71a119d" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800f-8a6e-dc4a51b582db" style="display:inline-block">Project 4: Grade Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-803f-b4c5-f041fe2f25c2" class="" dir="auto">What it does</h2><p id="39315921-b68f-8009-8172-f44973b7479a" class="" dir="auto">Turns numeric score into letter grade.</p><h2 id="39315921-b68f-8050-a6f4-f86d728e966f" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80dd-88ae-f14a6cdce50e" class="numbered-list" start="1" dir="auto"><li>Get score input</li></ol><ol type="1" id="39315921-b68f-80a1-a20a-d41d367a91b7" class="numbered-list" start="2" dir="auto"><li>Check ranges</li></ol><ol type="1" id="39315921-b68f-80ff-bd73-f87593386523" class="numbered-list" start="3" dir="auto"><li>Print grade</li></ol><pre id="39315921-b68f-8003-81be-cac148b28aa0" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Scanner;
+
+public class GradeCalc {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        // Step 1: Get score
+        System.out.print(&quot;Enter score: &quot;);
+        int score = sc.nextInt();
+
+        // Step 2: Determine grade
+        if (score &gt;= 90) {
+            System.out.println(&quot;A&quot;);
+        } else if (score &gt;= 80) {
+            System.out.println(&quot;B&quot;);
+        } else if (score &gt;= 70) {
+            System.out.println(&quot;C&quot;);
+        } else if (score &gt;= 60) {
+            System.out.println(&quot;D&quot;);
+        } else {
+            System.out.println(&quot;F&quot;);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-806a-8649-e02a1742394b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ae-bdb3-c8d1fb97f26b" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h2 id="39315921-b68f-8072-b847-db433de558c5" class="" dir="auto">What it does</h2><p id="39315921-b68f-805a-a915-c6af1503d21c" class="" dir="auto">Two players roll dice; highest wins.</p><h2 id="39315921-b68f-8096-b76b-d7195e01e940" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8054-950f-e086dae3db7c" class="numbered-list" start="1" dir="auto"><li>Create Random</li></ol><ol type="1" id="39315921-b68f-80ba-92dd-cb850e5c1923" class="numbered-list" start="2" dir="auto"><li>Generate rolls</li></ol><ol type="1" id="39315921-b68f-80ed-a75e-e8d103f1a7a1" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-809e-994e-db899f4e7b75" class="numbered-list" start="4" dir="auto"><li>Print winner</li></ol><pre id="39315921-b68f-8034-a3bd-ed1b4cc492e0" class="code code-wrap" data-notion-code-syntax="java"><code class="language-java" style="white-space:pre-wrap;word-break:break-all">import java.util.Random;
+
+public class DiceBattle {
+    public static void main(String[] args) {
+
+        Random rand = new Random();
+
+        // Step 1: Player 1 roll
+        int p1 = rand.nextInt(6) + 1;
+
+        // Step 2: Player 2 roll
+        int p2 = rand.nextInt(6) + 1;
+
+        // Step 3: Show rolls
+        System.out.println(&quot;P1: &quot; + p1);
+        System.out.println(&quot;P2: &quot; + p2);
+
+        // Step 4: Determine winner
+        if (p1 &gt; p2) {
+            System.out.println(&quot;Player 1 Wins!&quot;);
+        } else if (p2 &gt; p1) {
+            System.out.println(&quot;Player 2 Wins!&quot;);
+        } else {
+            System.out.println(&quot;Tie!&quot;);
+        }
+    }
+}</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

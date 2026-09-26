@@ -1,0 +1,1221 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/C# + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-8000-a373-c62ced388b73" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/C# + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-80c3-a1de-cf94aa1168bc" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b2-a184-fe7e0a6cf04f" style="display:inline-block">Key Concepts </h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8015-8ba9-fccfc730eae6" style="display:inline-block">Variables and Constants</h1></summary><div class="indented"><p id="39315921-b68f-80d2-91f9-d2eda11e6e69" class="" dir="auto">Q1: What is a variable?<br/>A: A variable is a named box that stores information your program can use or change.</p><p id="39315921-b68f-803a-abf0-fb82f70b745b" class="" dir="auto">Q2: When should I use a variable?<br/>A: Use a variable whenever a value might change while the program is running.</p><p id="39315921-b68f-80ff-bc61-ce165be3414e" class="" dir="auto">Q3: What is a constant?<br/>A: A constant is a value that cannot be changed after it is created.</p><p id="39315921-b68f-8084-ae11-cc42801cad45" class="" dir="auto">Q4: When should I use a constant instead of a variable?<br/>A: Use a constant for values that should always stay the same, like PI or the number of days in a week.</p><p id="39315921-b68f-803a-9ecd-fc6611c3fb00" class="" dir="auto">Q5: Why should I use meaningful variable names?<br/>A: Good names make your code much easier to read and understand.</p><p id="39315921-b68f-8019-9c95-de7382c53971" class="" dir="auto">Q6: How do I create a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="39315921-b68f-80bd-863a-c2cd64ff6588" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int age = 25;</code></pre><p id="39315921-b68f-80cf-ae41-d01e66659af6" class="" dir="auto">Q7: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-80e0-993a-ca445dcd3595" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const double Pi = 3.14159;</code></pre><p id="39315921-b68f-80ec-88a7-df62ab2bc357" class="" dir="auto">Q8: Can I change a variable later?<br/>A: Yes.</p><pre id="39315921-b68f-802a-a529-dbc5aa3ea57f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int score = 10;
+score = 20;</code></pre><p id="39315921-b68f-80ba-8d38-e9dcdcc29f4b" class="" dir="auto">Q9: Can I change a constant later?<br/>A: No. Constants cannot be modified.</p><p id="39315921-b68f-800d-ba59-d1593a35cc09" class="" dir="auto">Q10: Why are variables one of the most important parts of programming?<br/>A: They let your program remember information while it runs.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c4-8d1b-e376644539ed" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8099-9ce9-c88d8cea7a70" class="" dir="auto">Q11: What is a data type?<br/>A: A data type tells C# what kind of information is being stored.</p><p id="39315921-b68f-801d-b658-d29f87e98301" class="" dir="auto">Q12: What is an int?<br/>A: An int stores whole numbers.</p><pre id="39315921-b68f-80ef-adc1-f9d8f41e0718" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int apples = 10;</code></pre><p id="39315921-b68f-80a7-8060-d16603602bf2" class="" dir="auto">Q13: What is a double?<br/>A: A double stores numbers with decimal places.</p><pre id="39315921-b68f-8069-8436-cf7ba0f1d0f6" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double price = 4.99;</code></pre><p id="39315921-b68f-80a1-a337-d02e4560b32e" class="" dir="auto">Q14: What is a string?<br/>A: A string stores text.</p><pre id="39315921-b68f-804b-b3da-ca1d8225883f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string name = &quot;Alice&quot;;</code></pre><p id="39315921-b68f-8042-9daa-d5236d22af36" class="" dir="auto">Q15: What is a char?<br/>A: A char stores a single character.</p><pre id="39315921-b68f-8023-a27b-e5118d449d11" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-80b7-8f42-d355d6f688f3" class="" dir="auto">Q16: What is a bool?<br/>A: A bool stores either true or false.</p><pre id="39315921-b68f-80eb-9ea2-f15cd9f9448a" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool isRunning = true;</code></pre><p id="39315921-b68f-80b6-aff0-c2b9684ed6b3" class="" dir="auto">Q17: When should I use an int instead of a double?<br/>A: Use int for whole numbers and double for decimal numbers.</p><p id="39315921-b68f-800c-be4b-d708af777517" class="" dir="auto">Q18: Why should I pick the correct data type?<br/>A: It helps prevent bugs and makes your code more efficient.</p><p id="39315921-b68f-8064-956c-ccb44aa15bf0" class="" dir="auto">Q19: Can one variable hold different data types?<br/>A: No. A variable has one data type.</p><p id="39315921-b68f-80f6-8479-db6ffec45a55" class="" dir="auto">Q20: How do I know which data type to choose?<br/>A: Ask yourself what kind of data you&#x27;re storing: number, text, letter, or true/false.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b0-bb8e-dd761ff961a8" style="display:inline-block">Input and Output</h1></summary><div class="indented"><p id="39315921-b68f-80ca-918d-e0f5af0be4de" class="" dir="auto">Q21: What is output?<br/>A: Output is information the program shows to the user.</p><p id="39315921-b68f-803a-abc0-e82ee7bebacf" class="" dir="auto">Q22: How do I display text?<br/>A:</p><pre id="39315921-b68f-8003-8b88-d3cf2e6a7589" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Hello!&quot;);</code></pre><p id="39315921-b68f-8069-b3d1-f0da80452a8f" class="" dir="auto">Q23: What is input?<br/>A: Input is information the user gives to the program.</p><p id="39315921-b68f-80af-ab97-e08dc5902573" class="" dir="auto">Q24: How do I read user input?<br/>A:</p><pre id="39315921-b68f-8008-a529-e6b954c99c77" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string name = Console.ReadLine();</code></pre><p id="39315921-b68f-8006-899e-cc1062a85606" class="" dir="auto">Q25: Why does ReadLine() return a string?<br/>A: Everything typed on the keyboard starts as text.</p><p id="39315921-b68f-8055-8b6e-e34ed82eea5b" class="" dir="auto">Q26: How do I convert text into a number?<br/>A:</p><pre id="39315921-b68f-8078-81f5-f05a6aca8d0b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int age = int.Parse(Console.ReadLine());</code></pre><p id="39315921-b68f-8001-8243-cd5af511297d" class="" dir="auto">Q27: When should I use Console.Write()?<br/>A: Use it when you do not want the cursor to move to a new line.</p><p id="39315921-b68f-801a-817d-f9542b86ab80" class="" dir="auto">Q28: When should I use Console.WriteLine()?<br/>A: Use it when you want the next output to appear on a new line.</p><p id="39315921-b68f-80cd-8fe2-e0565dd4c7b4" class="" dir="auto">Q29: Why should I ask users for input?<br/>A: It makes your program interactive instead of always doing the same thing.</p><p id="39315921-b68f-805d-8b67-f0d1abb136f8" class="" dir="auto">Q30: What happens if the user enters the wrong type of data?<br/>A: The program may crash unless you handle the error.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80c2-b03a-fb7d749ab7bc" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-805b-88cf-c8c7062e7c4d" class="" dir="auto">Q31: What math operators does C# have?<br/>A: +, -, *, /, and %.</p><p id="39315921-b68f-806c-8d64-e34227b4ee70" class="" dir="auto">Q32: How do I add numbers?<br/>A:</p><pre id="39315921-b68f-806a-a34a-cbebe8254162" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int total = 5 + 3;</code></pre><p id="39315921-b68f-80b8-bba2-cf85bdab29cb" class="" dir="auto">Q33: How do I subtract numbers?<br/>A:</p><pre id="39315921-b68f-8046-8e9c-d67e9267711f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = 10 - 4;</code></pre><p id="39315921-b68f-803d-aaac-e66199a9785b" class="" dir="auto">Q34: How do I multiply numbers?<br/>A:</p><pre id="39315921-b68f-8006-aeaf-f1ad638b8bdb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int area = 5 * 6;</code></pre><p id="39315921-b68f-80f7-b2ed-d116b5307e67" class="" dir="auto">Q35: How do I divide numbers?<br/>A:</p><pre id="39315921-b68f-809f-91cf-e9bf5f8cbdea" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int answer = 20 / 4;</code></pre><p id="39315921-b68f-8097-a1d6-eab0ff0e4ac3" class="" dir="auto">Q36: What does the % operator do?<br/>A: It gives the remainder after division.</p><pre id="39315921-b68f-8011-a95d-ea5f4a279d7e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">7 % 2</code></pre><p id="39315921-b68f-800d-8470-dcd34856d481" class="" dir="auto">Result:</p><pre id="39315921-b68f-8063-836f-f8803b38e51b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">1</code></pre><p id="39315921-b68f-80bd-b326-c0926e347508" class="" dir="auto">Q37: When should I use the remainder operator?<br/>A: Use it to check if a number is even, odd, or evenly divisible.</p><p id="39315921-b68f-800c-952b-cb1adfff666b" class="" dir="auto">Q38: Why should I store math results in variables?<br/>A: So you can reuse the answer later.</p><p id="39315921-b68f-80cc-80f4-ca4cdb396d15" class="" dir="auto">Q39: Can I do math with variables?<br/>A: Yes.</p><pre id="39315921-b68f-807f-a10c-c95685a9f105" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int total = apples + oranges;</code></pre><p id="39315921-b68f-8032-a6cd-e4b9d5f1d6c8" class="" dir="auto">Q40: Why is math important in programming?<br/>A: Many programs calculate values, measurements, scores, money, and statistics.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e5-a71c-df8506e625db" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8023-8b8a-efffe3d94ecd" class="" dir="auto">Q41: What is an if statement?<br/>A: An if statement lets the program make decisions.</p><p id="39315921-b68f-80d6-b169-e4c195edd8d2" class="" dir="auto">Q42: When should I use an if statement?<br/>A: Use it whenever something should only happen if a condition is true.</p><p id="39315921-b68f-80b4-a63f-dbf1c110fd22" class="" dir="auto">Q43: What is an else statement?<br/>A: Else runs when the if condition is false.</p><p id="39315921-b68f-8049-9ee2-fe25aeb7e27c" class="" dir="auto">Q44: How do I write an if statement?<br/>A:</p><pre id="39315921-b68f-80c6-91c4-f8f1e7ba8750" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18)
+{
+    Console.WriteLine(&quot;Adult&quot;);
+}</code></pre><p id="39315921-b68f-804e-ba25-d370edaf203a" class="" dir="auto">Q45: How do I use if and else together?<br/>A:</p><pre id="39315921-b68f-80e5-b00e-e1462a2713ca" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 60)
+{
+    Console.WriteLine(&quot;Pass&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-8090-a165-f5009354ede6" class="" dir="auto">Q46: What is a condition?<br/>A: A condition is a question that is either true or false.</p><p id="39315921-b68f-80af-8b3c-cf29b93e1df3" class="" dir="auto">Q47: What comparison operators are commonly used?<br/>A:</p><pre id="39315921-b68f-8031-81ad-ec4a9b7211bd" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">==
+!=
+&lt;
+&gt;
+&lt;=
+&gt;=</code></pre><p id="39315921-b68f-80bb-a35d-e8017167ca7d" class="" dir="auto">Q48: Why are conditionals important?<br/>A: They let your program react differently in different situations.</p><p id="39315921-b68f-8010-99ae-f8e2cfaa35ce" class="" dir="auto">Q49: Can I have more than one condition?<br/>A: Yes.</p><pre id="39315921-b68f-8095-9370-e2f6045686b7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18 &amp;&amp; hasID)</code></pre><p id="39315921-b68f-804b-8b75-ee747685b001" class="" dir="auto">Q50: What is the easiest way to think about an if statement?<br/>A: Think of it like asking a yes-or-no question before doing something.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8093-850e-cd03209cabd6" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-80a3-9847-e95e1c7f6b79" class="" dir="auto">Q51: What is a random number?<br/>A: It is a number chosen unpredictably from a range.</p><p id="39315921-b68f-8062-9227-c7769d57e033" class="" dir="auto">Q52: When should I use random numbers?<br/>A: Use them for games, simulations, dice rolls, or random choices.</p><p id="39315921-b68f-80a9-833b-c42cfcb20445" class="" dir="auto">Q53: How do I create a Random object?<br/>A:</p><pre id="39315921-b68f-80c0-93a9-c842b263fde6" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random random = new Random();</code></pre><p id="39315921-b68f-80b2-b146-dd12bfe7d149" class="" dir="auto">Q54: How do I generate a random number?<br/>A:</p><pre id="39315921-b68f-8002-a44d-f0f45dea1eec" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int number = random.Next(1, 11);</code></pre><p id="39315921-b68f-807b-b070-f9daf0afea10" class="" dir="auto">Q55: What does Next(1, 11) mean?<br/>A: It generates numbers from 1 through 10.</p><p id="39315921-b68f-8004-b0b4-e63b72971091" class="" dir="auto">Q56: Why do I create the Random object only once?<br/>A: Reusing one Random object gives better random results.</p><p id="39315921-b68f-80f0-b0c0-ebbc8307f7b9" class="" dir="auto">Q57: Can I generate random decimal numbers?<br/>A: Yes.</p><pre id="39315921-b68f-8077-99d6-c85933350951" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double value = random.NextDouble();</code></pre><p id="39315921-b68f-801f-be1d-f60f6bd8fc0b" class="" dir="auto">Q58: How can I simulate rolling a die?<br/>A:</p><pre id="39315921-b68f-801e-84b6-c532e223aafd" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int roll = random.Next(1, 7);</code></pre><p id="39315921-b68f-80a9-906e-e23f088eacc9" class="" dir="auto">Q59: How can I randomly choose between true and false?<br/>A:</p><pre id="39315921-b68f-8039-bdd7-ea008c2d9114" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool result = random.Next(2) == 0;</code></pre><p id="39315921-b68f-80c0-bc1c-f3069e7ae914" class="" dir="auto">Q60: Why are random numbers useful?<br/>A: They make programs less predictable and more interesting by creating different results each time.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800d-97ca-f057983a5e10" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b1-ac58-e2f653a158fb" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-809f-9356-e9013ea1d0c0" class="" dir="auto">Q1: I want to store a player&#x27;s name in my program.<br/>A:</p><pre id="39315921-b68f-80cd-9c0b-e3968f40bc7b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string playerName = &quot;John&quot;;</code></pre><p id="39315921-b68f-805f-930d-e27a7c8f6175" class="" dir="auto">Q2: I want to store a score that will change during the game.<br/>A:</p><pre id="39315921-b68f-80f3-800c-d06bfe851f5a" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int score = 0;</code></pre><p id="39315921-b68f-805e-a538-e4fa924e8907" class="" dir="auto">Q3: I want to store the value of PI that should never change.<br/>A:</p><pre id="39315921-b68f-80f8-a055-e61f573bdad5" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const double PI = 3.14159;</code></pre><p id="39315921-b68f-8010-b7cd-d2291ed9e929" class="" dir="auto">Q4: I want to store whether a player is alive or dead.<br/>A:</p><pre id="39315921-b68f-80b5-975d-c78904fe3f78" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool isAlive = true;</code></pre><p id="39315921-b68f-80a7-bc3e-e8c4bc888374" class="" dir="auto">Q5: I want to store a fixed game title.<br/>A:</p><pre id="39315921-b68f-8036-9ef7-ce4bb1ae70cc" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">const string gameTitle = &quot;Space Battle&quot;;</code></pre><p id="39315921-b68f-8044-8e02-daa7d7bdf6de" class="" dir="auto">Q6: I want to increase a score by 10.<br/>A:</p><pre id="39315921-b68f-804d-ab7b-f0205b2a2c83" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score += 10;</code></pre><p id="39315921-b68f-8029-ba67-ee76ed8999ac" class="" dir="auto">Q7: I want to reset a score to zero.<br/>A:</p><pre id="39315921-b68f-8085-b371-c12e7c9aaf1c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score = 0;</code></pre><p id="39315921-b68f-80b2-af89-ed0e8327ac90" class="" dir="auto">Q8: I want to store a character grade.<br/>A:</p><pre id="39315921-b68f-80c8-b192-d21ea30ce6ea" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-8069-b056-c2b0a480a63c" class="" dir="auto">Q9: I want to store a decimal health value.<br/>A:</p><pre id="39315921-b68f-806d-ac4d-cdf39eeeca38" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double health = 75.5;</code></pre><p id="39315921-b68f-80fa-9dfa-cdcc5d1b2ccb" class="" dir="auto">Q10: I want to update a player&#x27;s name.<br/>A:</p><pre id="39315921-b68f-80fe-8b13-e528e5dd4a0c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">playerName = &quot;Alex&quot;;</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8095-b682-deaad89b9b77" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-80c7-a007-d6038ae2d057" class="" dir="auto">Q11: I want to store whole numbers only.<br/>A:</p><pre id="39315921-b68f-803a-baf0-e05a2c10dd7e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int level = 1;</code></pre><p id="39315921-b68f-80a0-9f7b-f7f0e4c4ba68" class="" dir="auto">Q12: I want to store text input from a user.<br/>A:</p><pre id="39315921-b68f-80a5-abeb-d85832662179" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string input = Console.ReadLine();</code></pre><p id="39315921-b68f-809a-9e65-c0fb1bb63b9f" class="" dir="auto">Q13: I want to store a yes/no value.<br/>A:</p><pre id="39315921-b68f-80d4-a4ee-c652561ae673" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool hasKey = false;</code></pre><p id="39315921-b68f-8068-aab5-df510dae1c21" class="" dir="auto">Q14: I want to store a single letter.<br/>A:</p><pre id="39315921-b68f-80c0-ab72-e715e2070cfc" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">char initial = &#x27;B&#x27;;</code></pre><p id="39315921-b68f-80bc-874c-d57618501044" class="" dir="auto">Q15: I want to store a precise price value.<br/>A:</p><pre id="39315921-b68f-805a-9139-eb8e566d5044" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double price = 19.99;</code></pre><p id="39315921-b68f-80f0-bb14-e6b092512bae" class="" dir="auto">Q16: I want to convert string input into an integer.<br/>A:</p><pre id="39315921-b68f-80fa-bd7e-daae47ab18ee" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int age = int.Parse(Console.ReadLine());</code></pre><p id="39315921-b68f-8060-a4eb-ffd5613b0ec7" class="" dir="auto">Q17: I want to store a large number safely.<br/>A:</p><pre id="39315921-b68f-80cd-96a0-d232e7b71786" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">long distance = 1000000000;</code></pre><p id="39315921-b68f-807d-933a-e798640931cc" class="" dir="auto">Q18: I want to store a floating-point calculation result.<br/>A:</p><pre id="39315921-b68f-80b4-9a77-fd745588c174" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">float temperature = 36.6f;</code></pre><p id="39315921-b68f-8087-a258-d157c6094237" class="" dir="auto">Q19: I want to store multiple words in a variable.<br/>A:</p><pre id="39315921-b68f-80c8-aaa9-fff89abd64cd" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string message = &quot;Hello World&quot;;</code></pre><p id="39315921-b68f-80ca-9f43-c89d3a5ba144" class="" dir="auto">Q20: I want to store whether a door is open or closed.<br/>A:</p><pre id="39315921-b68f-8055-bb13-eb73c979bec7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">bool isOpen = true;</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8004-baae-de53b2ac219a" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-80e0-8ac3-e1eff7df3bb7" class="" dir="auto">Q21: I want to print a message to the console.<br/>A:</p><pre id="39315921-b68f-8076-849b-d5bc26d49feb" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Hello Player&quot;);</code></pre><p id="39315921-b68f-8097-ae63-f81608962d38" class="" dir="auto">Q22: I want to print without going to a new line.<br/>A:</p><pre id="39315921-b68f-80c3-8c1e-e8fda61d47b1" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.Write(&quot;Enter name: &quot;);</code></pre><p id="39315921-b68f-8041-a8c8-cdad9cb8e4af" class="" dir="auto">Q23: I want to ask the user for their name.<br/>A:</p><pre id="39315921-b68f-80fd-9731-c3b736d19468" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string name = Console.ReadLine();</code></pre><p id="39315921-b68f-80f2-b85e-ed89d1f89c69" class="" dir="auto">Q24: I want to display the user&#x27;s name.<br/>A:</p><pre id="39315921-b68f-8048-979e-e0295122c6ea" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(name);</code></pre><p id="39315921-b68f-804c-b843-cba4226cc478" class="" dir="auto">Q25: I want to combine text and variables in output.<br/>A:</p><pre id="39315921-b68f-806e-954d-ef2a1372addc" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Hello &quot; + name);</code></pre><p id="39315921-b68f-804e-b35f-dd008efe93ac" class="" dir="auto">Q26: I want to convert input to a number.<br/>A:</p><pre id="39315921-b68f-80ed-a800-d04fa4943919" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int number = int.Parse(Console.ReadLine());</code></pre><p id="39315921-b68f-80a0-a04c-e4e18af5f9d1" class="" dir="auto">Q27: I want to show a score to the user.<br/>A:</p><pre id="39315921-b68f-8081-afeb-f5c299f70d7d" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Score: &quot; + score);</code></pre><p id="39315921-b68f-8029-b31f-d3a1c20f5ea2" class="" dir="auto">Q28: I want to pause the program until input is entered.<br/>A:</p><pre id="39315921-b68f-804c-9a4f-cf176994c0ff" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.ReadLine();</code></pre><p id="39315921-b68f-808d-b784-dc22579dcc68" class="" dir="auto">Q29: I want to display multiple lines of text.<br/>A:</p><pre id="39315921-b68f-8075-b020-da073dc9934c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.WriteLine(&quot;Line 1\nLine 2&quot;);</code></pre><p id="39315921-b68f-8093-9fd9-f3c607fd9a64" class="" dir="auto">Q30: I want to clear the console screen.<br/>A:</p><pre id="39315921-b68f-8019-9337-f9775fc3457e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Console.Clear();</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b4-b911-eb330a14bbe6" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-804e-8473-cf3ce6783950" class="" dir="auto">Q31: I want to add two numbers.<br/>A:</p><pre id="39315921-b68f-80f2-a5c9-cfe320555611" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a + b;</code></pre><p id="39315921-b68f-8078-b431-fc81eabd475d" class="" dir="auto">Q32: I want to subtract two numbers.<br/>A:</p><pre id="39315921-b68f-809c-913e-eb0cb32f4391" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-80b0-8ba6-dfd0c59a479f" class="" dir="auto">Q33: I want to multiply two numbers.<br/>A:</p><pre id="39315921-b68f-80d1-bdae-fa122a25ade3" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-8022-8150-fba2bc0657d4" class="" dir="auto">Q34: I want to divide two numbers.<br/>A:</p><pre id="39315921-b68f-8029-97cc-efa8104f90ee" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int result = a / b;</code></pre><p id="39315921-b68f-8075-9a28-ff9222705195" class="" dir="auto">Q35: I want to find remainder of division.<br/>A:</p><pre id="39315921-b68f-80ad-8e89-c40bf303d90e" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">int remainder = a % b;</code></pre><p id="39315921-b68f-8073-a695-f736bd662c4d" class="" dir="auto">Q36: I want to increase a variable by 1.<br/>A:</p><pre id="39315921-b68f-80f7-abe7-c3d97f1df73c" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">count++;</code></pre><p id="39315921-b68f-803c-912f-f34eb1070511" class="" dir="auto">Q37: I want to decrease a variable by 1.<br/>A:</p><pre id="39315921-b68f-80b3-b995-cec21e2fcc32" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">count--;</code></pre><p id="39315921-b68f-802b-bbf7-cebb8b1196ce" class="" dir="auto">Q38: I want to add 5 to a score.<br/>A:</p><pre id="39315921-b68f-80cc-bc44-d3b68b0f38de" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">score += 5;</code></pre><p id="39315921-b68f-8069-815a-f2eac20db879" class="" dir="auto">Q39: I want to double a value.<br/>A:</p><pre id="39315921-b68f-80b7-992e-c8f7b4576bfe" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">value *= 2;</code></pre><p id="39315921-b68f-8020-98df-e6c977e0e2b8" class="" dir="auto">Q40: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-80b3-9a42-d96b8d23ce38" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">double avg = (a + b) / 2.0;</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ed-b4f8-f53898137b4b" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8071-84bf-f147c6f566c7" class="" dir="auto">Q41: I want to check if a player is old enough.<br/>A:</p><pre id="39315921-b68f-80e3-8f0e-dc5d77724431" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18)
+{
+    Console.WriteLine(&quot;Allowed&quot;);
+}</code></pre><p id="39315921-b68f-8051-ad65-f1870573db24" class="" dir="auto">Q42: I want to block underage users.<br/>A:</p><pre id="39315921-b68f-80ec-a5fc-ee07cee82176" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (age &lt; 18)
+{
+    Console.WriteLine(&quot;Blocked&quot;);
+}</code></pre><p id="39315921-b68f-8023-94b5-f34cc970a083" class="" dir="auto">Q43: I want to handle both pass and fail.<br/>A:</p><pre id="39315921-b68f-8081-b02a-ddce07eed1b2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50)
+{
+    Console.WriteLine(&quot;Pass&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-80ce-bd67-c966e2382487" class="" dir="auto">Q44: I want to check if a number is equal to 10.<br/>A:</p><pre id="39315921-b68f-80c8-810c-e63a99866693" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (number == 10)
+{
+    Console.WriteLine(&quot;Match&quot;);
+}</code></pre><p id="39315921-b68f-8021-9f09-d257f7fa7634" class="" dir="auto">Q45: I want to check if two conditions are true.<br/>A:</p><pre id="39315921-b68f-80f2-85a8-d1cab3002aa1" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (hasKey &amp;&amp; doorLocked)
+{
+    Console.WriteLine(&quot;Open door&quot;);
+}</code></pre><p id="39315921-b68f-802b-9b86-ec491a47a4f2" class="" dir="auto">Q46: I want to check if either condition is true.<br/>A:</p><pre id="39315921-b68f-80f9-9162-f4f8667d4c12" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (isAdmin || isModerator)
+{
+    Console.WriteLine(&quot;Access granted&quot;);
+}</code></pre><p id="39315921-b68f-80d2-a7b0-d253b85cb430" class="" dir="auto">Q47: I want to check if a number is not equal to 0.<br/>A:</p><pre id="39315921-b68f-8021-a812-cfd46855e20b" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (number != 0)
+{
+    Console.WriteLine(&quot;Valid&quot;);
+}</code></pre><p id="39315921-b68f-8036-bf39-e7f133be4e3c" class="" dir="auto">Q48: I want to handle multiple conditions.<br/>A:</p><pre id="39315921-b68f-8083-b096-d0ee08c91714" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 80)
+{
+    Console.WriteLine(&quot;A&quot;);
+}
+else if (score &gt; 50)
+{
+    Console.WriteLine(&quot;B&quot;);
+}
+else
+{
+    Console.WriteLine(&quot;C&quot;);
+}</code></pre><p id="39315921-b68f-8060-8b13-db18a09808a6" class="" dir="auto">Q49: I want to check if a user is logged in.<br/>A:</p><pre id="39315921-b68f-8031-be1c-e90d41a04a96" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (isLoggedIn)
+{
+    Console.WriteLine(&quot;Welcome&quot;);
+}</code></pre><p id="39315921-b68f-80ea-9936-c242afbe45b7" class="" dir="auto">Q50: I want to stop invalid input.<br/>A:</p><pre id="39315921-b68f-8027-8521-ec596eedde0f" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">if (input == &quot;&quot;)
+{
+    Console.WriteLine(&quot;Invalid input&quot;);
+}</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8037-84d9-f2c781ffb0a5" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8007-95a8-f008c7d78689" class="" dir="auto">Q51: I want to generate a random number between 1 and 10.<br/>A:</p><pre id="39315921-b68f-8074-a130-e5ce3f0c99c5" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int number = rand.Next(1, 11);</code></pre><p id="39315921-b68f-80f3-8d95-ca1e6b76df14" class="" dir="auto">Q52: I want to simulate a dice roll.<br/>A:</p><pre id="39315921-b68f-805e-a8d8-f123ca03938a" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int roll = rand.Next(1, 7);</code></pre><p id="39315921-b68f-8057-886b-e9172d0465b0" class="" dir="auto">Q53: I want to randomly pick true or false.<br/>A:</p><pre id="39315921-b68f-80ca-961e-e35969ffa878" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+bool result = rand.Next(2) == 0;</code></pre><p id="39315921-b68f-8039-a3ff-e95bee7928c7" class="" dir="auto">Q54: I want to generate a random decimal.<br/>A:</p><pre id="39315921-b68f-8041-a005-e327d6e15279" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+double value = rand.NextDouble();</code></pre><p id="39315921-b68f-805d-981a-cd495f1aa120" class="" dir="auto">Q55: I want to randomly pick a number between 50 and 100.<br/>A:</p><pre id="39315921-b68f-8047-b0ec-f6aaf6787f72" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int value = rand.Next(50, 101);</code></pre><p id="39315921-b68f-8053-b47d-d43f04356296" class="" dir="auto">Q56: I want to simulate a coin flip.<br/>A:</p><pre id="39315921-b68f-80d1-ac6a-d0a3f393cdd2" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+string flip = rand.Next(2) == 0 ? &quot;Heads&quot; : &quot;Tails&quot;;</code></pre><p id="39315921-b68f-800f-8424-decb0efcbd6b" class="" dir="auto">Q57: I want to randomly increase score by 1 or 2.<br/>A:</p><pre id="39315921-b68f-806c-aa0a-e931cc5f6076" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+score += rand.Next(1, 3);</code></pre><p id="39315921-b68f-80b0-b403-cbc5ebfc1633" class="" dir="auto">Q58: I want to randomly choose a name.<br/>A:</p><pre id="39315921-b68f-80ae-966a-d9dc3e9935f7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">string[] names = { &quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot; };
+Random rand = new Random();
+string pick = names[rand.Next(names.Length)];</code></pre><p id="39315921-b68f-80e1-a0f6-c4db1f61a113" class="" dir="auto">Q59: I want to generate a random damage value.<br/>A:</p><pre id="39315921-b68f-80dd-b9d0-ee1e4f513493" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+int damage = rand.Next(5, 16);</code></pre><p id="39315921-b68f-8071-a0a1-d9655ceb2676" class="" dir="auto">Q60: I want to randomly decide if an attack hits.<br/>A:</p><pre id="39315921-b68f-807e-acca-d9802a7fd038" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">Random rand = new Random();
+bool hit = rand.Next(100) &lt; 75;</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8090-bb60-d320ccd45d22" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-80a1-b5b1-c2d42d009359" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-80ff-9b65-ee34e6e012b3" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-8042-ab21-ea66cd51d2e1" dir="ltr"><th id="&lt;\h&lt;" class="simple-table-header-color simple-table-header">Text shape</th><th id="pQob" class="simple-table-header-color simple-table-header">Actual flowchart shape</th><th id="N@yE" class="simple-table-header-color simple-table-header">Purpose</th></tr></thead><tbody><tr id="3e315921-b68f-8025-884d-f73c7b47377e" dir="ltr"><td id="&lt;\h&lt;" class=""><code>([ START / END ])</code></td><td id="pQob" class=""><strong>Oval / Terminator</strong></td><td id="N@yE" class="">Beginning or ending</td></tr><tr id="3e315921-b68f-806f-8118-f87c92008343" dir="ltr"><td id="&lt;\h&lt;" class=""><code>[ Process ]</code></td><td id="pQob" class=""><strong>Rectangle</strong></td><td id="N@yE" class="">Calculation, assignment, setup</td></tr><tr id="3e315921-b68f-80bd-a3ac-fc2fa1809f93" dir="ltr"><td id="&lt;\h&lt;" class=""><code>[/ Input /]</code></td><td id="pQob" class=""><strong>Parallelogram</strong></td><td id="N@yE" class="">User input or displayed output</td></tr><tr id="3e315921-b68f-80d1-9f99-f2089b41d445" dir="ltr"><td id="&lt;\h&lt;" class=""><code>{ Decision? }</code></td><td id="pQob" class=""><strong>Diamond</strong></td><td id="N@yE" class="">Condition / branching</td></tr><tr id="3e315921-b68f-80c7-87d4-d685374843b3" dir="ltr"><td id="&lt;\h&lt;" class=""><code>↓</code></td><td id="pQob" class=""><strong>Arrow</strong></td><td id="N@yE" class="">Direction of execution</td></tr></tbody></table><hr id="3e315921-b68f-801c-89f5-d7abc1497267" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80e2-9551-ffc5d64cc038" style="display:inline-block">Project 1: Simple CLI Calculator</h1></summary><div class="indented"><h3 id="3e315921-b68f-807d-8675-e1efe1fc5811" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80ff-9b06-cadf47f95fe2" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [/ Ask for first number /]
+                  |
+                  ↓
+       [/ Read first number /]
+                  |
+                  ↓
+       [ Convert input to integer ]
+                  |
+                  ↓
+       [/ Ask for second number /]
+                  |
+                  ↓
+       [/ Read second number /]
+                  |
+                  ↓
+       [ Convert input to integer ]
+                  |
+                  ↓
+       [ Calculate addition
+         add = num1 + num2 ]
+                  |
+                  ↓
+       [ Calculate subtraction
+         subtract = num1 - num2 ]
+                  |
+                  ↓
+       [ Calculate multiplication
+         multiply = num1 * num2 ]
+                  |
+                  ↓
+       [ Calculate division
+         divide = num1 / num2 ]
+                  |
+                  ↓
+       [/ Display addition result /]
+                  |
+                  ↓
+       [/ Display subtraction result /]
+                  |
+                  ↓
+       [/ Display multiplication result /]
+                  |
+                  ↓
+       [/ Display division result /]
+                  |
+                  ↓
+             ([ END ])</code></pre><h3 id="3e315921-b68f-808e-84e1-d8051bd1203d" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80e8-9782-f787d33a415d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Start → <strong>Terminator</strong></li></ul><ul id="3e315921-b68f-8020-970b-de2971af406b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for number → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80fb-846f-f25f34620d89" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read input → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8044-8f86-d6e6319a7bc1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert to integer → <strong>Process</strong></li></ul><ul id="3e315921-b68f-804e-bef4-e7acefc60f35" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Calculate operations → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8030-8948-e7d450fa1ae0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display results → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80c0-b325-ebe1277e44d5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><p id="3e315921-b68f-804c-96cd-dcdeaecdaaff" class="" dir="auto"><strong>Important:</strong> The actual C# code does not separately &quot;convert&quot; the value after reading it—the <code>int.Parse()</code> happens as part of the input statement. The separate conversion box is useful for teaching the underlying logic.</p></div></details><hr id="3e315921-b68f-8069-923b-c6918c4f2bab" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8039-ac42-ec4ce177948f" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-8000-8bfd-f55f7dacdd8e" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-809c-a1e8-edfd42e7ddd6" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Random generator ]
+                  |
+                  ↓
+       [ Generate secret number
+             between 1-10 ]
+                  |
+                  ↓
+       [/ Ask user for guess /]
+                  |
+                  ↓
+       [/ Read user&#x27;s guess /]
+                  |
+                  ↓
+       [ Convert guess to integer ]
+                  |
+                  ↓
+          { Guess == Secret? }
+             /           \
+           YES            NO
+            |              |
+            ↓              ↓
+   [/ Display &quot;Correct!&quot; /] [/ Display &quot;Wrong!&quot; /]
+            |              |
+            |              ↓
+            |       [/ Display secret number /]
+            |              |
+            └───────┬──────┘
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-80f9-b42d-ee75d05e06be" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8040-96f0-f3bf85a06b4f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create <code>Random</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8046-be17-d31b3b939d78" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate secret → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80f9-be1a-f2929d700ac0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80e7-992f-d9e6e6c40637" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert guess → <strong>Process</strong></li></ul><ul id="3e315921-b68f-804f-ad0e-c0c92c2b407a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare values → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80f5-8618-cde3e7fbefe3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80fa-8f97-c8634cc5dd70" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-801f-a30d-da2b0fbc4f2a" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-8038-8fbc-dfd67c1c38da" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">              Guess == Secret?
+                 /       \
+              YES         NO
+               ↓           ↓
+            Correct       Wrong</code></pre><p id="3e315921-b68f-807e-b3a8-eeb876c19cfc" class="" dir="auto">This is your basic <strong>if/else</strong> flow.</p></div></details><hr id="3e315921-b68f-80db-81fe-c2dd99ee2c05" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ea-b8c1-ef767cd3cced" style="display:inline-block">Project 3: Login Check System</h1></summary><div class="indented"><h3 id="3e315921-b68f-809c-8278-cedc941415e0" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80b8-b627-d7c3f92a7ed7" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Store correct username
+         and correct password ]
+                  |
+                  ↓
+       [/ Ask for username /]
+                  |
+                  ↓
+       [/ Read username /]
+                  |
+                  ↓
+       [/ Ask for password /]
+                  |
+                  ↓
+       [/ Read password /]
+                  |
+                  ↓
+       { Username correct
+         AND
+         Password correct? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+ [/ Display &quot;Access     [/ Display &quot;Access
+       Granted&quot; /]            Denied&quot; /]
+            |             |
+            └──────┬──────┘
+                   ↓
+               ([ END ])</code></pre><h3 id="3e315921-b68f-8054-b8be-d1270ea9dd90" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80ab-959b-c8b8f2b08f9d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store credentials → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80c1-902a-d6ab6050c892" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read username → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80bd-a68d-ddb273e4d879" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask/read password → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-805a-859d-dd43c87a7f94" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Check credentials → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80b6-9956-f8d1c83ec6cc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display access result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80af-9851-e553bef2f908" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-809c-9797-eecea3e58a82" class="" dir="auto">Core logic</h3><p id="3e315921-b68f-80a1-b565-d8485a8c34f6" class="" dir="auto">The diamond represents <strong>two conditions combined with </strong><code><strong>&amp;&amp;</strong></code>:</p><pre id="3e315921-b68f-8078-aeac-e6e97fee5661" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">user == correctUser
+        AND
+pass == correctPass
+        ↓
+     Decision</code></pre><p id="3e315921-b68f-80f4-aad5-f66bf0b56dfe" class="" dir="auto">Both must be true to reach <strong>Access Granted</strong>.</p></div></details><hr id="3e315921-b68f-8042-adcc-fa06934156f3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-808d-8395-e3de4ddf6082" style="display:inline-block">Project 4: Simple Grade Calculator</h1></summary><div class="indented"><p id="3e315921-b68f-8038-86c3-de7455259344" class="" dir="auto">This one is the most useful example for teaching <strong>else-if chains</strong>.</p><h3 id="3e315921-b68f-802e-b317-ce375108a94f" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80fb-9109-fdcccf0eabc8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+          [/ Ask for score /]
+                  |
+                  ↓
+          [/ Read score /]
+                  |
+                  ↓
+       [ Convert score to integer ]
+                  |
+                  ↓
+             { score &gt;= 90? }
+              /           \
+            YES            NO
+             |              |
+             ↓              ↓
+       [/ Grade: A /]   { score &gt;= 80? }
+             |            /          \
+             |          YES           NO
+             |           |             |
+             |           ↓             ↓
+             |      [/ Grade: B /] { score &gt;= 70? }
+             |                         /        \
+             |                       YES         NO
+             |                        |           |
+             |                        ↓           ↓
+             |                  [/ Grade: C /] { score &gt;= 60? }
+             |                                    /      \
+             |                                  YES       NO
+             |                                   |         |
+             |                                   ↓         ↓
+             |                             [/ Grade: D /] [/ Grade: F /]
+             |                                   |         |
+             └───────────────────┬───────────────┴─────────┘
+                                 ↓
+                            ([ END ])</code></pre><h3 id="3e315921-b68f-804b-a825-faf103812666" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-809b-82eb-d82c3b5fb6c3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Ask for score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80ea-8261-db6c178d1643" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-805a-bbee-e851e95a2152" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert score → <strong>Process</strong></li></ul><ul id="3e315921-b68f-802e-924d-eb44e7bcec05" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Every <code>score &gt;= X</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8017-aed5-db510cd7ec73" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display grade → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8040-a7e9-e03bd2255f8d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-805c-be82-d8614d01ba66" class="" dir="auto">The logic structure</h3><pre id="3e315921-b68f-808a-b6c1-ec15daaa4415" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">score &gt;= 90?
+   ├── YES → A
+   └── NO
+        ↓
+     score &gt;= 80?
+        ├── YES → B
+        └── NO
+             ↓
+          score &gt;= 70?
+             ├── YES → C
+             └── NO
+                  ↓
+               score &gt;= 60?
+                  ├── YES → D
+                  └── NO → F</code></pre><p id="3e315921-b68f-8074-8d9a-df246d041c47" class="" dir="auto">This is a great visual example of how:</p><pre id="3e315921-b68f-80dd-a7f9-dc47ab0bece7" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">ifelseifelseifelseifelse</code></pre><p id="3e315921-b68f-8037-927e-c985810c34d0" class="" dir="auto">creates a <strong>decision chain</strong>.</p></div></details><hr id="3e315921-b68f-807c-a973-fe3454dfef0a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-808f-8cde-eb1cefa87bb6" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h3 id="3e315921-b68f-8053-8597-dd590a205155" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-808c-851c-cbfe9c268d22" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ Create Random generator ]
+                  |
+                  ↓
+       [ Roll Player 1
+         between 1-6 ]
+                  |
+                  ↓
+       [ Roll Player 2
+         between 1-6 ]
+                  |
+                  ↓
+       [/ Display Player 1 roll /]
+                  |
+                  ↓
+       [/ Display Player 2 roll /]
+                  |
+                  ↓
+          { Player 1 &gt; Player 2? }
+             /             \
+           YES              NO
+            |                |
+            ↓                ↓
+ [/ Display &quot;Player 1    { Player 2 &gt; Player 1? }
+       wins!&quot; /]            /              \
+            |              YES              NO
+            |               |                |
+            |               ↓                ↓
+            |       [/ Display &quot;Player 2  [/ Display
+            |             wins!&quot; /]        &quot;It&#x27;s a tie!&quot; /]
+            |               |                |
+            └───────┬───────┴────────────────┘
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-80ae-8fd0-f7db7b0db2ab" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80de-a697-c1f3c0663d2c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create random generator → <strong>Process</strong></li></ul><ul id="3e315921-b68f-805c-b47d-dc50ce55d89c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Roll dice → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8063-8f0f-e534cf0bd69b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display rolls → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8039-94da-dd6d680ca019" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare Player 1 vs Player 2 → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80d7-9ce4-c72bb834eb05" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare Player 2 vs Player 1 → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8063-bdd0-f121d37b3d02" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display winner/tie → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8064-9050-cc6c21d6262b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80b8-a752-ff8b8c725bc5" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-80b5-8a5d-cc6d59520d04" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          Player 1 &gt; Player 2?
+             /          \
+           YES           NO
+            ↓             ↓
+       Player 1 wins   Player 2 &gt; Player 1?
+                            /       \
+                          YES        NO
+                           ↓          ↓
+                      Player 2 wins  Tie</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b9-ab54-c16db13c3869" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d3-babb-e22cc63ef6a0" style="display:inline-block">Project 1: Simple CLI Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-8086-96b8-f26c82dd2e1a" class="" dir="auto">What it does</h2><p id="39315921-b68f-80f9-825c-e4eb30ad138d" class="" dir="auto">Takes two numbers from the user and performs basic math operations.</p><h2 id="39315921-b68f-8014-9ac0-d71bc78e5225" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-8035-aced-ee94ffef8e54" class="numbered-list" start="1" dir="auto"><li>Ask user for first number</li></ol><ol type="1" id="39315921-b68f-80cc-8cf8-fddf2aaabe63" class="numbered-list" start="2" dir="auto"><li>Ask user for second number</li></ol><ol type="1" id="39315921-b68f-8049-9705-d72e5b9cb3c3" class="numbered-list" start="3" dir="auto"><li>Convert input to integers</li></ol><ol type="1" id="39315921-b68f-8025-abb7-caadc866b70b" class="numbered-list" start="4" dir="auto"><li>Add, subtract, multiply, divide</li></ol><ol type="1" id="39315921-b68f-8066-8ebc-ca5125ed5968" class="numbered-list" start="5" dir="auto"><li>Display results</li></ol><pre id="39315921-b68f-8076-b7ab-efaa14352260" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Step 1: Ask user for first number
+        Console.Write(&quot;Enter first number: &quot;);
+        int num1 = int.Parse(Console.ReadLine());
+
+        // Step 2: Ask user for second number
+        Console.Write(&quot;Enter second number: &quot;);
+        int num2 = int.Parse(Console.ReadLine());
+
+        // Step 3: Perform calculations
+        int add = num1 + num2;
+        int subtract = num1 - num2;
+        int multiply = num1 * num2;
+        int divide = num1 / num2;
+
+        // Step 4: Display results
+        Console.WriteLine(&quot;Add: &quot; + add);
+        Console.WriteLine(&quot;Subtract: &quot; + subtract);
+        Console.WriteLine(&quot;Multiply: &quot; + multiply);
+        Console.WriteLine(&quot;Divide: &quot; + divide);
+    }
+}</code></pre></div></details><hr id="39315921-b68f-8022-8d66-f083857bab02" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8054-ae0c-f08432bebc13" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-80ac-83b9-d21713e0d3a3" class="" dir="auto">What it does</h2><p id="39315921-b68f-8089-a196-e7c24423148d" class="" dir="auto">User guesses a random number between 1 and 10.</p><h2 id="39315921-b68f-804f-bf54-f938a809be9e" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-808a-9acb-f4e7d4219579" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-8093-8b6a-cc97f7a2c7d9" class="numbered-list" start="2" dir="auto"><li>Ask user for guess</li></ol><ol type="1" id="39315921-b68f-80c7-a770-cc086aee8788" class="numbered-list" start="3" dir="auto"><li>Compare guess to number</li></ol><ol type="1" id="39315921-b68f-80f0-8a6c-fec1a223e35a" class="numbered-list" start="4" dir="auto"><li>Tell user if correct or wrong</li></ol><pre id="39315921-b68f-8086-a1e5-d0df6e2ef144" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Step 1: Generate random number
+        Random rand = new Random();
+        int secret = rand.Next(1, 11);
+
+        // Step 2: Ask user for guess
+        Console.Write(&quot;Guess a number (1-10): &quot;);
+        int guess = int.Parse(Console.ReadLine());
+
+        // Step 3: Compare values
+        if (guess == secret)
+        {
+            Console.WriteLine(&quot;Correct!&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;Wrong! The number was &quot; + secret);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-803b-80da-e4fc90a54430" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8049-bf1e-c532e442907e" style="display:inline-block">Project 3: Login Check System</h1></summary><div class="indented"><h2 id="39315921-b68f-80f8-9690-f904c2413d62" class="" dir="auto">What it does</h2><p id="39315921-b68f-800b-af02-e8a06bb7d4a4" class="" dir="auto">Checks username and password input.</p><h2 id="39315921-b68f-80a5-8c10-f286b363f101" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-8049-89c6-dcba113ee572" class="numbered-list" start="1" dir="auto"><li>Store correct username/password</li></ol><ol type="1" id="39315921-b68f-8095-a27c-fcbdbfb3b16c" class="numbered-list" start="2" dir="auto"><li>Ask user for input</li></ol><ol type="1" id="39315921-b68f-8075-9cde-f8af9c453db0" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-809e-8b3e-f4a610e74c15" class="numbered-list" start="4" dir="auto"><li>Show access result</li></ol><pre id="39315921-b68f-8060-82bf-e46199503f26" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Step 1: Stored credentials
+        string correctUser = &quot;admin&quot;;
+        string correctPass = &quot;1234&quot;;
+
+        // Step 2: Ask user for input
+        Console.Write(&quot;Enter username: &quot;);
+        string user = Console.ReadLine();
+
+        Console.Write(&quot;Enter password: &quot;);
+        string pass = Console.ReadLine();
+
+        // Step 3: Compare credentials
+        if (user == correctUser &amp;&amp; pass == correctPass)
+        {
+            Console.WriteLine(&quot;Access Granted&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;Access Denied&quot;);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-80d9-b50b-e998c96aa141" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8096-9671-f6365f94d7f2" style="display:inline-block">Project 4: Simple Grade Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-802b-9fbe-dc55e4db260c" class="" dir="auto">What it does</h2><p id="39315921-b68f-80d4-9f65-d192a46a3e5a" class="" dir="auto">Converts numeric score into a letter grade.</p><h2 id="39315921-b68f-80cf-bb22-ca2f6170bb0b" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-80dd-aaff-fa9cca03e0cc" class="numbered-list" start="1" dir="auto"><li>Ask user for score</li></ol><ol type="1" id="39315921-b68f-8031-8552-e4628fad7746" class="numbered-list" start="2" dir="auto"><li>Convert input to number</li></ol><ol type="1" id="39315921-b68f-80eb-9921-dce4a3f0ee35" class="numbered-list" start="3" dir="auto"><li>Check score ranges</li></ol><ol type="1" id="39315921-b68f-80e2-9210-c614097b7239" class="numbered-list" start="4" dir="auto"><li>Output grade</li></ol><pre id="39315921-b68f-8035-927d-dcfa4bd72fe7" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Step 1: Ask for score
+        Console.Write(&quot;Enter score (0-100): &quot;);
+        int score = int.Parse(Console.ReadLine());
+
+        // Step 2: Determine grade
+        if (score &gt;= 90)
+        {
+            Console.WriteLine(&quot;Grade: A&quot;);
+        }
+        else if (score &gt;= 80)
+        {
+            Console.WriteLine(&quot;Grade: B&quot;);
+        }
+        else if (score &gt;= 70)
+        {
+            Console.WriteLine(&quot;Grade: C&quot;);
+        }
+        else if (score &gt;= 60)
+        {
+            Console.WriteLine(&quot;Grade: D&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;Grade: F&quot;);
+        }
+    }
+}</code></pre></div></details><hr id="39315921-b68f-8052-8bf0-e815b3111653" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f8-862f-c2f1d0c69df6" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h2 id="39315921-b68f-80a3-948d-d77235d943ee" class="" dir="auto">What it does</h2><p id="39315921-b68f-80ec-ae27-d876660ad679" class="" dir="auto">Two players roll dice; highest roll wins.</p><h2 id="39315921-b68f-802a-b143-ccc7aafe83cd" class="" dir="auto">Step-by-step</h2><ol type="1" id="39315921-b68f-80dd-bdb1-c68069eb0217" class="numbered-list" start="1" dir="auto"><li>Create random generator</li></ol><ol type="1" id="39315921-b68f-80c0-b60f-db1344afa12e" class="numbered-list" start="2" dir="auto"><li>Roll dice for player 1</li></ol><ol type="1" id="39315921-b68f-8015-b46e-c955e6a4c553" class="numbered-list" start="3" dir="auto"><li>Roll dice for player 2</li></ol><ol type="1" id="39315921-b68f-8061-886b-f85ada36668f" class="numbered-list" start="4" dir="auto"><li>Compare results</li></ol><ol type="1" id="39315921-b68f-8003-a3d1-e0f7a1487439" class="numbered-list" start="5" dir="auto"><li>Declare winner</li></ol><pre id="39315921-b68f-80b9-8105-c7a668fc9ea9" class="code code-wrap" data-notion-code-syntax="csharp"><code class="language-csharp" style="white-space:pre-wrap;word-break:break-all">using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Step 1: Create random generator
+        Random rand = new Random();
+
+        // Step 2: Player 1 roll
+        int player1 = rand.Next(1, 7);
+
+        // Step 3: Player 2 roll
+        int player2 = rand.Next(1, 7);
+
+        // Step 4: Show results
+        Console.WriteLine(&quot;Player 1 rolled: &quot; + player1);
+        Console.WriteLine(&quot;Player 2 rolled: &quot; + player2);
+
+        // Step 5: Determine winner
+        if (player1 &gt; player2)
+        {
+            Console.WriteLine(&quot;Player 1 wins!&quot;);
+        }
+        else if (player2 &gt; player1)
+        {
+            Console.WriteLine(&quot;Player 2 wins!&quot;);
+        }
+        else
+        {
+            Console.WriteLine(&quot;It&#x27;s a tie!&quot;);
+        }
+    }
+}</code></pre></div></details></div></details><p id="3e315921-b68f-80ad-b091-dd1573586e68" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

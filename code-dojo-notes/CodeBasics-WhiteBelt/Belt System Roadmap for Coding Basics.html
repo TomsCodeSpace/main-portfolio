@@ -1,0 +1,797 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Belt System/Roadmap for Coding Basics</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="3e615921-b68f-8037-9f30-dd17372fdcaf" class="page sans"><header><h1 class="page-title" dir="auto">Belt System/Roadmap for Coding Basics</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="3e615921-b68f-8009-9f32-e02de4470e72" class="" dir="auto"><strong>A Belt-Based Roadmap for Learning, Retaining, and Applying Programming Concepts</strong></p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-8085-845d-c3ad3780e6ab" style="display:inline-block"><strong>Intro</strong></h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80b7-b332-cf1f01062611" style="display:inline-block"><strong>What are we building/learning?</strong></h2></summary><div class="indented"><p id="3e615921-b68f-80cd-92f1-dee2e63c4707" class="" dir="auto">We&#x27;re building a learning and note-taking system focused on **core</p><p id="3e615921-b68f-80b5-8b7a-e8945bb50700" class="" dir="auto">programming concepts that transfer across many languages**. The goal is</p><p id="3e615921-b68f-8099-bd0e-c5e978a16cea" class="" dir="auto">to understand the underlying ideas first, then learn how each language</p><p id="3e615921-b68f-80d5-b802-f8764dee816a" class="" dir="auto">expresses them.</p><p id="3e615921-b68f-80a3-8e76-f7e6393e3ed8" class="" dir="auto">Some topics---such as memory management, compilation, and</p><p id="3e615921-b68f-8032-843b-f206615ff7da" class="" dir="auto">concurrency---work differently across languages and platforms. The</p><p id="3e615921-b68f-8095-a446-ceb0a3047443" class="" dir="auto">system distinguishes transferable concepts from language-specific</p><p id="3e615921-b68f-800d-974a-c0e41e27c03f" class="" dir="auto">details.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-802b-9bb6-ed73c1d7141d" style="display:inline-block"><strong>Who is this roadmap for?</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-8089-afb8-f4ba9d42cd82" class="bulleted-list" dir="auto"><li style="list-style-type:disc">CS students</li></ul><ul id="3e615921-b68f-8037-b477-ca3deee11168" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Engineering students</li></ul><ul id="3e615921-b68f-80c2-83ed-c0d80f2b8b13" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Future startup owners</li></ul><ul id="3e615921-b68f-80d7-a13b-daca004e4de7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Anyone who wants to start building projects while working with</li></ul><p id="3e615921-b68f-80e6-afab-fc28365c8522" class="" dir="auto">limited time during the day</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80b1-8860-f5c74a6d532a" style="display:inline-block"><strong>What practical outcome will I get after watching this?</strong></h2></summary><div class="indented"><p id="3e615921-b68f-803c-bfce-ebcc9babc1ac" class="" dir="auto">Compared with roadmaps that focus mainly on technologies to learn, this</p><p id="3e615921-b68f-8092-a48b-fde3557706f4" class="" dir="auto">system is organized around:</p><ul id="3e615921-b68f-80e1-9f4b-e1dbd328125b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*What you need to learn**</strong></li></ul><ul id="3e615921-b68f-8095-8ba4-cffb82ab052a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why you need to learn it**</strong></li></ul><ul id="3e615921-b68f-80da-ab74-f1d4be3e6a90" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*How the concepts connect**</strong></li></ul><ul id="3e615921-b68f-8090-a2d8-d9b9a4bbade6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*How to retain and apply them**</strong></li></ul><ul id="3e615921-b68f-80b4-abaf-d551a74963d1" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*What you should be capable of building afterward**</strong></li></ul><p id="3e615921-b68f-809b-9a50-ef1e0bf15ebf" class="" dir="auto">The meta-learning component is meant to provide more than a list of</p><p id="3e615921-b68f-8015-be33-c0e6a52b62df" class="" dir="auto">topics: it offers a repeatable system for understanding a roadmap and</p><p id="3e615921-b68f-804f-86d4-dd42fdc4cbcd" class="" dir="auto">navigating future subjects.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-80ac-ba9f-d4ca1f5dc6b2" style="display:inline-block"><strong>The Belts</strong></h1></summary><div class="indented"><p id="3e615921-b68f-8068-8fea-f28fe4101e5d" class="" dir="auto">The belts group broad programming topics into five levels. They</p><p id="3e615921-b68f-80b6-9778-c528b60111bd" class="" dir="auto">represent increasing scope and complexity---not a guarantee of</p><p id="3e615921-b68f-8097-b977-dcbb1c5f3d46" class="" dir="auto">professional mastery or a requirement to complete every specialization.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80b8-a184-efdf6d0b8fa9" style="display:inline-block"><strong>White Belt: Foundations of Programming</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-80b0-9c65-cff5df37535f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Learn the basic building blocks of programming.</li></ul><ul id="3e615921-b68f-800d-9c98-cd6914a04811" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Skills:**</strong></li></ul><p id="3e615921-b68f-800c-8fb9-dc5ee3029345" class="" dir="auto">-   Variables and constants</p><p id="3e615921-b68f-8066-8622-e1660d9ad963" class="" dir="auto">-   Data types: numbers, strings, and booleans</p><p id="3e615921-b68f-8030-97cc-df1192ba1a50" class="" dir="auto">-   Input/output: displaying output and receiving user input</p><p id="3e615921-b68f-80a1-8666-cc08bcf5699f" class="" dir="auto">-   Basic math operations</p><p id="3e615921-b68f-807e-9b7b-f721bd00209c" class="" dir="auto">-   Conditionals: if/else statements</p><p id="3e615921-b68f-80b6-a329-fcb0c9dd10f8" class="" dir="auto">-   Basic random-number use</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-804a-82da-e6ef46d6be48" style="display:inline-block"><strong>Yellow Belt: Core Logic and Data Handling</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-800b-a15f-eb9155306502" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Build problem-solving skills through repetition,</li></ul><p id="3e615921-b68f-808b-98c6-cd3769f8be84" class="" dir="auto">collections, and basic data handling.</p><ul id="3e615921-b68f-8019-bcee-c9cb4e9c7748" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Skills:**</strong></li></ul><p id="3e615921-b68f-80c2-a9b6-d880529587cf" class="" dir="auto">-   Loops: `while` and `for`</p><p id="3e615921-b68f-80cb-976d-f3fb8e24ba70" class="" dir="auto">-   Basic data structures: arrays, lists, and tuples</p><p id="3e615921-b68f-8000-904b-ebd28b1702d4" class="" dir="auto">-   Accessing, converting, and modifying individual collection</p><p id="3e615921-b68f-80cf-8043-db36d9ffa07a" class="" dir="auto">elements</p><p id="3e615921-b68f-8031-a0f5-fac25320efdf" class="" dir="auto">-   Text-file input/output</p><p id="3e615921-b68f-8008-98a8-f51644228880" class="" dir="auto">-   Basic error handling</p><p id="3e615921-b68f-8032-8b01-d6939ad4f980" class="" dir="auto">-   String manipulation</p><p id="3e615921-b68f-802c-898d-d6271a943c59" class="" dir="auto">-   Accumulators and counters</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-808f-b1ff-f8b73ade1fa9" style="display:inline-block"><strong>Red Belt: Program Construction and Abstraction</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-802b-94fc-c999d608fa5e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Organize code into reusable components and build larger</li></ul><p id="3e615921-b68f-80f6-80c2-ccb6c8995f67" class="" dir="auto">programs.</p><ul id="3e615921-b68f-80c1-a243-cd14582f9a02" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Skills:**</strong></li></ul><p id="3e615921-b68f-8030-8517-dac47d8ef974" class="" dir="auto">-   Dictionaries/maps and key-value data</p><p id="3e615921-b68f-805b-8077-c87038791e6b" class="" dir="auto">-   Functions and methods in a single file</p><p id="3e615921-b68f-8073-9f3d-e14043e43e08" class="" dir="auto">-   Local and global scope</p><p id="3e615921-b68f-809f-bb97-c1fdb7d02cd7" class="" dir="auto">-   Classes and objects in a single file</p><p id="3e615921-b68f-80ce-8c56-d2251a2407b8" class="" dir="auto">-   Multi-class, multi-file object-oriented systems</p><p id="3e615921-b68f-8067-8bc6-f21f9d53b314" class="" dir="auto">-   Imports, modules, and basic project structure</p><p id="3e615921-b68f-802b-922e-cec04d2edf26" class="" dir="auto">-   Introductory use of one or two libraries</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-8043-ba97-d6b43e6b7861" style="display:inline-block"><strong>Brown Belt: Real-World Integrations</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-80b7-8557-ec303c20f14f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Build practical applications that connect interfaces,</li></ul><p id="3e615921-b68f-80fd-95a7-cdc7ea2865e4" class="" dir="auto">program logic, data storage, and external services.</p><ul id="3e615921-b68f-80fb-bac8-ebee6e8f71c2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Skills:**</strong></li></ul><p id="3e615921-b68f-8054-91dd-e0c994fa53d4" class="" dir="auto">-   Web and UI basics: HTML, CSS, JavaScript, or a GUI toolkit</p><p id="3e615921-b68f-803f-9080-d3f93ec3e1bb" class="" dir="auto">-   SQL and database interaction</p><p id="3e615921-b68f-800d-a8ff-d237d98eea80" class="" dir="auto">-   REST APIs and JSON</p><p id="3e615921-b68f-8039-9a0c-cc8763cf5372" class="" dir="auto">-   Asynchronous programming</p><p id="3e615921-b68f-80df-91a2-fd274712ae11" class="" dir="auto">-   Debugging and testing</p><p id="3e615921-b68f-8065-a186-cc7c694d1341" class="" dir="auto">-   Applying data structures and algorithms to real systems:</p><p id="3e615921-b68f-805f-bafc-f57f3c58a2dd" class="" dir="auto">-   Hash tables/maps, stacks, and introductory trees</p><p id="3e615921-b68f-80a0-98c8-c8e33ddf189b" class="" dir="auto">-   Binary search, recursion, and introductory tree traversal</p><p id="3e615921-b68f-80a1-a651-d4d12136b422" class="" dir="auto">(DFS/BFS)</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-806c-b062-f025bda58078" style="display:inline-block"><strong>Black Belt: Advanced Systems and Specialization</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-80c5-8f13-da534d01e56b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Develop deeper systems knowledge and explore advanced</li></ul><p id="3e615921-b68f-8064-ad54-c755d8b2a742" class="" dir="auto">areas. This belt is a collection of advanced learning paths, not a</p><p id="3e615921-b68f-8096-a72f-ce0d55b25804" class="" dir="auto">claim that every learner must master every topic.</p><ul id="3e615921-b68f-80d7-9ba4-e3dc9c40c93a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Skills and areas of study:**</strong></li></ul><p id="3e615921-b68f-8046-966d-cc787075cf6f" class="" dir="auto">-   Performance analysis and optimization</p><p id="3e615921-b68f-8091-b93d-d5e838d4bba3" class="" dir="auto">-   Concurrency and parallel execution</p><p id="3e615921-b68f-803c-ba64-cce9e91e9de4" class="" dir="auto">-   Networking: TCP/IP, HTTP, and WebSockets</p><p id="3e615921-b68f-8044-8bc4-fe25698e481b" class="" dir="auto">-   Distributed systems and cloud architecture</p><p id="3e615921-b68f-8061-b50d-ed2c4666ff0e" class="" dir="auto">-   Security fundamentals and system integrity</p><p id="3e615921-b68f-8054-a377-f86b8b46c643" class="" dir="auto">-   Low-level systems: memory, runtime, and compilation concepts</p><p id="3e615921-b68f-80c4-86dd-ed2ac70208a2" class="" dir="auto">-   Optional specialization: GPU computing and high-performance</p><p id="3e615921-b68f-8024-ac81-cf1db275c21d" class="" dir="auto">computing</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-803c-8ffb-dac9f769f276" style="display:inline-block"><strong>Phases</strong></h1></summary><div class="indented"><p id="3e615921-b68f-805f-b5f4-cf9a1a5ed201" class="" dir="auto">The phases break each belt into smaller learning units to make the</p><p id="3e615921-b68f-8010-b449-f66aecdb3b92" class="" dir="auto">progression easier to follow. Each phase should connect concepts to</p><p id="3e615921-b68f-807c-bd57-c8bea27890f2" class="" dir="auto">small exercises or projects.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80b0-bef5-c93f65b56df3" style="display:inline-block"><strong>White Belt: Foundations of Programming</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-806e-aede-c4d20630c3ca" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Goal: Learn the basic building blocks of programming.</li></ul><h3 id="3e615921-b68f-8047-a894-ca8704205c32" class="" dir="auto">Broad Topics</h3><ul id="3e615921-b68f-80b2-bf05-f411ccd89b75" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Variables and constants</li></ul><ul id="3e615921-b68f-8077-9700-dadc23737d1c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Data types (numbers, strings, booleans)</li></ul><ul id="3e615921-b68f-804e-ae0a-f7b02c6aa03d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Input/Output</li></ul><ul id="3e615921-b68f-804e-8fbc-fd13ebc948ae" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic math operations</li></ul><ul id="3e615921-b68f-8009-a0d6-c43dd86ae0b4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Conditionals (if/else statements)</li></ul><ul id="3e615921-b68f-80c8-b72d-c22153baa222" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Random numbers</li></ul><h3 id="3e615921-b68f-80c5-abec-f2523f76f97c" class="" dir="auto">Phases</h3><ul id="3e615921-b68f-8045-9aa6-d859b66864a9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">N/A</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80de-874e-de3ce0b0f28f" style="display:inline-block"><strong>Yellow Belt: Core Logic and Data Handling</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-8043-aa43-cbbc9cbf449c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Build problem-solving skills through repetition,</li></ul><p id="3e615921-b68f-80e8-b982-daad98936de6" class="" dir="auto">collections, and basic data handling.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8079-b4f5-c36ca8a9fcaa" style="display:inline-block"><strong>Phase 1 --- Lists/arrays and Loops</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-806e-9222-dace9fbc3200" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Lists, arrays, and tuples</li></ul><ul id="3e615921-b68f-80fa-8198-dfe3cb380df9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Accessing and updating elements</li></ul><ul id="3e615921-b68f-80a9-9996-e8db9400fb57" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Iterating through lists, arrays, tuples</li></ul><ul id="3e615921-b68f-803b-8509-dc92df6f4f26" class="bulleted-list" dir="auto"><li style="list-style-type:disc">`for` and `while` loop patterns</li></ul><ul id="3e615921-b68f-802a-a037-dbc102b93198" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Adding, removing, searching, and modifying elements</li></ul><ul id="3e615921-b68f-80b5-a946-fd111304db98" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Accumulators and counters</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8085-855c-ecbe5a3cd540" style="display:inline-block"><strong>Phase 2 --- Text File Handling</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8056-9e6a-fb40ced0be30" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Reading text files</li></ul><ul id="3e615921-b68f-8016-8ba1-d1bf27278f5d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Writing and appending data</li></ul><ul id="3e615921-b68f-8039-8ba8-daa56f7a6940" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Working with file paths</li></ul><ul id="3e615921-b68f-80b5-903c-fe16481ff7b2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic data persistence</li></ul><ul id="3e615921-b68f-806f-bad6-cca171efe8f5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Handling common file errors</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-806e-b052-cc4159adf380" style="display:inline-block"><strong>Phase 3 --- String Manipulation and Errors</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-801d-9617-fafd32a9dba9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Splitting and joining strings</li></ul><ul id="3e615921-b68f-802e-a2bb-f996bcb3df16" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Searching within strings</li></ul><ul id="3e615921-b68f-808f-8532-c81e45004cfc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Replacing and modifying text</li></ul><ul id="3e615921-b68f-804c-885c-d28eef7d7b8d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Formatting strings</li></ul><ul id="3e615921-b68f-8026-8b40-ed954982ff19" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic error handling and debugging</li></ul></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80c0-9359-d3d61f3c8d16" style="display:inline-block"><strong>Red Belt: Program Construction and Abstraction</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-8052-ae67-c3dfdb998595" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Organize code into reusable components and build larger</li></ul><p id="3e615921-b68f-806a-8140-dd0d7f7e9e92" class="" dir="auto">programs.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80a6-9c89-e417dcc287cf" style="display:inline-block"><strong>Phase 1 --- Dictionaries and Data Handling</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8078-b654-e6ae5b61ef72" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Dictionaries/maps and key-value pairs</li></ul><ul id="3e615921-b68f-805e-b0f3-ed45339ea652" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Create, read, update, and delete (CRUD) operations</li></ul><ul id="3e615921-b68f-8004-9883-e2128f6d210d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic in-memory state storage</li></ul><ul id="3e615921-b68f-8049-8124-ed550d557183" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Dictionaries + .txt files</li></ul><ul id="3e615921-b68f-8062-b243-fa652e4dd3c9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Simple CLI input/output; GUI input/output may be introduced as an</li></ul><p id="3e615921-b68f-80a1-9b41-f1a2119e4293" class="" dir="auto">optional interface exercise</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8043-9ee4-fb9d3b0e12ae" style="display:inline-block"><strong>Phase 2 --- Functions/Methods and Logic Organization (Single File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80f8-97b8-dbfc3dcb6585" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Defining and calling functions</li></ul><ul id="3e615921-b68f-8076-a026-f31b19220c01" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Parameters, arguments, and return values</li></ul><ul id="3e615921-b68f-8054-bef3-eaaa18767b3f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Methods as functions associated with objects</li></ul><ul id="3e615921-b68f-8028-8374-c84f923f32e4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Local vs. global variables (introductory)</li></ul><ul id="3e615921-b68f-809e-8cf4-eea8d8f8cdbb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic flow control</li></ul><ul id="3e615921-b68f-8023-bd00-ead635ee46bc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Organizing code within one file</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80ad-986f-cb52145df5fc" style="display:inline-block"><strong>Phase 3 --- Classes and Objects (Core OOP, Single File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8052-b979-c18f483ec6bc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Classes and objects</li></ul><ul id="3e615921-b68f-800f-b23e-eb8419c120de" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Attributes and methods</li></ul><ul id="3e615921-b68f-8035-b8e4-f76747540be2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Constructors/initialization</li></ul><ul id="3e615921-b68f-80f6-b832-d28ebedd339a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Encapsulation at an introductory level</li></ul><ul id="3e615921-b68f-804d-ad14-f511f32868d0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Keeping the exercise within one file</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80ad-8820-ece13e78ea25" style="display:inline-block"><strong>Phase 4 --- OOP Systems (Multi-Class and Multi-File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80ff-83f8-d86d5863d184" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Multiple classes working together</li></ul><ul id="3e615921-b68f-808c-bb78-ce11d950b48b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Imports between files</li></ul><ul id="3e615921-b68f-80a5-af5e-e817f3ca569a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Object interaction and composition</li></ul><ul id="3e615921-b68f-80dc-904a-f06ebd790629" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic project structure: entry point and modules</li></ul><ul id="3e615921-b68f-807f-b124-c8f11a856241" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Separating responsibilities across files</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80e1-b8f2-e1165990bfec" style="display:inline-block"><strong>Phase 5 --- Libraries and External Tools (Light Use)</strong></h3></summary><div class="indented"><p id="3e615921-b68f-8000-8cf6-f18ea132473c" class="" dir="auto">💡Python is a below example but you choose the libraries based on the language</p><ul id="3e615921-b68f-80d9-b0dc-de382ff8fa0e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Use one or two beginner-friendly libraries</li></ul><ul id="3e615921-b68f-806d-8c64-df38c6227e83" class="bulleted-list" dir="auto"><li style="list-style-type:disc">NumPy: introductory arrays, where relevant</li></ul><ul id="3e615921-b68f-80c4-8842-fe6c8c75c0e1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Pandas: introductory tables, where relevant</li></ul><ul id="3e615921-b68f-80f8-8dc1-f1607babc40a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Optional: a light introduction to Flask or a similar framework</li></ul><ul id="3e615921-b68f-802f-bb24-df41ccd27cb0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Focus: use tools to extend a working system rather than relying on</li></ul><p id="3e615921-b68f-8023-acf7-f6a3860f7145" class="" dir="auto">them to hide the underlying concepts</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-8037-bdff-ef3269f05bf1" style="display:inline-block"><strong>Brown Belt: Real-World Integrations</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-80f7-baab-c05aa755fe65" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Build practical applications that connect interfaces,</li></ul><p id="3e615921-b68f-80bc-8df3-d901c21a9fc4" class="" dir="auto">program logic, data storage, and external services.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8043-ae8b-f6bf2025c12b" style="display:inline-block"><strong>Phase 1 --- Web and UI Foundations</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80f7-b011-dcfed80c67ed" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Understand what users see and interact with.</li></ul><ul id="3e615921-b68f-8056-9e06-dd9c585e88b2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Choose an introductory interface path:**</strong></li></ul><p id="3e615921-b68f-8068-a081-d1e33074a2c0" class="" dir="auto">-   Web: HTML structure, basic CSS, and JavaScript interactions</p><p id="3e615921-b68f-80ec-9bd1-c4c3497c2664" class="" dir="auto">-   Desktop GUI: a toolkit such as Tkinter, WinForms, or JavaFX</p><ul id="3e615921-b68f-80d2-a0e9-ebf3e7aeaa6d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display program output</li></ul><ul id="3e615921-b68f-8057-8ebf-d92fd5c8b403" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Accept user input through an interface</li></ul><ul id="3e615921-b68f-804e-bae6-c5982a9c0abb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Connect UI events to backend logic</li></ul><ul id="3e615921-b68f-8051-8f38-c1611ab6579b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> A visible interface gives learners immediate feedback</li></ul><p id="3e615921-b68f-808c-a1d1-da255d453e01" class="" dir="auto">and a concrete way to interact with program behavior.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-807a-bf07-c563af5c8136" style="display:inline-block"><strong>Phase 2 --- Data and SQL Foundations</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80a7-a2cc-e652a39b0f9c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Store and retrieve structured data outside the program.</li></ul><ul id="3e615921-b68f-80d7-9c95-dd9bb8de4412" class="bulleted-list" dir="auto"><li style="list-style-type:disc">SQL basics: `SELECT`, `INSERT`, `UPDATE`, and `DELETE`</li></ul><ul id="3e615921-b68f-80d4-8641-df083f2d47a2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Tables, rows, and columns</li></ul><ul id="3e615921-b68f-805e-80f8-db04a728eff3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic database design and relationships</li></ul><ul id="3e615921-b68f-8088-b717-de2c51b8ab4d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Connecting program data to stored data</li></ul><ul id="3e615921-b68f-8083-8fe6-ee2957e029a9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> Learners move from in-memory data to persistent,</li></ul><p id="3e615921-b68f-80b9-b74f-edeedcbfff11" class="" dir="auto">structured storage.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8023-a101-eeddbb46f5cc" style="display:inline-block"><strong>Phase 3 --- APIs and JSON Communication</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-806a-8a31-fcb40adf194c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Make programs communicate with other systems.</li></ul><ul id="3e615921-b68f-80a9-a3c2-f956dfd6b0ad" class="bulleted-list" dir="auto"><li style="list-style-type:disc">REST API concepts</li></ul><ul id="3e615921-b68f-8000-be0d-c82131f0b453" class="bulleted-list" dir="auto"><li style="list-style-type:disc">HTTP methods such as GET and POST</li></ul><ul id="3e615921-b68f-80ea-b620-f1279e4a5938" class="bulleted-list" dir="auto"><li style="list-style-type:disc">JSON structure</li></ul><ul id="3e615921-b68f-80ba-b557-f95f00d70469" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sending requests and receiving responses</li></ul><ul id="3e615921-b68f-8038-b943-f8744c9928d0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Parsing and using response data</li></ul><ul id="3e615921-b68f-805d-8d74-e6364f76b3b9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> APIs introduce communication with external services</li></ul><p id="3e615921-b68f-8014-9fea-c308a6e47062" class="" dir="auto">and systems.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-802e-956d-da9f6e90dc3f" style="display:inline-block"><strong>Phase 4 --- Asynchronous Programming, Error Handling, and Testing</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80c8-89ac-fd5e8453528e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Handle operations that take time or depend on external</li></ul><p id="3e615921-b68f-80ab-8af9-ff8e808a4031" class="" dir="auto">systems.</p><ul id="3e615921-b68f-80c0-a121-e394bad2dee8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Async/await and promises, or language-specific equivalents</li></ul><ul id="3e615921-b68f-804a-aaec-cd627286c244" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Waiting for network and other I/O operations</li></ul><ul id="3e615921-b68f-80f9-871b-d052dbd9e519" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Error handling for failed requests and operations</li></ul><ul id="3e615921-b68f-80fa-9984-fb31accff1f7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Debugging tools</li></ul><ul id="3e615921-b68f-8092-aebd-c9aa50c85aed" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Introductory automated testing and unit tests</li></ul><ul id="3e615921-b68f-8085-a932-f48bb8f288b3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> Network requests and other I/O operations make</li></ul><p id="3e615921-b68f-806d-9b99-fe9b94f6a07c" class="" dir="auto">waiting, failure handling, and testing more visible.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80d9-9568-db4e6242536f" style="display:inline-block"><strong>Phase 5 --- Data Structures and Algorithms Applied to Real Systems</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8029-918f-f2f893c27b4f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Apply data structures and algorithms within applications</li></ul><p id="3e615921-b68f-803e-b7dc-ceddfa71167c" class="" dir="auto">rather than studying them only in isolation.</p><ul id="3e615921-b68f-808f-be5b-c6e8189ea1e5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Review over Dictionaries/hash maps</li></ul><ul id="3e615921-b68f-8043-8f40-f627b2ed3cfa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Stacks, including state tracking or undo features</li></ul><ul id="3e615921-b68f-804c-b2b8-fdfbaba8905e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Introductory trees</li></ul><ul id="3e615921-b68f-80c1-a8e3-f18f532861b1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Binary search and the conditions under which it works</li></ul><ul id="3e615921-b68f-80b8-afec-eb0c92a81a46" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Recursion in simple use cases</li></ul><ul id="3e615921-b68f-800b-a01a-fdd3ecc2f457" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Optional extension: breadth-first search (BFS) and depth-first</li></ul><p id="3e615921-b68f-8055-b147-d2333a4067c2" class="" dir="auto">search (DFS)</p><ul id="3e615921-b68f-805e-9ab8-e2ac305d8d93" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Key rule:**</strong> Connect each concept to a real application, API,</li></ul><p id="3e615921-b68f-8065-95a3-d855c34bad3d" class="" dir="auto">database, or piece of app logic.</p><ul id="3e615921-b68f-8047-86c9-d8eb765b8496" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> Learners can relate these concepts to systems they</li></ul><p id="3e615921-b68f-8074-9cd0-f365e8c52dca" class="" dir="auto">have already built. Deeper complexity analysis and optimization are</p><p id="3e615921-b68f-806f-b4f4-d270795e61aa" class="" dir="auto">explored in Black Belt.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80c3-8b27-faa385dbc376" style="display:inline-block"><strong>Black Belt: Advanced Systems and Specialization</strong></h2></summary><div class="indented"><ul id="3e615921-b68f-8068-8b18-c32c09d636dc" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Develop deeper systems knowledge and explore advanced</li></ul><p id="3e615921-b68f-801b-ba53-e4feb5665e18" class="" dir="auto">areas. The order below is one suggested path; some topics can be</p><p id="3e615921-b68f-80fe-a856-e5a7346d370e" class="" dir="auto">studied in parallel or in a different order depending on the</p><p id="3e615921-b68f-80fc-b2b4-c811af8ca3f9" class="" dir="auto">learner&#x27;s goals.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80ac-9026-f83e10832988" style="display:inline-block"><strong>Phase 1 --- Performance and Optimization (Single-Machine Focus)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-803a-9cd7-f03499007f74" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Measure and improve program efficiency on one machine.</li></ul><ul id="3e615921-b68f-8003-8a7b-dbdd5671a428" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Big-O intuition and practical complexity analysis</li></ul><ul id="3e615921-b68f-80d1-b993-c454350e3e3b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">CPU and memory tradeoffs</li></ul><ul id="3e615921-b68f-8049-8ac9-d5374164c1e2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Data-structure efficiency in real programs</li></ul><ul id="3e615921-b68f-80ea-8bda-e9c0f66091ac" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Caching strategies, including maps used as caches</li></ul><ul id="3e615921-b68f-80c7-9913-f9b170d36e2c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic profiling and bottleneck identification</li></ul><ul id="3e615921-b68f-8042-9fda-fe884d899637" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Optimize CLI or GUI applications</li></ul><ul id="3e615921-b68f-800f-b593-fdca682d7fe5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Reduce unnecessary work and improve memory use</li></ul><ul id="3e615921-b68f-8092-95bb-c02dd0d75baf" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> A single-machine focus provides a concrete starting</li></ul><p id="3e615921-b68f-808c-89cc-f2640a4c1222" class="" dir="auto">point for performance analysis before studying larger-scale systems.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80dc-b368-c6e15e654cc8" style="display:inline-block"><strong>Phase 2 --- Concurrency and Parallel Execution</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8067-8061-d1acb2f36e5b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Understand and manage overlapping or simultaneous work.</li></ul><ul id="3e615921-b68f-8072-bbe4-f0658178c75c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Threads and asynchronous execution models</li></ul><ul id="3e615921-b68f-80d9-8a34-efe08f094b5e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Concurrency vs. parallelism</li></ul><ul id="3e615921-b68f-809a-90f2-e8564e69e155" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Race conditions and synchronization</li></ul><ul id="3e615921-b68f-807b-b922-f1a67ae114ae" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Locks and other basic coordination mechanisms</li></ul><ul id="3e615921-b68f-80ae-87e7-cbf6255e5903" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Task queues</li></ul><ul id="3e615921-b68f-80e0-82b2-d87e5ce27f1f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Background tasks in CLI or GUI applications</li></ul><ul id="3e615921-b68f-8039-a5dc-d2613806e378" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Parallel API calls where appropriate</li></ul><ul id="3e615921-b68f-801f-983f-ef3e1b0b0578" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic multi-user simulations</li></ul><ul id="3e615921-b68f-8026-bee2-c67b504e595b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> These concepts build on an understanding of program</li></ul><p id="3e615921-b68f-8034-8f40-f7d68ac75d25" class="" dir="auto">behavior and introduce coordination challenges.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-807b-9449-e502cc9c5898" style="display:inline-block"><strong>Phase 3 --- Networking and Communication Systems</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-806a-8669-cb95f8eb29f6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Understand how programs communicate across machines.</li></ul><ul id="3e615921-b68f-80ce-aa79-e58e7a0c63b9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TCP/IP fundamentals</li></ul><ul id="3e615921-b68f-804a-ad57-dc52b5f9f084" class="bulleted-list" dir="auto"><li style="list-style-type:disc">HTTP beyond introductory API use</li></ul><ul id="3e615921-b68f-8096-925e-f60812d6816a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">WebSockets and real-time communication</li></ul><ul id="3e615921-b68f-80d6-b11c-cf4bd996371e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Client-server architecture</li></ul><ul id="3e615921-b68f-8055-8e3a-cd8aec1469a7" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Build a basic chat system or real-time update feature</li></ul><ul id="3e615921-b68f-8095-9a6f-d27f50dbc85b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Build API clients and servers</li></ul><ul id="3e615921-b68f-804d-bb78-ef46b7cc573b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> Networking extends application behavior beyond a</li></ul><p id="3e615921-b68f-802a-881c-d4828eb16f29" class="" dir="auto">single machine.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8011-b62e-eb20b1c2ca42" style="display:inline-block"><strong>Phase 4 --- Distributed Systems (Multi-Machine Thinking)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80aa-8efd-d79463de5ca6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Understand systems made up of multiple cooperating</li></ul><p id="3e615921-b68f-80b3-a004-c53efcb1ccd5" class="" dir="auto">machines or services.</p><ul id="3e615921-b68f-8055-ac86-f3fe8ecf62ae" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Load balancing</li></ul><ul id="3e615921-b68f-8099-ace2-f232c75ad9c2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Replication</li></ul><ul id="3e615921-b68f-80d3-a0a1-c6e07508de6c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Server clusters</li></ul><ul id="3e615921-b68f-80eb-a62e-d30d9281d639" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Cloud architecture fundamentals</li></ul><ul id="3e615921-b68f-8073-8021-f2460e2ca024" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Stateless vs. stateful services</li></ul><ul id="3e615921-b68f-80af-8023-c8503abda8a6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Scaling application components</li></ul><ul id="3e615921-b68f-8077-a07b-e9bcac4cc030" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Fault tolerance and failure handling</li></ul><ul id="3e615921-b68f-80dd-9ce6-c46f0eac9b33" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> These concepts build on networking and introduce</li></ul><p id="3e615921-b68f-80ad-abd9-ea846248dbda" class="" dir="auto">coordination and reliability across multiple machines.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-806a-bb77-d7338ffad802" style="display:inline-block"><strong>Phase 5 --- Security and System Integrity</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80f5-a619-f128a457d571" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Protect systems, data, and users throughout development</li></ul><p id="3e615921-b68f-8070-ac1a-db5bfd85b8ea" class="" dir="auto">and operation.</p><ul id="3e615921-b68f-80c4-adc4-fb4a4c0fb3fa" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Authentication vs. authorization</li></ul><ul id="3e615921-b68f-809a-8427-fee486e1a150" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Encryption fundamentals and appropriate uses</li></ul><ul id="3e615921-b68f-800a-9a65-eed9d9b1b8d4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Secure communication, including HTTPS/TLS concepts</li></ul><ul id="3e615921-b68f-80e8-a054-c761c96a9406" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Token-based systems, including JWT concepts</li></ul><ul id="3e615921-b68f-80b9-837a-f82cc195e78f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Secure data storage and secret handling</li></ul><ul id="3e615921-b68f-80a1-8341-e40382e147cf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Secure API design</li></ul><ul id="3e615921-b68f-80d3-818e-e0ef6e71d327" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Common application vulnerabilities and basic prevention</li></ul><ul id="3e615921-b68f-80e4-ae1b-c67a3d779c88" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> Security is relevant throughout the roadmap. This</li></ul><p id="3e615921-b68f-8081-891b-ee2ad1cfbddb" class="" dir="auto">phase consolidates security concepts in the context of complete</p><p id="3e615921-b68f-80f3-a855-eea0b57dceee" class="" dir="auto">applications and connected systems.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8029-9e84-f2f95ac13202" style="display:inline-block"><strong>Phase 6 --- Low-Level Systems and Compilation</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-802e-8b93-e395d939e107" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Understand how programs are translated and executed.</li></ul><ul id="3e615921-b68f-809e-9a1e-d88cafb9bfe3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compilation and interpretation concepts</li></ul><ul id="3e615921-b68f-80cf-863d-f51953c58851" class="bulleted-list" dir="auto"><li style="list-style-type:disc">A basic compilation model using C or C++ as an example</li></ul><ul id="3e615921-b68f-806f-ae0f-d05e40e10a85" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Runtime vs. compile time</li></ul><ul id="3e615921-b68f-8077-a6e5-f8ab0107f254" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Memory allocation concepts, including stack and heap</li></ul><ul id="3e615921-b68f-8037-8b92-fe7d43c5b4f0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Garbage collection vs. manual memory management</li></ul><ul id="3e615921-b68f-80b3-bf44-ca45d0b32bc0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic understanding of how programs interact with the operating</li></ul><p id="3e615921-b68f-8023-b01a-e2cbcc3905ab" class="" dir="auto">system</p><ul id="3e615921-b68f-8084-bb50-d9dee1641b86" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why here:**</strong> This phase explores what happens beneath</li></ul><p id="3e615921-b68f-808b-9e93-edfdd2bf38ac" class="" dir="auto">application-level code and supports deeper performance and debugging</p><p id="3e615921-b68f-80b5-b378-ecca199dac02" class="" dir="auto">knowledge.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80d0-86b6-f1154c46a9e1" style="display:inline-block"><strong>Phase 7 --- Optional Mastery Extension: GPU and Advanced Compute</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80cd-84e2-ec4c4ae1f929" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Goal:**</strong> Explore specialized approaches to computationally</li></ul><p id="3e615921-b68f-807b-b9ff-c97cb8845a0f" class="" dir="auto">intensive work.</p><ul id="3e615921-b68f-8039-ab89-f441e3a39081" class="bulleted-list" dir="auto"><li style="list-style-type:disc">GPU computation fundamentals</li></ul><ul id="3e615921-b68f-80f6-986c-c14ef7b19f45" class="bulleted-list" dir="auto"><li style="list-style-type:disc">CPU vs. GPU workloads</li></ul><ul id="3e615921-b68f-801e-99db-f58ce2e029b6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Parallel computation concepts</li></ul><ul id="3e615921-b68f-8083-9063-f11314a23755" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Batch processing</li></ul><ul id="3e615921-b68f-8018-9ab0-c04dc69a1e78" class="bulleted-list" dir="auto"><li style="list-style-type:disc">High-performance computing ideas</li></ul><ul id="3e615921-b68f-8066-bb57-e6b4884b3427" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Data-heavy optimization</li></ul><ul id="3e615921-b68f-808c-a1fb-ff7736134eaf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Introductory awareness of AI/ML infrastructure</li></ul><ul id="3e615921-b68f-808f-9160-cf27d06171fa" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>*Why optional:**</strong> GPU and high-performance computing are specialized</li></ul><p id="3e615921-b68f-807d-87ac-e3b0466fadb7" class="" dir="auto">areas, not prerequisites for every software developer.</p></div></details></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-8082-9175-cec52985051e" style="display:inline-block"><strong>Sections at Each Phase/Belt</strong></h1></summary><div class="indented"><p id="3e615921-b68f-8099-971b-fb9b314d9ca9" class="" dir="auto">&quot;A tool is only as useful as its application.&quot;</p><p id="3e615921-b68f-80dc-ac7d-fe811229272f" class="" dir="auto">Each phase uses a consistent note and project structure to connect</p><p id="3e615921-b68f-8051-ac4f-fb5fa16f57d1" class="" dir="auto">theory to implementation:</p><ul id="3e615921-b68f-80eb-8bcc-ec1498166e2e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Key Concepts</strong></li></ul><ul id="3e615921-b68f-8078-beb2-c4cdd6adcb1b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Code Syntax</strong></li></ul><ul id="3e615921-b68f-8088-b0e0-c94b917c58ff" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Sample Flowcharts based on the projects</strong></li></ul><ul id="3e615921-b68f-8065-95bc-ee0c413739aa" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Sample Projects</strong></li></ul><p id="3e615921-b68f-80a0-8e82-c123554efb25" class="" dir="auto">The purpose is to turn concepts into working knowledge through</p><p id="3e615921-b68f-8069-b644-ec76f9f05821" class="" dir="auto">explanation, visualization, and practice.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-8051-a980-e3d7ce3d5928" style="display:inline-block"><strong>Current System as a Whole We&#x27;re Actually Using</strong></h1></summary><div class="indented"><p id="3e615921-b68f-80b1-97aa-d64dc3eea4be" class="" dir="auto">This section is the practical template used to organize notes and</p><p id="3e615921-b68f-80ab-8169-dde52d9e408d" class="" dir="auto">projects at each belt and phase.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-807e-8586-c8e471a2de75" style="display:inline-block">White Belt: Foundations of Programming</h2></summary><div class="indented"><p id="3e615921-b68f-8010-8d14-fa3a1e2d2009" class="" dir="auto"><strong>Goal:</strong> Learn the fundamental building blocks of programming and basic program logic.</p><p id="3e615921-b68f-80df-8247-d2ec32ed14ec" class="" dir="auto"><strong>Phases: N/A</strong></p><ul id="3e615921-b68f-803a-a9fd-c619a2b150bb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Values, Variables &amp; Data Types</li></ul><ul id="3e615921-b68f-8028-909e-c3624291646d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Input, Output &amp; Expressions</li></ul><ul id="3e615921-b68f-80db-91b8-f725f730485f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Operators &amp; Boolean Logic</li></ul><ul id="3e615921-b68f-80fe-904e-d5e5051d00ac" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Conditions &amp; Basic Control Flow</li></ul><ul id="3e615921-b68f-803a-a615-db11734e5ea5" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Basic Randomness</li></ul><p id="3e615921-b68f-80a6-81ed-e0681f231dfd" class="" dir="auto"><strong>Note Sections:</strong></p><ul id="3e615921-b68f-80b9-9d51-dbadaa4ccb13" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts</li></ul><ul id="3e615921-b68f-8088-abdc-d7b9b8c46d18" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Code Syntax</li></ul><ul id="3e615921-b68f-80c3-9d15-f80842500871" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sample Flowcharts</li></ul><ul id="3e615921-b68f-808c-9942-c297db661898" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-8043-a4f2-d53763c27e28" style="display:inline-block"><strong>Yellow Belt: Core Logic and Data Handling</strong></h2></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8036-adf7-fe1329463608" style="display:inline-block"><strong>Phase 1 --- Collections and Loops</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80bb-a3dc-e52919a82d0c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-806e-b4f3-c0ac174b2f9a" style="display:inline-block"><strong>Phase 2 --- Text File Handling</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80f9-a562-ff070e2db213" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-802f-bfea-eff94f842b89" style="display:inline-block"><strong>Phase 3 --- String Manipulation and Errors</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80fa-b186-ee14b3d0ec9b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-804b-9075-df3354600ea3" style="display:inline-block"><strong>Red Belt: Program Construction and Abstraction</strong></h2></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-806a-861b-eee8bc0b0734" style="display:inline-block"><strong>Phase 1 --- Dictionaries and Data Handling</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-808f-a5bb-d96c83daa027" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80f3-8287-cff8cce3e3d2" style="display:inline-block"><strong>Phase 2 --- Functions, Methods, and Logic Organization (Single File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-801f-9f2c-c920016b8213" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80f9-a068-ebe6cb89a148" style="display:inline-block"><strong>Phase 3 --- Classes and Objects (Core OOP, Single File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8067-af0b-d2c97d4f895e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80f6-a018-dbbb1c756ab7" style="display:inline-block"><strong>Phase 4 --- OOP Systems (Multi-Class and Multi-File)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80d6-97db-d5d309fac5a6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80b5-8315-d1da5e864c74" style="display:inline-block"><strong>Phase 5 --- Libraries and External Tools (Light Use)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-807a-9b53-d3db722fe025" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-80de-8a10-d6de2183ef0c" style="display:inline-block"><strong>Brown Belt: Real-World Integrations</strong></h2></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8003-adb8-d01691d1dc52" style="display:inline-block"><strong>Phase 1 --- Web and UI Foundations</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8025-ac96-ce3a5e48362a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-809e-aaec-c96828272f28" style="display:inline-block"><strong>Phase 2 --- Data and SQL Foundations</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80a4-ad56-c88eae727ec6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80ce-a2d2-d5c9c2299628" style="display:inline-block"><strong>Phase 3 --- APIs and JSON Communication</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8028-be79-db5f2cebcc85" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80c9-b35b-d4dede8bf461" style="display:inline-block"><strong>Phase 4 --- Asynchronous Programming, Error Handling, and Testing</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8073-9eb7-e8ddaef344db" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8094-90f7-c3ca78272e6f" style="display:inline-block"><strong>Phase 5 --- Data Structures and Algorithms Applied to Real Systems</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8051-b0e8-d6cdae881840" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0"><h2 id="3e615921-b68f-8039-ad02-dc744f423f5f" style="display:inline-block"><strong>Black Belt: Advanced Systems and Specialization</strong></h2></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8054-af67-f7df0601e808" style="display:inline-block"><strong>Phase 1 --- Performance and Optimization (Single-Machine Focus)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8055-ab70-ea0d09f74277" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8020-b0cb-e70761e5e3e5" style="display:inline-block"><strong>Phase 2 --- Concurrency and Parallel Execution</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8028-aacd-ce6ec382df5e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80eb-b92a-c629547b5f2b" style="display:inline-block"><strong>Phase 3 --- Networking and Communication Systems</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8001-9f58-f7bfa97c36d3" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8028-ac67-ea913ee4445d" style="display:inline-block"><strong>Phase 4 --- Distributed Systems (Multi-Machine Thinking)</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80c4-939b-e67a8bb619e0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80ec-9deb-d033d5bd4061" style="display:inline-block"><strong>Phase 5 --- Security and System Integrity</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8028-a937-e30efd9e9971" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-80c8-a20d-f5303a8f6788" style="display:inline-block"><strong> Phase 6 --- Low-Level Systems and Compilation</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-8022-b79c-c4668f50e8e0" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.25em;line-height:1.3;margin:0"><h3 id="3e615921-b68f-8052-a886-e23b8e412025" style="display:inline-block"><strong>Phase 7 --- Optional Mastery Extension: GPU and Advanced Compute</strong></h3></summary><div class="indented"><ul id="3e615921-b68f-80b2-a713-fc97f34745c1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Key Concepts \| Code Syntax \| Sample Flowcharts \| Sample Projects</li></ul></div></details></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-8010-b09c-c96f408e767d" style="display:inline-block"><strong>Suggested Completion Standard</strong></h1></summary><div class="indented"><p id="3e615921-b68f-80ff-a56e-cc0811b179ff" class="" dir="auto">A belt is complete when the learner can:</p><ul id="3e615921-b68f-8010-8815-e242cae26ac1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Explain its core concepts in their own words.</li></ul><ul id="3e615921-b68f-80d7-bab4-c1fbf16aef88" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Apply those concepts in a small project.</li></ul><ul id="3e615921-b68f-80f2-acac-f0ed1c57615f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Trace the program&#x27;s logic and data flow.</li></ul><ul id="3e615921-b68f-8069-8fad-eb70a8509037" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Identify and troubleshoot common errors.</li></ul><p id="3e615921-b68f-8087-b9aa-dc00d469ed8d" class="" dir="auto">For <strong>advanced belts (Brown/Black)</strong>, phases should be treated as <strong>specializations rather than exhaustive curricula</strong>.</p><p id="3e615921-b68f-8041-a74a-c36f97a8fe9b" class="" dir="auto">The completion standard is not to memorize or master every detail within a specialization. Instead, the learner should be able to:</p><ul id="3e615921-b68f-801b-8b8a-c5294f7ed075" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Identify the most important concepts and components.</li></ul><ul id="3e615921-b68f-80a9-9a73-f530ee5b34c6" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Explain what they do and why they matter.</li></ul><ul id="3e615921-b68f-800d-a7b0-ed235d4e3e91" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Reduce complex topics to their fundamental building blocks.</li></ul><ul id="3e615921-b68f-8035-84a2-e5fbb0863509" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Demonstrate the core concepts through a small example or project.</li></ul><ul id="3e615921-b68f-8066-86c3-c1ac7c8250bb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Recognize where deeper specialization would be necessary.</li></ul><p id="3e615921-b68f-8072-b1b7-f7b00f82843f" class="" dir="auto"><strong>The goal is conceptual coverage and practical understanding—not collecting every possible piece of information.</strong></p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e615921-b68f-8015-b82d-e1665036c10d" style="display:inline-block"><strong>Conclusion</strong></h1></summary><div class="indented"><p id="3e615921-b68f-804a-9c25-f4b32cce62ce" class="" dir="auto">That&#x27;s the roadmap and belt system.</p><p id="3e615921-b68f-807b-9a21-d99957936f50" class="" dir="auto">We now have a structured system for understanding **what to learn, why</p><p id="3e615921-b68f-8069-bee4-cf137d486c1f" class="" dir="auto">it matters, how concepts connect, and how to apply them**.</p><p id="3e615921-b68f-8021-8fa6-d611011b81da" class="" dir="auto">With the meta-learning component, the goal isn&#x27;t just to get through</p><p id="3e615921-b68f-80b1-b590-eecab1c191af" class="" dir="auto">this roadmap. It&#x27;s to develop a repeatable approach for navigating</p><p id="3e615921-b68f-800d-b9a3-fb90b4ef45d7" class="" dir="auto">future programming topics---and, where useful, other technical subjects.</p></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

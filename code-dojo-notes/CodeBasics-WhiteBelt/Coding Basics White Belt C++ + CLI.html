@@ -1,0 +1,1146 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/C++ + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-8005-ae15-db03ef85e30a" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/C++ + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-80fd-97b2-c78c23819620" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801f-af7c-c9997cca3af1" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8006-8823-fe539bf03df6" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-80b2-8d26-e56c05bc53f5" class="" dir="auto">Q1: What is a variable in C++?<br/>A: A variable is a named container that stores data your program can change.</p><p id="39315921-b68f-80b7-9df2-da2efdeb159a" class="" dir="auto">Q2: When should I use a variable?<br/>A: When the value needs to change while the program runs.</p><p id="39315921-b68f-8092-9848-e8d7987fd71e" class="" dir="auto">Q3: How do I create a variable in C++?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js" integrity="sha512-8VrjxGFLIkS0mgEmO3p46A5OkqATHhrNVwyv2V7yUeZrk1jmSDuI3SOEpC9XHEHUWEOsfzzcJeBlUkee9lKGrw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js" integrity="sha512-namzGTZvHaug0jeipHRN2pMepMiJj+EbrloktVFlMYGnA0EwZhbdLeENjBYLCgoghVbZGinIz/FFYHmB0o3wLw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-80f6-a9d6-eb754f184232" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int score = 10;</code></pre><p id="39315921-b68f-8065-87a1-c1f351e58a51" class="" dir="auto">Q4: What is a constant in C++?<br/>A: A constant is a value that cannot change after it is set.</p><p id="39315921-b68f-802d-9bdc-f7b34a6dd227" class="" dir="auto">Q5: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-806f-80a0-c29c4f2405df" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">const int MAX = 100;</code></pre><p id="39315921-b68f-8069-98a3-d9553f58cfdb" class="" dir="auto">Q6: When should I use a constant?<br/>A: When the value should never change, like limits or fixed settings.</p><p id="39315921-b68f-8081-941e-ee609bff688d" class="" dir="auto">Q7: Why use variables instead of fixed values?<br/>A: So your program can change and adapt.</p><p id="39315921-b68f-8099-94c9-d64b5ab5ee1e" class="" dir="auto">Q8: What does const do?<br/>A: It locks a value so it cannot be modified.</p><p id="39315921-b68f-8056-85bb-eb7c556fb00b" class="" dir="auto">Q9: Can variables change in C++?<br/>A: Yes, unless marked const.</p><p id="39315921-b68f-8058-8d4e-f43820addc18" class="" dir="auto">Q10: Why are variables important?<br/>A: They let programs remember and update information.</p></div></details><hr id="39315921-b68f-804e-9c24-db0242af29ce" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8091-82e7-ff8686d510cd" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8085-9eaa-c4ea1fdd38c4" class="" dir="auto">Q11: What is a data type?<br/>A: It tells C++ what kind of value is stored.</p><p id="39315921-b68f-80ff-929f-df875838c3db" class="" dir="auto">Q12: What is an int?<br/>A:</p><pre id="39315921-b68f-80b7-b4ba-d7379131deac" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int age = 20;</code></pre><p id="39315921-b68f-80a9-b5b0-c2545d52449a" class="" dir="auto">Q13: What is a double?<br/>A:</p><pre id="39315921-b68f-8044-aed3-ee2b915caddb" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">double price = 4.99;</code></pre><p id="39315921-b68f-80ce-936a-cb64943c1a42" class="" dir="auto">Q14: What is a string?<br/>A:</p><pre id="39315921-b68f-80a1-bf6b-d24713f70245" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;string&gt;
+std::string name = &quot;Alex&quot;;</code></pre><p id="39315921-b68f-80b3-8326-db71f9c2ff55" class="" dir="auto">Q15: What is a bool?<br/>A:</p><pre id="39315921-b68f-80a4-815f-f446394e0bf2" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">bool isAlive = true;</code></pre><p id="39315921-b68f-8035-b2d8-d9b65358ef60" class="" dir="auto">Q16: When should I use int vs double?<br/>A: int for whole numbers, double for decimals.</p><p id="39315921-b68f-80a1-8b46-ec7d004bac29" class="" dir="auto">Q17: Why do data types matter?<br/>A: They prevent incorrect operations.</p><p id="39315921-b68f-8055-a1d9-e5a1f489acb0" class="" dir="auto">Q18: What is char?<br/>A:</p><pre id="39315921-b68f-80b3-b3fd-cc2ec5c108da" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-802f-88df-e9675704679c" class="" dir="auto">Q19: Can types be mixed?<br/>A: Yes, but it may require conversion.</p><p id="39315921-b68f-8076-b45d-ec02dd3c276d" class="" dir="auto">Q20: Why choose correct types?<br/>A: To keep programs predictable and safe.</p></div></details><hr id="39315921-b68f-800e-ac12-de711fcaa923" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f7-8252-ed33045c1af8" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-8009-8e0d-d4293c076d53" class="" dir="auto">Q21: How do I print text in C++?<br/>A:</p><pre id="39315921-b68f-8031-96de-e453ce6d2d34" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+std::cout &lt;&lt; &quot;Hello&quot;;</code></pre><p id="39315921-b68f-809c-97ca-e284aab44384" class="" dir="auto">Q22: What is output?<br/>A: Information shown to the user.</p><p id="39315921-b68f-8078-b2f9-ebbd0cbf9c1c" class="" dir="auto">Q23: What is input?<br/>A: Data the user types in the terminal.</p><p id="39315921-b68f-806e-99a8-f36ada90114f" class="" dir="auto">Q24: How do I read input?<br/>A:</p><pre id="39315921-b68f-809f-a5ee-f4d01588ff61" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int age;
+std::cin &gt;&gt; age;</code></pre><p id="39315921-b68f-801d-8342-fa85275b950a" class="" dir="auto">Q25: Why use std::cin?<br/>A: It allows keyboard input.</p><p id="39315921-b68f-80f3-84a2-d7a01d181f4e" class="" dir="auto">Q26: How do I read a string with spaces?<br/>A:</p><pre id="39315921-b68f-80c6-992c-efb9512a3084" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::getline(std::cin, name);</code></pre><p id="39315921-b68f-80ce-aa54-e0603fb59deb" class="" dir="auto">Q27: Why use std::cout?<br/>A: It prints output to the terminal.</p><p id="39315921-b68f-804f-a172-e4f4e971c431" class="" dir="auto">Q28: What is the &lt;&lt; operator?<br/>A: It sends data to output.</p><p id="39315921-b68f-8056-b7da-cc583d225804" class="" dir="auto">Q29: What is the &gt;&gt; operator?<br/>A: It takes input from the user.</p><p id="39315921-b68f-8071-aa36-f9d3f7306e34" class="" dir="auto">Q30: Why use CLI input/output?<br/>A: It makes programs interactive.</p></div></details><hr id="39315921-b68f-80ec-afea-f6fccd0cb051" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d0-9925-dbf9bc5a367c" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-8078-8e25-fcb480fb69bd" class="" dir="auto">Q31: How do I add numbers in C++?<br/>A:</p><pre id="39315921-b68f-8040-b287-c23b151242d7" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a + b;</code></pre><p id="39315921-b68f-804a-8ff0-ca80d4f7e308" class="" dir="auto">Q32: How do I subtract?<br/>A:</p><pre id="39315921-b68f-80bb-9fa1-c059b5750274" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-807d-9d2c-c630e6d57061" class="" dir="auto">Q33: How do I multiply?<br/>A:</p><pre id="39315921-b68f-80db-9a79-c8d506a0e0b9" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-8008-bbf2-d645a3f6b325" class="" dir="auto">Q34: How do I divide?<br/>A:</p><pre id="39315921-b68f-80cc-a696-fc9c1f1e5b56" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a / b;</code></pre><p id="39315921-b68f-8051-8011-f77f252d8951" class="" dir="auto">Q35: What is modulus?<br/>A:</p><pre id="39315921-b68f-8008-b5f9-e0ba2e74cfad" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int r = a % b;</code></pre><p id="39315921-b68f-80aa-afd8-c76d965a8b63" class="" dir="auto">Q36: When should I use modulus?<br/>A: For remainder checks like even/odd.</p><p id="39315921-b68f-805b-accb-ca847e2afc23" class="" dir="auto">Q37: What happens in integer division?<br/>A: Decimals are removed.</p><p id="39315921-b68f-80c1-a8af-d33d680209c6" class="" dir="auto">Q38: How to get decimal division?<br/>A:</p><pre id="39315921-b68f-80db-89e5-fe3264bd40bd" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">double result = (double)a / b;</code></pre><p id="39315921-b68f-8046-a1d5-efc8026bf134" class="" dir="auto">Q39: Why store math results?<br/>A: So they can be reused.</p><p id="39315921-b68f-8029-8fed-c71ac5f87af2" class="" dir="auto">Q40: Why is math important?<br/>A: Many programs rely on calculations.</p></div></details><hr id="39315921-b68f-80a8-a8a7-fba64879afa1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8087-8bad-e5dd819d267d" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8018-9b02-c65dfa28e2ea" class="" dir="auto">Q41: What is an if statement?<br/>A: A decision tool in code.</p><p id="39315921-b68f-804d-a613-e3f6440fa006" class="" dir="auto">Q42: When should I use if?<br/>A: When something depends on a condition.</p><p id="39315921-b68f-807e-bcb9-eeda86a0fd0e" class="" dir="auto">Q43: How do I write an if statement?<br/>A:</p><pre id="39315921-b68f-8022-93b3-de3cb316f70e" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    std::cout &lt;&lt; &quot;Adult&quot;;
+}</code></pre><p id="39315921-b68f-800f-a3a1-d16c3f4298bd" class="" dir="auto">Q44: What is else?<br/>A: What happens when if is false.</p><p id="39315921-b68f-807d-8886-f66c8d13124f" class="" dir="auto">Q45: How do I use else?<br/>A:</p><pre id="39315921-b68f-8076-85bc-c6bf31f15ff1" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50) {
+    std::cout &lt;&lt; &quot;Pass&quot;;
+} else {
+    std::cout &lt;&lt; &quot;Fail&quot;;
+}</code></pre><p id="39315921-b68f-8015-a94d-d04025645dc0" class="" dir="auto">Q46: What is a condition?<br/>A: A true or false question.</p><p id="39315921-b68f-806a-b0f8-f5b99dc39a76" class="" dir="auto">Q47: What operators are used in conditions?<br/>A:</p><pre id="39315921-b68f-806b-b422-cdfa44eec4d8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">== != &lt; &gt; &lt;= &gt;=</code></pre><p id="39315921-b68f-80ae-88df-f5adbba88c30" class="" dir="auto">Q48: Why use conditions?<br/>A: To control program behavior.</p><p id="39315921-b68f-80ef-82d1-c2e7dea6ed53" class="" dir="auto">Q49: Can I check multiple conditions?<br/>A:</p><pre id="39315921-b68f-805e-ada6-cb602aa1d8f0" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (age &gt; 18 &amp;&amp; hasID)</code></pre><p id="39315921-b68f-80cc-b77c-e44a11d6c342" class="" dir="auto">Q50: What does &amp;&amp; mean?<br/>A: Both conditions must be true.</p></div></details><hr id="39315921-b68f-8093-9758-cbfa738fd5f1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-801b-9c2a-da410ff1ab79" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8058-b466-e1574eccd231" class="" dir="auto">Q51: How do I generate random numbers in C++?<br/>A:</p><pre id="39315921-b68f-804f-8dd3-d392e2d8fbd9" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+std::srand(time(0));
+int num = std::rand() % 10 + 1;</code></pre><p id="39315921-b68f-80eb-8a17-ca6825273076" class="" dir="auto">Q52: What does rand() do?<br/>A: Generates a random number.</p><p id="39315921-b68f-809d-b952-e705f0bda46e" class="" dir="auto">Q53: Why use srand(time(0))?<br/>A: To make numbers different each run.</p><p id="39315921-b68f-8059-8d8e-eae401f3d2c1" class="" dir="auto">Q54: How do I get 1–6 random?<br/>A:</p><pre id="39315921-b68f-80cd-a0e1-c443c76bd777" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int roll = std::rand() % 6 + 1;</code></pre><p id="39315921-b68f-8034-9c41-ecd7de79c046" class="" dir="auto">Q55: When should I use random numbers?<br/>A: Games and simulations.</p><p id="39315921-b68f-804f-8352-c3ceae0ca4f2" class="" dir="auto">Q56: Why is rand() limited?<br/>A: It produces predictable sequences without seeding.</p><p id="39315921-b68f-80f2-a547-cd84daaf423b" class="" dir="auto">Q57: How do I generate true randomness?<br/>A: Use modern C++ &lt;random&gt; library.</p><p id="39315921-b68f-80f5-88ea-f931be5ecf74" class="" dir="auto">Q58: How do I pick true/false randomly?<br/>A:</p><pre id="39315921-b68f-801a-b00e-ed49506147b1" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">bool b = std::rand() % 2;</code></pre><p id="39315921-b68f-8064-8924-c2238699eb68" class="" dir="auto">Q59: How do I randomize decisions?<br/>A:</p><pre id="39315921-b68f-80f7-b156-c2a2b29698c4" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (std::rand() % 100 &lt; 50)</code></pre><p id="39315921-b68f-80bc-949e-c2214238efc0" class="" dir="auto">Q60: Why are random numbers useful?<br/>A: They make programs unpredictable and dynamic.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f2-99a3-cd346cca2127" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d3-9a14-e4ec7fdbc4c1" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-8042-8f71-f7e74ec88a5c" class="" dir="auto">Q1: I want to store a player&#x27;s name.<br/>A:</p><pre id="39315921-b68f-8087-a911-ed7241c09d05" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::string playerName = &quot;Alex&quot;;</code></pre><p id="39315921-b68f-808b-8ce1-e2ef8610c598" class="" dir="auto">Q2: I want to store a score that changes.<br/>A:</p><pre id="39315921-b68f-80d3-86c1-cc115cbde988" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int score = 0;</code></pre><p id="39315921-b68f-80e1-a0d6-c06f39a6142b" class="" dir="auto">Q3: I want to store a constant max value.<br/>A:</p><pre id="39315921-b68f-8093-a67c-c0938c76350b" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">const int MAX_SCORE = 100;</code></pre><p id="39315921-b68f-80e3-9526-e3da7f5b55a2" class="" dir="auto">Q4: I want to increase score by 10.<br/>A:</p><pre id="39315921-b68f-802f-b9d4-fa690c46d093" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">score += 10;</code></pre><p id="39315921-b68f-8006-9eac-d67d1649cf79" class="" dir="auto">Q5: I want to reset a score.<br/>A:</p><pre id="39315921-b68f-80a3-b6e2-fcfc4e18c1a8" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">score = 0;</code></pre><p id="39315921-b68f-80dd-99a3-c2d753c7c23c" class="" dir="auto">Q6: I want to store player health.<br/>A:</p><pre id="39315921-b68f-80a3-9283-e3d89c191ce6" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int health = 100;</code></pre><p id="39315921-b68f-80ff-874f-ee4f74a8b4bc" class="" dir="auto">Q7: I want to store true/false state.<br/>A:</p><pre id="39315921-b68f-808f-9cd9-c1ec6ac1f31c" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">bool isAlive = true;</code></pre><p id="39315921-b68f-8087-8f70-c6dc73ed8d82" class="" dir="auto">Q8: I want to store a decimal value.<br/>A:</p><pre id="39315921-b68f-8049-85f6-f99a5e5dc4ea" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">double price = 19.99;</code></pre><p id="39315921-b68f-80bf-b94d-c80946e1692e" class="" dir="auto">Q9: I want to store a single character.<br/>A:</p><pre id="39315921-b68f-8082-845e-c44f79e5b2ae" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">char grade = &#x27;A&#x27;;</code></pre><p id="39315921-b68f-800c-a0dd-e1435d8c8145" class="" dir="auto">Q10: I want to update a variable value.<br/>A:</p><pre id="39315921-b68f-80a6-a6e7-d03afd3db12e" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">playerName = &quot;Jordan&quot;;</code></pre></div></details><hr id="39315921-b68f-80db-a156-cc0c2a8dbffc" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8051-9d4e-f72797fac98a" style="display:inline-block">Input / Output (CLI)</h1></summary><div class="indented"><p id="39315921-b68f-80a9-b6ea-c96c2fd763b5" class="" dir="auto">Q11: I want to print text to terminal.<br/>A:</p><pre id="39315921-b68f-8095-95a2-d4395fcc5fe6" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; &quot;Hello World&quot;;</code></pre><p id="39315921-b68f-80b7-9533-d8ec23a955f2" class="" dir="auto">Q12: I want to read a number from user.<br/>A:</p><pre id="39315921-b68f-80bb-9137-fa961da40a02" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int age;
+std::cin &gt;&gt; age;</code></pre><p id="39315921-b68f-8079-af13-c8f410c3d81e" class="" dir="auto">Q13: I want to read a string with spaces.<br/>A:</p><pre id="39315921-b68f-80cd-90c2-caa93dbb4eaf" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::getline(std::cin, playerName);</code></pre><p id="39315921-b68f-80b7-96fd-fb9d0fe6ac15" class="" dir="auto">Q14: I want to print a variable.<br/>A:</p><pre id="39315921-b68f-80b5-9c96-f1251ce4f2d6" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; score;</code></pre><p id="39315921-b68f-807d-b031-ddd423e5df3e" class="" dir="auto">Q15: I want to print text and variable together.<br/>A:</p><pre id="39315921-b68f-80e2-8f92-e1d66bf6c055" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; &quot;Score: &quot; &lt;&lt; score;</code></pre><p id="39315921-b68f-8060-9a65-eb2a9036ddc1" class="" dir="auto">Q16: I want to ask for two inputs.<br/>A:</p><pre id="39315921-b68f-804b-8df5-e34eb6f14c2a" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int a, b;
+std::cin &gt;&gt; a &gt;&gt; b;</code></pre><p id="39315921-b68f-80ee-b5f1-c9b4b5f5a19b" class="" dir="auto">Q17: I want to print a new line.<br/>A:</p><pre id="39315921-b68f-8030-8c44-c9ee328fa7f6" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; &quot;\n&quot;;</code></pre><p id="39315921-b68f-80c7-aea5-f3eb345d54a0" class="" dir="auto">Q18: I want to display a welcome message.<br/>A:</p><pre id="39315921-b68f-80cf-9692-f2a0b99f5e68" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; &quot;Welcome!\n&quot;;</code></pre><p id="39315921-b68f-809b-9095-ea2a87c5baf1" class="" dir="auto">Q19: I want to pause program for input.<br/>A:</p><pre id="39315921-b68f-801d-8679-ce519208784d" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cin.get();</code></pre><p id="39315921-b68f-8021-94e0-df136b652553" class="" dir="auto">Q20: I want to display both values.<br/>A:</p><pre id="39315921-b68f-80f7-87b6-d657b24b9e32" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; a &lt;&lt; &quot; &quot; &lt;&lt; b;</code></pre></div></details><hr id="39315921-b68f-80ef-80ef-e14175786c2d" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-807d-b795-fec8fa15252d" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80e1-8e08-caba8f6abc6b" class="" dir="auto">Q21: I want to add two numbers.<br/>A:</p><pre id="39315921-b68f-80df-a6f7-da91006cfddf" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a + b;</code></pre><p id="39315921-b68f-8010-ab93-f9a6cfca0661" class="" dir="auto">Q22: I want to subtract.<br/>A:</p><pre id="39315921-b68f-8047-a13c-e3c0ee5a75e5" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a - b;</code></pre><p id="39315921-b68f-80e8-80a1-fbe64cf3b9fb" class="" dir="auto">Q23: I want to multiply.<br/>A:</p><pre id="39315921-b68f-80e6-97ef-c997939d1bd4" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a * b;</code></pre><p id="39315921-b68f-8060-ad12-d6bdc46496d5" class="" dir="auto">Q24: I want to divide.<br/>A:</p><pre id="39315921-b68f-803d-9a2f-c90f7ece7489" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int result = a / b;</code></pre><p id="39315921-b68f-807b-ae64-c99a12d937f9" class="" dir="auto">Q25: I want remainder.<br/>A:</p><pre id="39315921-b68f-8033-9c32-fa138eea771a" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int r = a % b;</code></pre><p id="39315921-b68f-80ef-b25b-ca81ea4f822d" class="" dir="auto">Q26: I want to increase value by 1.<br/>A:</p><pre id="39315921-b68f-80c2-8a68-ca9e95e495ed" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">score++;</code></pre><p id="39315921-b68f-8008-955c-fa0cea211720" class="" dir="auto">Q27: I want to decrease value by 1.<br/>A:</p><pre id="39315921-b68f-804f-a5cf-e0658c36a9e9" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">score--;</code></pre><p id="39315921-b68f-8075-878b-ca7a8425a53a" class="" dir="auto">Q28: I want to double a value.<br/>A:</p><pre id="39315921-b68f-80dd-9463-d3d359003148" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">value *= 2;</code></pre><p id="39315921-b68f-80ce-a6dd-fb3c631e223a" class="" dir="auto">Q29: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-807d-b856-dd452ac1b859" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">double avg = (a + b) / 2.0;</code></pre><p id="39315921-b68f-802c-8c36-f381b00e5585" class="" dir="auto">Q30: I want to calculate total cost.<br/>A:</p><pre id="39315921-b68f-809d-8ed0-ff3e1d055698" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">double total = price * quantity;</code></pre></div></details><hr id="39315921-b68f-8051-8377-d1bd5f8c317f" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80af-acde-db491d0b9a76" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8043-94ba-f51e17847e41" class="" dir="auto">Q31: I want to check if user is adult.<br/>A:</p><pre id="39315921-b68f-80e9-b811-e41cde820ac0" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    std::cout &lt;&lt; &quot;Adult&quot;;
+}</code></pre><p id="39315921-b68f-8083-8cb8-ea2e98a74481" class="" dir="auto">Q32: I want to block minors.<br/>A:</p><pre id="39315921-b68f-8046-89a8-e95e5de15c52" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (age &lt; 18) {
+    std::cout &lt;&lt; &quot;Blocked&quot;;
+}</code></pre><p id="39315921-b68f-80ff-8fc7-c649e12cf048" class="" dir="auto">Q33: I want pass/fail check.<br/>A:</p><pre id="39315921-b68f-8076-993a-ff36ccefc891" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 50) {
+    std::cout &lt;&lt; &quot;Pass&quot;;
+} else {
+    std::cout &lt;&lt; &quot;Fail&quot;;
+}</code></pre><p id="39315921-b68f-8053-b91a-ecd2e5e837e2" class="" dir="auto">Q34: I want equality check.<br/>A:</p><pre id="39315921-b68f-8087-8485-c1e7c570bfe7" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (a == b) {
+    std::cout &lt;&lt; &quot;Equal&quot;;
+}</code></pre><p id="39315921-b68f-806d-ae4c-e75996f97804" class="" dir="auto">Q35: I want not equal check.<br/>A:</p><pre id="39315921-b68f-806e-bd46-efaa243e7445" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (a != b) {
+    std::cout &lt;&lt; &quot;Not equal&quot;;
+}</code></pre><p id="39315921-b68f-80ec-a1df-d91e8c2d9b78" class="" dir="auto">Q36: I want greater than check.<br/>A:</p><pre id="39315921-b68f-806b-9428-f8e242e39a25" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 80) {
+    std::cout &lt;&lt; &quot;High score&quot;;
+}</code></pre><p id="39315921-b68f-809a-8214-efd33b76b985" class="" dir="auto">Q37: I want multiple conditions (AND).<br/>A:</p><pre id="39315921-b68f-802a-ab11-f78fa9a004cf" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (age &gt; 18 &amp;&amp; hasID) {
+    std::cout &lt;&lt; &quot;Allowed&quot;;
+}</code></pre><p id="39315921-b68f-8072-a3a8-cf4d42c7e241" class="" dir="auto">Q38: I want OR condition.<br/>A:</p><pre id="39315921-b68f-80be-a7fb-e21d9e0e3a52" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (isAdmin || isMod) {
+    std::cout &lt;&lt; &quot;Access granted&quot;;
+}</code></pre><p id="39315921-b68f-80c7-b86b-d8f36c4682b1" class="" dir="auto">Q39: I want grade system.<br/>A:</p><pre id="39315921-b68f-805b-99fa-c20920beb396" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 90) {
+    std::cout &lt;&lt; &quot;A&quot;;
+} else if (score &gt;= 80) {
+    std::cout &lt;&lt; &quot;B&quot;;
+} else {
+    std::cout &lt;&lt; &quot;C&quot;;
+}</code></pre><p id="39315921-b68f-8028-a12d-d40758949a42" class="" dir="auto">Q40: I want to check empty input.<br/>A:</p><pre id="39315921-b68f-800e-906c-e6ae3012ec28" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (input.empty()) {
+    std::cout &lt;&lt; &quot;Invalid&quot;;
+}</code></pre></div></details><hr id="39315921-b68f-8092-b82c-ce71571174cb" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8041-90c7-c0ad27a7256b" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-80cb-8ff3-f008baf162ec" class="" dir="auto">Q41: I want random number 1–10.<br/>A:</p><pre id="39315921-b68f-8090-ad2e-c888176bfccb" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+
+std::srand(time(0));
+int num = std::rand() % 10 + 1;</code></pre><p id="39315921-b68f-80b8-ab0b-dffce06ba51b" class="" dir="auto">Q42: I want dice roll.<br/>A:</p><pre id="39315921-b68f-8001-bbd6-ec9d72091847" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int roll = std::rand() % 6 + 1;</code></pre><p id="39315921-b68f-8017-861a-eca4d45d8954" class="" dir="auto">Q43: I want random true/false.<br/>A:</p><pre id="39315921-b68f-80b3-bfe3-e52e37e626e6" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">bool b = std::rand() % 2;</code></pre><p id="39315921-b68f-80ad-b217-cff1c146c8c7" class="" dir="auto">Q44: I want random damage.<br/>A:</p><pre id="39315921-b68f-800a-a487-d198a4791ba8" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int damage = std::rand() % 10 + 5;</code></pre><p id="39315921-b68f-8057-9890-defd32f9b329" class="" dir="auto">Q45: I want random chance check.<br/>A:</p><pre id="39315921-b68f-80b5-8091-e169a17c3e00" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (std::rand() % 100 &lt; 50)</code></pre><p id="39315921-b68f-80a9-95c4-fb42eb06f8ea" class="" dir="auto">Q46: I want random 50–100 number.<br/>A:</p><pre id="39315921-b68f-8097-b98a-d09ac5eb8fdc" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int num = std::rand() % 51 + 50;</code></pre><p id="39315921-b68f-8050-80b0-fbf72e58eca8" class="" dir="auto">Q47: I want random array selection.<br/>A:</p><pre id="39315921-b68f-8025-a37e-d9557d96f419" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::string names[] = {&quot;A&quot;, &quot;B&quot;, &quot;C&quot;};
+std::string pick = names[std::rand() % 3];</code></pre><p id="39315921-b68f-802e-84ef-ea241dd3bc63" class="" dir="auto">Q48: I want critical hit chance.<br/>A:</p><pre id="39315921-b68f-80df-8cae-fe30d23e2c9c" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (std::rand() % 100 &lt; 25)</code></pre><p id="39315921-b68f-809c-a43b-fbb8b7c64225" class="" dir="auto">Q49: I want random decision output.<br/>A:</p><pre id="39315921-b68f-80d4-a6b7-d3acc278195a" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; (std::rand() % 2 ? &quot;Yes&quot; : &quot;No&quot;);</code></pre><p id="39315921-b68f-80cc-9a35-f5f28ce34ed9" class="" dir="auto">Q50: I want random event trigger.<br/>A:</p><pre id="39315921-b68f-8004-9b02-d95e68e06601" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (std::rand() % 100 &lt; 10) {
+    std::cout &lt;&lt; &quot;Event!&quot;;
+}</code></pre></div></details><hr id="39315921-b68f-80e2-b025-cf3c3c510163" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-806f-a995-e32e958f846b" style="display:inline-block">Mixed CLI Logic</h1></summary><div class="indented"><p id="39315921-b68f-8011-84c2-d9595dac910e" class="" dir="auto">Q51: I want greet user by name.<br/>A:</p><pre id="39315921-b68f-8064-88ba-c95eb0f4270f" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; &quot;Hello &quot; &lt;&lt; name;</code></pre><p id="39315921-b68f-80d3-8127-c118b3e9ed47" class="" dir="auto">Q52: I want add two inputs directly.<br/>A:</p><pre id="39315921-b68f-8081-b3f5-ca69bdfe457d" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">int sum = a + b;</code></pre><p id="39315921-b68f-809e-ab41-c0f7d3302cc0" class="" dir="auto">Q53: I want check positive number.<br/>A:</p><pre id="39315921-b68f-80d0-a4d8-d0f8b1637ec1" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (num &gt; 0) {
+    std::cout &lt;&lt; &quot;Positive&quot;;
+}</code></pre><p id="39315921-b68f-801d-9b4c-c10a0036b3c3" class="" dir="auto">Q54: I want prevent divide by zero.<br/>A:</p><pre id="39315921-b68f-8000-a0ef-cc4cb477973c" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (b != 0) {
+    std::cout &lt;&lt; a / b;
+}</code></pre><p id="39315921-b68f-80e9-b1a0-e890eae4baa0" class="" dir="auto">Q55: I want limit score max to 100.<br/>A:</p><pre id="39315921-b68f-805b-bd15-e42b6fbcf02e" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 100) score = 100;</code></pre><p id="39315921-b68f-80a3-b745-c2a3153ecd7a" class="" dir="auto">Q56: I want show name and score.<br/>A:</p><pre id="39315921-b68f-8085-b02e-e13792de6b92" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; name &lt;&lt; &quot;: &quot; &lt;&lt; score;</code></pre><p id="39315921-b68f-8085-a68d-fd72d6ba5279" class="" dir="auto">Q57: I want login check.<br/>A:</p><pre id="39315921-b68f-8033-9677-c26e8e3b9348" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (user == &quot;admin&quot; &amp;&amp; pass == &quot;1234&quot;)</code></pre><p id="39315921-b68f-8009-81fe-dbb28ea0eb21" class="" dir="auto">Q58: I want check empty string.<br/>A:</p><pre id="39315921-b68f-803f-9baa-c6a46fc7cfe8" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (input.empty())</code></pre><p id="39315921-b68f-800b-b279-f3e8da765286" class="" dir="auto">Q59: I want compare max value.<br/>A:</p><pre id="39315921-b68f-8064-a91d-c316233e811d" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">std::cout &lt;&lt; std::max(a, b);</code></pre><p id="39315921-b68f-80a7-9a78-d864c1ad734f" class="" dir="auto">Q60: I want trigger rare event.<br/>A:</p><pre id="39315921-b68f-8038-8bab-e63378da8577" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">if (std::rand() % 100 &lt; 5) {
+    std::cout &lt;&lt; &quot;Rare event!&quot;;
+}</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8086-8b50-c306a28dd787" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-80f4-bbff-da1d8af4fe06" class="" dir="auto">Flowchart Shape Key</h3><table id="3e315921-b68f-807e-9627-d8c8f66d67b9" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-805d-b20f-e1850a189b5b" dir="ltr"><th id="fpRp" class="simple-table-header-color simple-table-header">Shape</th><th id="LstK" class="simple-table-header-color simple-table-header">Meaning</th><th id="B\D|" class="simple-table-header-color simple-table-header">Used for</th></tr></thead><tbody><tr id="3e315921-b68f-80c9-aaa6-e9393b76e9c8" dir="ltr"><td id="fpRp" class=""><code>([ START / END ])</code></td><td id="LstK" class=""><strong>Oval / Terminator</strong></td><td id="B\D|" class="">Program start or end</td></tr><tr id="3e315921-b68f-8098-930b-f2a6cd758174" dir="ltr"><td id="fpRp" class=""><code>[ Process ]</code></td><td id="LstK" class=""><strong>Rectangle</strong></td><td id="B\D|" class="">Calculations, assignments, setup, generating values</td></tr><tr id="3e315921-b68f-8074-b78e-c1cf90033e58" dir="ltr"><td id="fpRp" class=""><code>[/ Input / Output /]</code></td><td id="LstK" class=""><strong>Parallelogram</strong></td><td id="B\D|" class="">User input and displayed output</td></tr><tr id="3e315921-b68f-80ed-9a1d-e464a3918bdf" dir="ltr"><td id="fpRp" class=""><code>{ Condition? }</code></td><td id="LstK" class=""><strong>Diamond</strong></td><td id="B\D|" class=""><code>if</code>, comparisons, decisions</td></tr><tr id="3e315921-b68f-804e-87d6-f6eee4a28b74" dir="ltr"><td id="fpRp" class=""><code>↓</code></td><td id="LstK" class=""><strong>Arrow</strong></td><td id="B\D|" class="">Direction of program flow</td></tr></tbody></table><hr id="3e315921-b68f-806d-bb3e-ca71514c8cc1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80b9-afc3-ffc863253495" style="display:inline-block">Project 1: CLI Calculator</h1></summary><div class="indented"><h3 id="3e315921-b68f-80b1-afdd-fe0e965466bb" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8022-bb6d-f61e2eeeec82" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Include libraries / Set up program ]
+     ↓
+[/ Display &quot;Enter first number:&quot; /]
+     ↓
+[/ Read integer a /]
+     ↓
+[/ Display &quot;Enter second number:&quot; /]
+     ↓
+[/ Read integer b /]
+     ↓
+[ Calculate add = a + b ]
+     ↓
+[ Calculate sub = a - b ]
+     ↓
+[ Calculate mul = a * b ]
+     ↓
+{ b != 0? }
+   ↙       ↘
+ YES       NO
+  ↓         ↓
+[ div =    [ div =
+  a / b ]    0 ]
+   ↘       ↙
+     ↓
+[/ Display Add result /]
+     ↓
+[/ Display Subtract result /]
+     ↓
+[/ Display Multiply result /]
+     ↓
+[/ Display Divide result /]
+     ↓
+([ END ])</code></pre><h3 id="3e315921-b68f-8049-b80b-d3515ec1e8c5" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8005-9be9-cbebd92228ff" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80a7-99ed-f02e4758380c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Include libraries / setup</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80be-95d0-de32174a53e4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for first number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80c3-bd00-c3c74cd37392" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read </strong><code><strong>a</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-80d3-8fa2-fb8a3ec36bf9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for second number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80a7-821e-d52f7d4db1a8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read </strong><code><strong>b</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-80c1-8351-c760059d709b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Calculate addition</strong> → Rectangle</li></ul><ul id="3e315921-b68f-802e-9674-d5f4571a77f7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Calculate subtraction</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80dd-a00c-fbc6ec0d3a29" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Calculate multiplication</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8046-85fb-c03bb66aef87" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>b != 0?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8036-b4da-e312d79ba09d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>div = a / b</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8002-acbb-d42d1006b39c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>div = 0</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8018-b7c7-f6d87f92c377" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display results</strong> → Parallelograms</li></ul><ul id="3e315921-b68f-807c-8424-fc08f405dc27" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><p id="3e315921-b68f-8033-8c33-d63e6c504ff0" class="" dir="auto"><strong>Core logic:</strong> Input → Calculate → Protect against division by zero → Output.</p></div></details><hr id="3e315921-b68f-8008-be70-c8a526b7cc1b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80b8-9db6-c682ac47b9a5" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-805c-a288-f95876d692c1" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80cb-96aa-e5f788a92161" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Include libraries / Set up random generator ]
+     ↓
+[ Generate secret number from 1–10 ]
+     ↓
+[/ Display &quot;Guess a number (1-10):&quot; /]
+     ↓
+[/ Read guess /]
+     ↓
+{ guess == secret? }
+    ↙          ↘
+  YES          NO
+   ↓            ↓
+[/ Display      [/ Display
+  &quot;Correct!&quot; /]   &quot;Wrong! It was secret&quot; /]
+    ↘          ↙
+       ↓
+    ([ END ])</code></pre><h3 id="3e315921-b68f-80ad-8222-f38594724982" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80de-8a9a-eb9fbacbf9b9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80ad-bd5c-e6148f04a361" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Setup random generator</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8093-95a4-cf8c9ee2ef30" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate secret number</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8061-9ae7-dac623f1ff43" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for guess</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80c1-bbff-f9b6fb861e39" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read </strong><code><strong>guess</strong></code> → Parallelogram</li></ul><ul id="3e315921-b68f-803b-9205-cf48e39fe733" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>guess == secret?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8053-9288-cc7b0b9afc40" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Correct</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-802b-bf9d-c1ea9bb57b0a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Wrong + secret</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-809f-9d2f-cf5aa76a9918" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><p id="3e315921-b68f-800c-9559-c2bf4f01150a" class="" dir="auto"><strong>Core logic:</strong> Generate → Input → Compare → Branch → Output.</p></div></details><hr id="3e315921-b68f-805d-9618-d1ba60e67902" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8005-bfd5-ddc2fc4500d6" style="display:inline-block">Project 3: Simple Login System</h1></summary><div class="indented"><h3 id="3e315921-b68f-80f5-97ed-ddc95f5b49d5" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-801d-b738-eecc44279f0b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Store correctUser = &quot;admin&quot; ]
+     ↓
+[ Store correctPass = &quot;1234&quot; ]
+     ↓
+[/ Display &quot;Username:&quot; /]
+     ↓
+[/ Read user /]
+     ↓
+[/ Display &quot;Password:&quot; /]
+     ↓
+[/ Read pass /]
+     ↓
+{ user == correctUser
+  AND
+  pass == correctPass? }
+       ↙             ↘
+     YES             NO
+      ↓               ↓
+[/ Display          [/ Display
+  &quot;Access             &quot;Access
+  Granted&quot; /]         Denied&quot; /]
+       ↘             ↙
+          ↓
+       ([ END ])</code></pre><h3 id="3e315921-b68f-80fc-ad61-f95fc7526aa4" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80f4-9417-ef0917b8ccfc" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-802a-a972-e8b6e85748f8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store correct username</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80d0-89a5-cbd3527b9701" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store correct password</strong> → Rectangle</li></ul><ul id="3e315921-b68f-808a-956b-e93f80cbd630" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Username prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8088-98c0-e967a40754a2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read username</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80b6-a8a5-deb939110ade" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Password prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-802b-ad13-fc5fa5995a2d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read password</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-801c-8323-e205897b2204" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Username AND password correct?</strong> → Diamond</li></ul><ul id="3e315921-b68f-800d-bde0-e670b9a9c034" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Granted</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8036-b2bf-d598d0446998" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Denied</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80e1-ba5f-d7b41542e0bc" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-8003-80cd-c1c95a200feb" class="" dir="auto">Important Logic</h3><pre id="3e315921-b68f-8012-acd8-df4c2537a2d7" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Username correct ──┐
+                   ├── AND ──&gt; Access Granted
+Password correct ──┘</code></pre><p id="3e315921-b68f-80fc-b6ab-d95325fc100c" class="" dir="auto">Both conditions must be <strong>true</strong>.</p></div></details><hr id="3e315921-b68f-80db-8fdf-f7c1da77e579" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8075-b26f-d6acc3661454" style="display:inline-block">Project 4: Grade Calculator</h1></summary><div class="indented"><p id="3e315921-b68f-8000-a5d0-cdf59201066f" class="" dir="auto">This one is different because it has a <strong>decision chain</strong>.</p><h3 id="3e315921-b68f-804a-ae9d-e8d5ebeda34e" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80fe-9bba-cd1ec8a5e942" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[/ Display &quot;Enter score:&quot; /]
+     ↓
+[/ Read score /]
+     ↓
+{ score &gt;= 90? }
+    ↙          ↘
+  YES          NO
+   ↓            ↓
+[/ Output A /] { score &gt;= 80? }
+                ↙          ↘
+              YES          NO
+               ↓            ↓
+          [/ Output B /] { score &gt;= 70? }
+                           ↙          ↘
+                         YES          NO
+                          ↓            ↓
+                     [/ Output C /] { score &gt;= 60? }
+                                      ↙          ↘
+                                    YES          NO
+                                     ↓            ↓
+                                [/ Output D /] [/ Output F /]
+                                     ↘          ↙
+                                       ↓
+                                    ([ END ])</code></pre><h3 id="3e315921-b68f-80e0-9c85-ce579b4323e1" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-808c-9b9f-f1ec7e20014a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80c0-8ca1-c973df706083" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display score prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80e7-8ec5-f27d06bde998" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read score</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80da-af1d-c6a0603f5539" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>score &gt;= 90?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8094-9262-e2078dfe6e4e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Output A</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80dc-bccc-d829c6c6e183" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>score &gt;= 80?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8030-8cb0-d508c7f12a6a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Output B</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-807d-933b-f869b336d007" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>score &gt;= 70?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-80cc-87b9-d57d3dc0e3d8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Output C</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8078-86b5-f1363236ff6d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>score &gt;= 60?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-80d9-a63e-de86f2564bec" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Output D</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80c0-8d8e-c99f981f36e9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Output F</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-803c-a609-c6d1061fd3e8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-8079-b075-f9e6b5c4d07b" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-8023-ab1a-e7cdc73748a6" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">90+ → A
+ ↓
+80+ → B
+ ↓
+70+ → C
+ ↓
+60+ → D
+ ↓
+&lt;60 → F</code></pre><p id="3e315921-b68f-80e8-b005-ce124d05481c" class="" dir="auto">The important concept here is that each failed condition moves to the <strong>next condition</strong>.</p></div></details><hr id="3e315921-b68f-8092-bec4-d8b105ee9c43" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-801f-9ba0-ee72236f82eb" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h3 id="3e315921-b68f-809d-8f85-fd2b8c376ce7" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8011-b472-d092277ff2e8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Include libraries / Set up random generator ]
+     ↓
+[ Generate Player 1 roll: 1–6 ]
+     ↓
+[ Generate Player 2 roll: 1–6 ]
+     ↓
+[/ Display Player 1 roll /]
+     ↓
+[/ Display Player 2 roll /]
+     ↓
+{ p1 &gt; p2? }
+    ↙          ↘
+  YES          NO
+   ↓            ↓
+[/ Display    { p2 &gt; p1? }
+  &quot;Player 1     ↙       ↘
+  Wins!&quot; /]   YES       NO
+               ↓         ↓
+          [/ Display   [/ Display
+            &quot;Player      &quot;Tie!&quot; /]
+            2 Wins!&quot; /]
+               ↘         ↙
+                  ↓
+               ([ END ])</code></pre><h3 id="3e315921-b68f-8060-b9db-d171de48b3f9" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80b5-8e83-e3273b89934f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80b2-a168-f10f5580c4e9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Setup random generator</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80a3-9dca-ce9feb2349a7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate Player 1 roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80b0-8cb2-fbb63e4d5caa" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate Player 2 roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80f7-b776-fe6bc8fa44a4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Player 1 roll</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8086-a963-c39d2d231423" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Player 2 roll</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-807e-b295-f6cd51c05a5b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>p1 &gt; p2?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8084-9b90-e6b4ba5bd215" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Player 1 Wins</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80dd-bc04-ead7378c0dc3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>p2 &gt; p1?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-808b-b2a7-f18e9d96f14a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Player 2 Wins</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80cb-9606-cec169cccadf" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Tie</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80cd-9f3b-d3078f459609" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul></div></details><hr id="3e315921-b68f-8045-bb09-ff6f37a558db" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8040-a9b2-e6483164a786" style="display:inline-block">C++ Master Flowchart</h1></summary><div class="indented"><p id="3e315921-b68f-80ff-92e3-f4769ec9379e" class="" dir="auto">All five projects can be reduced to this universal programming structure:</p><pre id="3e315921-b68f-8059-a561-c3cdeb5780c7" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  ↓
+           [ PROGRAM SETUP ]
+                  ↓
+             [/ INPUT /]
+                  ↓
+             [ PROCESS ]
+                  ↓
+           { DECISION? }
+             ↙       ↘
+           YES       NO
+            ↓         ↓
+       [ PROCESS ] [ PROCESS ]
+             ↘       ↙
+                  ↓
+             [/ OUTPUT /]
+                  ↓
+               ([ END ])</code></pre><h3 id="3e315921-b68f-8025-b179-c299a767399a" class="" dir="auto">The C++ concepts these five projects progressively introduce</h3><table id="3e315921-b68f-8021-96a9-e89a1525257c" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80e0-b0ce-c0bd3df5e01a" dir="ltr"><th id="abgv" class="simple-table-header-color simple-table-header">Project</th><th id="]LVq" class="simple-table-header-color simple-table-header">Main concept</th></tr></thead><tbody><tr id="3e315921-b68f-805c-a01a-e7fd1c066815" dir="ltr"><td id="abgv" class=""><strong>1. Calculator</strong></td><td id="]LVq" class="">Variables, input, arithmetic, ternary decision</td></tr><tr id="3e315921-b68f-809b-9dac-e17a4c6791a6" dir="ltr"><td id="abgv" class=""><strong>2. Guessing Game</strong></td><td id="]LVq" class="">Random numbers + comparison</td></tr><tr id="3e315921-b68f-80f2-b7c8-f0dc6e25fe88" dir="ltr"><td id="abgv" class=""><strong>3. Login</strong></td><td id="]LVq" class="">Strings + <code>&amp;&amp;</code> / compound conditions</td></tr><tr id="3e315921-b68f-80cb-a3b0-c7ee6a3620e6" dir="ltr"><td id="abgv" class=""><strong>4. Grade Calculator</strong></td><td id="]LVq" class=""><code>if / else if / else</code> decision chains</td></tr><tr id="3e315921-b68f-8030-8726-d3f909fe389c" dir="ltr"><td id="abgv" class=""><strong>5. Dice Battle</strong></td><td id="]LVq" class="">Random numbers + multiple branches</td></tr></tbody></table><p id="3e315921-b68f-80ff-93b2-e688b9c89420" class="" dir="auto">
+</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d6-b1a6-e37d1d7326b1" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-805f-a73a-f117c61b6c2b" style="display:inline-block">Project 1: CLI Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-8045-bdb8-dc5d6e9269f6" class="" dir="auto">What it does</h2><p id="39315921-b68f-80f3-ae13-e82ac68add19" class="" dir="auto">Takes two numbers and performs basic math operations.</p><h2 id="39315921-b68f-803f-8fb1-c1771f29ec02" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8052-acbf-e43c4c414175" class="numbered-list" start="1" dir="auto"><li>Ask user for two numbers</li></ol><ol type="1" id="39315921-b68f-800c-80e9-f01de9a0a3f0" class="numbered-list" start="2" dir="auto"><li>Store inputs</li></ol><ol type="1" id="39315921-b68f-8094-81c3-d68435af06ea" class="numbered-list" start="3" dir="auto"><li>Perform math</li></ol><ol type="1" id="39315921-b68f-80a9-946d-fa6ff8eae1db" class="numbered-list" start="4" dir="auto"><li>Display results</li></ol><pre id="39315921-b68f-80f8-a251-ef3903d16c35" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+
+    // Step 1: Ask for first number
+    cout &lt;&lt; &quot;Enter first number: &quot;;
+    int a;
+    cin &gt;&gt; a;
+
+    // Step 2: Ask for second number
+    cout &lt;&lt; &quot;Enter second number: &quot;;
+    int b;
+    cin &gt;&gt; b;
+
+    // Step 3: Perform calculations
+    int add = a + b;
+    int sub = a - b;
+    int mul = a * b;
+    int div = (b != 0) ? (a / b) : 0;
+
+    // Step 4: Display results
+    cout &lt;&lt; &quot;Add: &quot; &lt;&lt; add &lt;&lt; endl;
+    cout &lt;&lt; &quot;Subtract: &quot; &lt;&lt; sub &lt;&lt; endl;
+    cout &lt;&lt; &quot;Multiply: &quot; &lt;&lt; mul &lt;&lt; endl;
+    cout &lt;&lt; &quot;Divide: &quot; &lt;&lt; div &lt;&lt; endl;
+
+    return 0;
+}</code></pre></div></details><hr id="39315921-b68f-80d7-a391-e36ee90685c5" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8073-9e60-e30a5da258df" style="display:inline-block">Project 2: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-805f-bb7a-fd9a261ce313" class="" dir="auto">What it does</h2><p id="39315921-b68f-80dd-a928-f75735e401b7" class="" dir="auto">User guesses a random number from 1–10.</p><h2 id="39315921-b68f-8083-814f-e1bc1eb32988" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8042-b4c0-f8208fe4598b" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-8045-b043-eea512e1b811" class="numbered-list" start="2" dir="auto"><li>Ask user guess</li></ol><ol type="1" id="39315921-b68f-80a8-86bc-c0dbbf20c6e7" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-8039-a69c-e6bb2c281e0f" class="numbered-list" start="4" dir="auto"><li>Output result</li></ol><pre id="39315921-b68f-80d9-b9b5-e0a8781e1f55" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+using namespace std;
+
+int main() {
+
+    srand(time(0));
+
+    // Step 1: Generate random number
+    int secret = rand() % 10 + 1;
+
+    // Step 2: Ask user guess
+    cout &lt;&lt; &quot;Guess a number (1-10): &quot;;
+    int guess;
+    cin &gt;&gt; guess;
+
+    // Step 3: Compare
+    if (guess == secret) {
+        cout &lt;&lt; &quot;Correct!&quot; &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;Wrong! It was &quot; &lt;&lt; secret &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre></div></details><hr id="39315921-b68f-80b6-bf34-dc86001022ff" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8015-bfad-e8d3df979717" style="display:inline-block">Project 3: Simple Login System</h1></summary><div class="indented"><h2 id="39315921-b68f-8022-9dc0-f872ab7093e0" class="" dir="auto">What it does</h2><p id="39315921-b68f-80bc-a787-efc417e29949" class="" dir="auto">Checks username and password in CLI.</p><h2 id="39315921-b68f-80cb-97e2-d88bd8c10aac" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80c7-9be2-fb9fbb47e174" class="numbered-list" start="1" dir="auto"><li>Store correct credentials</li></ol><ol type="1" id="39315921-b68f-8004-a730-ef73db516c3a" class="numbered-list" start="2" dir="auto"><li>Ask user input</li></ol><ol type="1" id="39315921-b68f-80d9-8730-e1952d579c0d" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80d9-a984-d3d01ce46140" class="numbered-list" start="4" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-801d-acfe-faa5fa866360" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+
+    // Step 1: Stored credentials
+    string correctUser = &quot;admin&quot;;
+    string correctPass = &quot;1234&quot;;
+
+    // Step 2: Ask user input
+    string user, pass;
+
+    cout &lt;&lt; &quot;Username: &quot;;
+    cin &gt;&gt; user;
+
+    cout &lt;&lt; &quot;Password: &quot;;
+    cin &gt;&gt; pass;
+
+    // Step 3: Compare
+    if (user == correctUser &amp;&amp; pass == correctPass) {
+        cout &lt;&lt; &quot;Access Granted&quot; &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;Access Denied&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre></div></details><hr id="39315921-b68f-805a-8369-da189a573763" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b3-aefd-f00634b2d3e3" style="display:inline-block">Project 4: Grade Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-8067-8493-f1530c96c809" class="" dir="auto">What it does</h2><p id="39315921-b68f-805b-80b1-d333642a9be2" class="" dir="auto">Turns numeric score into letter grade.</p><h2 id="39315921-b68f-806b-9d82-f7dfe3917958" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80e0-8daa-feb89a92a852" class="numbered-list" start="1" dir="auto"><li>Get score</li></ol><ol type="1" id="39315921-b68f-80e3-b1ef-dec949e1caff" class="numbered-list" start="2" dir="auto"><li>Check ranges</li></ol><ol type="1" id="39315921-b68f-80e4-8f22-d943803e82cc" class="numbered-list" start="3" dir="auto"><li>Print grade</li></ol><pre id="39315921-b68f-808a-a355-e95e20864cff" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+
+    // Step 1: Get input
+    cout &lt;&lt; &quot;Enter score: &quot;;
+    int score;
+    cin &gt;&gt; score;
+
+    // Step 2: Determine grade
+    if (score &gt;= 90) {
+        cout &lt;&lt; &quot;A&quot; &lt;&lt; endl;
+    }
+    else if (score &gt;= 80) {
+        cout &lt;&lt; &quot;B&quot; &lt;&lt; endl;
+    }
+    else if (score &gt;= 70) {
+        cout &lt;&lt; &quot;C&quot; &lt;&lt; endl;
+    }
+    else if (score &gt;= 60) {
+        cout &lt;&lt; &quot;D&quot; &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;F&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre></div></details><hr id="39315921-b68f-80a1-8263-c57095e8b537" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8099-8173-ca07f1d3fa68" style="display:inline-block">Project 5: Dice Battle Simulator</h1></summary><div class="indented"><h2 id="39315921-b68f-8069-9a6e-fa265bc3d2b2" class="" dir="auto">What it does</h2><p id="39315921-b68f-80de-b689-f0c150ccc530" class="" dir="auto">Two players roll dice and highest wins.</p><h2 id="39315921-b68f-800c-847a-dbe07459b0f5" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80e0-a8af-c8c17f6e4033" class="numbered-list" start="1" dir="auto"><li>Seed random</li></ol><ol type="1" id="39315921-b68f-8079-bb08-e947f99261bb" class="numbered-list" start="2" dir="auto"><li>Generate rolls</li></ol><ol type="1" id="39315921-b68f-8043-837a-c0ca23db75eb" class="numbered-list" start="3" dir="auto"><li>Compare</li></ol><ol type="1" id="39315921-b68f-8087-9115-f1dcbe262bb7" class="numbered-list" start="4" dir="auto"><li>Print winner</li></ol><pre id="39315921-b68f-8097-baca-e761975e92d1" class="code code-wrap" data-notion-code-syntax="cpp"><code class="language-cpp" style="white-space:pre-wrap;word-break:break-all">#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+#include &lt;ctime&gt;
+using namespace std;
+
+int main() {
+
+    srand(time(0));
+
+    // Step 1: Player 1 roll
+    int p1 = rand() % 6 + 1;
+
+    // Step 2: Player 2 roll
+    int p2 = rand() % 6 + 1;
+
+    // Step 3: Display rolls
+    cout &lt;&lt; &quot;Player 1: &quot; &lt;&lt; p1 &lt;&lt; endl;
+    cout &lt;&lt; &quot;Player 2: &quot; &lt;&lt; p2 &lt;&lt; endl;
+
+    // Step 4: Compare results
+    if (p1 &gt; p2) {
+        cout &lt;&lt; &quot;Player 1 Wins!&quot; &lt;&lt; endl;
+    }
+    else if (p2 &gt; p1) {
+        cout &lt;&lt; &quot;Player 2 Wins!&quot; &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; &quot;Tie!&quot; &lt;&lt; endl;
+    }
+
+    return 0;
+}</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

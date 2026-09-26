@@ -1,0 +1,1195 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Kotlin + GUI (XML)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="38f15921-b68f-802b-9753-f0c70421da12" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Kotlin + GUI (XML)</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-8044-9211-f7ab5397c52b" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80ff-8b4c-eb8c8af3b435" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80cf-8c36-e3d0c49f6b58" style="display:inline-block">Variables and Constants</h1></summary><div class="indented"><h3 id="39215921-b68f-80bb-a732-e93be2a0f430" class="" dir="auto">1. What is a variable?</h3><p id="39215921-b68f-8023-be82-fdd4abf45281" class="" dir="auto">A variable is a container that stores information that can change while the program runs.</p><h3 id="39215921-b68f-8014-a1d0-e4de2b65dfa7" class="" dir="auto">2. When should I use a variable?</h3><p id="39215921-b68f-80d3-8843-c8cbe007576d" class="" dir="auto">Use a variable whenever you expect the value to change later.</p><h3 id="39215921-b68f-8001-851a-cc187858fc2d" class="" dir="auto">3. Why should I use a variable?</h3><p id="39215921-b68f-80ce-bbaa-fd17857982e4" class="" dir="auto">Variables let your app remember information like scores, names, or health.</p><h3 id="39215921-b68f-80bd-9a05-f7971e8dadf4" class="" dir="auto">4. What is a constant?</h3><p id="39215921-b68f-8080-9d3e-cfbc7e95e540" class="" dir="auto">A constant stores information that should never change after it is created.</p><h3 id="39215921-b68f-80e0-9635-de14f2d80015" class="" dir="auto">5. When should I use a constant?</h3><p id="39215921-b68f-8035-acf0-f80830e725e2" class="" dir="auto">Use a constant for values like your app name, tax rate, or company name.</p><h3 id="39215921-b68f-80fd-83cf-e13c99d0c795" class="" dir="auto">6. Why use a constant instead of a variable?</h3><p id="39215921-b68f-8057-8c8b-e830d8c94303" class="" dir="auto">It prevents accidental changes and makes your code safer.</p><h3 id="39215921-b68f-80fc-9dc4-c5f7d7bb7229" class="" dir="auto">7. What does <code>var</code> mean?</h3><p id="39215921-b68f-8011-88b8-f6bf10014286" class="" dir="auto"><code>var</code> creates a variable that can change.</p><h3 id="39215921-b68f-80b2-bf38-d685da51a257" class="" dir="auto">8. What does <code>val</code> mean?</h3><p id="39215921-b68f-80fc-8f04-f4d70f20529c" class="" dir="auto"><code>val</code> creates a constant that cannot change.</p><h3 id="39215921-b68f-806e-9940-e64db64ac01c" class="" dir="auto">9. When should I choose <code>var</code>?</h3><p id="39215921-b68f-80d2-a03f-e5e5c72b97ac" class="" dir="auto">Choose <code>var</code> when the value needs to be updated.</p><h3 id="39215921-b68f-8063-bc79-d7add4b0b9c9" class="" dir="auto">10. When should I choose <code>val</code>?</h3><p id="39215921-b68f-80ba-8c8f-f3edbc376876" class="" dir="auto">Choose <code>val</code> whenever possible because it makes your code more reliable.</p></div></details><hr id="39215921-b68f-806b-9c84-f50b4ce4f455" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8049-8289-fb828cf6053d" style="display:inline-block">Data Types</h1></summary><div class="indented"><h3 id="39215921-b68f-8021-8619-e059b3141d72" class="" dir="auto">11. What is a data type?</h3><p id="39215921-b68f-8087-93c0-cb4248584212" class="" dir="auto">A data type tells Kotlin what kind of information is being stored.</p><h3 id="39215921-b68f-80bf-a032-c96c21f35bb8" class="" dir="auto">12. What is an Int?</h3><p id="39215921-b68f-8073-9806-c45585875bab" class="" dir="auto">An Int stores whole numbers like 5, 10, or 200.</p><h3 id="39215921-b68f-8008-b7a2-e11a2b5ee902" class="" dir="auto">13. When should I use an Int?</h3><p id="39215921-b68f-80d6-9f86-f86585c2950b" class="" dir="auto">Use it for counting, scores, ages, and quantities.</p><h3 id="39215921-b68f-801b-b8c0-e7cafe48c124" class="" dir="auto">14. What is a Double?</h3><p id="39215921-b68f-80b2-8fb0-c3f9e446ac61" class="" dir="auto">A Double stores decimal numbers.</p><h3 id="39215921-b68f-8029-955a-e0c10e82724b" class="" dir="auto">15. When should I use a Double?</h3><p id="39215921-b68f-8088-a83c-ff5d67277ebc" class="" dir="auto">Use it for money, measurements, and averages.</p><h3 id="39215921-b68f-80d6-b034-ce90b84e0099" class="" dir="auto">16. What is a String?</h3><p id="39215921-b68f-801d-90d1-d9ff4c0361d8" class="" dir="auto">A String stores text.</p><h3 id="39215921-b68f-80b2-87c8-cd730ac6bd62" class="" dir="auto">17. When should I use a String?</h3><p id="39215921-b68f-8012-bec1-deb9cd8866d8" class="" dir="auto">Use it for names, addresses, messages, and sentences.</p><h3 id="39215921-b68f-80e2-8bf9-e8b361b476e1" class="" dir="auto">18. What is a Boolean?</h3><p id="39215921-b68f-8073-8fcd-de21df0e49a8" class="" dir="auto">A Boolean stores only two values:</p><ul id="39215921-b68f-8066-8d02-f66e90f6392a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">true</li></ul><ul id="39215921-b68f-8097-b1f9-e932c385324e" class="bulleted-list" dir="auto"><li style="list-style-type:disc">false</li></ul><h3 id="39215921-b68f-8072-81bb-cb1e484e9121" class="" dir="auto">19. When should I use a Boolean?</h3><p id="39215921-b68f-8014-9895-c63bf84e4738" class="" dir="auto">Use it whenever something is either yes/no or on/off.</p><h3 id="39215921-b68f-8004-b265-e9e427f643f2" class="" dir="auto">20. Why are data types important?</h3><p id="39215921-b68f-8051-be70-ff2389034848" class="" dir="auto">They help Kotlin understand how to work with your data correctly.</p></div></details><hr id="39215921-b68f-800e-a0fe-dae6f0bc0713" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8048-b39b-c9d02bc67ebd" style="display:inline-block">Input</h1></summary><div class="indented"><h3 id="39215921-b68f-80cf-8ee6-c471655184d5" class="" dir="auto">21. What is input?</h3><p id="39215921-b68f-80ee-8fcf-ce9a0c9187de" class="" dir="auto">Input is information the user gives your app.</p><h3 id="39215921-b68f-8073-9520-cd9064a40694" class="" dir="auto">22. What is an EditText?</h3><p id="39215921-b68f-8067-98af-c0404f0fe360" class="" dir="auto">An EditText is a textbox where users type information.</p><h3 id="39215921-b68f-8071-a715-d1770f1b4cf5" class="" dir="auto">23. When should I use an EditText?</h3><p id="39215921-b68f-8055-a9ef-e85a85d710ee" class="" dir="auto">Whenever you want the user to enter text or numbers.</p><h3 id="39215921-b68f-802a-b9f1-cf0bc650923f" class="" dir="auto">24. Why do I use <code>.text.toString()</code>?</h3><p id="39215921-b68f-8090-885a-c2899d926339" class="" dir="auto">Because EditText stores editable text, and you usually need a normal String.</p><h3 id="39215921-b68f-80ad-ae1f-f41bfeaa89a7" class="" dir="auto">25. What happens if the user types nothing?</h3><p id="39215921-b68f-8005-bed6-da4eac0aa391" class="" dir="auto">The String will simply be empty.</p><h3 id="39215921-b68f-80e7-b60e-dfa7392297cc" class="" dir="auto">26. Why do I convert text into numbers?</h3><p id="39215921-b68f-8018-afda-dbec2dda752d" class="" dir="auto">Because math only works on numbers, not text.</p><h3 id="39215921-b68f-8030-8cfd-e9ff94e5ce46" class="" dir="auto">27. What does <code>.toInt()</code> do?</h3><p id="39215921-b68f-80a2-b9ba-cefd05a81c84" class="" dir="auto">It converts text into an integer.</p><h3 id="39215921-b68f-80e2-921c-cd6c5e41b0f6" class="" dir="auto">28. What does <code>.toDouble()</code> do?</h3><p id="39215921-b68f-8050-bef6-cb91e027f243" class="" dir="auto">It converts text into a decimal number.</p><h3 id="39215921-b68f-80ee-b41e-d582020932f2" class="" dir="auto">29. When should I read input?</h3><p id="39215921-b68f-80fd-86fd-f1b758a25226" class="" dir="auto">Usually after the user presses a button.</p><h3 id="39215921-b68f-807e-92a3-cc22a3624a07" class="" dir="auto">30. Why shouldn&#x27;t I read input before the user types?</h3><p id="39215921-b68f-803a-bdca-dbb143cf2366" class="" dir="auto">Because there won&#x27;t be anything to read yet.</p></div></details><hr id="39215921-b68f-8052-8f3b-e754cfd05bc7" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-807e-b77e-c51a9330ee3a" style="display:inline-block">Output</h1></summary><div class="indented"><h3 id="39215921-b68f-80e8-a281-fd527a7a976d" class="" dir="auto">31. What is output?</h3><p id="39215921-b68f-802a-bf68-f43365498df3" class="" dir="auto">Output is information your app displays to the user.</p><h3 id="39215921-b68f-8052-a64a-e9d157d52834" class="" dir="auto">32. What is a TextView?</h3><p id="39215921-b68f-8094-b36a-c32debe54c13" class="" dir="auto">A TextView displays text on the screen.</p><h3 id="39215921-b68f-801e-bbbf-c28ceab16a83" class="" dir="auto">33. When should I use a TextView?</h3><p id="39215921-b68f-8089-8114-df92c0b73b6b" class="" dir="auto">Whenever you want to show information.</p><h3 id="39215921-b68f-803f-84b4-e2ce4b97ab03" class="" dir="auto">34. Why use a TextView instead of an EditText?</h3><p id="39215921-b68f-803e-871f-c7d228345aec" class="" dir="auto">TextView is for displaying information, not typing it.</p><h3 id="39215921-b68f-80a6-9755-f67fe94d538b" class="" dir="auto">35. What is a Toast?</h3><p id="39215921-b68f-8022-9514-ef967d462e2c" class="" dir="auto">A Toast is a small popup message.</p><h3 id="39215921-b68f-8060-b134-d674577df8f8" class="" dir="auto">36. When should I use a Toast?</h3><p id="39215921-b68f-803e-8b12-db1e66a2c962" class="" dir="auto">For quick messages like &quot;Saved!&quot; or &quot;Deleted!&quot;</p><h3 id="39215921-b68f-8061-b028-fe56aeb96ff9" class="" dir="auto">37. Why should I display results?</h3><p id="39215921-b68f-803f-9376-dbe9ed0fdf0e" class="" dir="auto">Users need feedback to know what happened.</p><h3 id="39215921-b68f-805d-ac36-d9998a684b36" class="" dir="auto">38. What does <code>.text =</code> do?</h3><p id="39215921-b68f-8051-92c1-ea8bf8406307" class="" dir="auto">It changes what the TextView displays.</p><h3 id="39215921-b68f-804c-87c9-ef234fe82079" class="" dir="auto">39. When should I update a TextView?</h3><p id="39215921-b68f-80be-b91d-d7934f182cc9" class="" dir="auto">After something changes.</p><h3 id="39215921-b68f-80fd-8670-c3c722f249ab" class="" dir="auto">40. Why is output important?</h3><p id="39215921-b68f-806c-a486-ce004eca976b" class="" dir="auto">Without output, users can&#x27;t see what your app is doing.</p></div></details><hr id="39215921-b68f-803f-81dc-f4d1c28725b1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80e0-9697-cc5cb0d61e00" style="display:inline-block">Basic Math</h1></summary><div class="indented"><h3 id="39215921-b68f-80fe-86cb-cb5e67595a58" class="" dir="auto">41. Why do programs perform math?</h3><p id="39215921-b68f-8017-b393-cccd932edaa1" class="" dir="auto">To calculate answers automatically.</p><h3 id="39215921-b68f-8038-9318-f67d8cba4b72" class="" dir="auto">42. What does <code>+</code> do?</h3><p id="39215921-b68f-8009-9d32-efe02c8fd6a4" class="" dir="auto">Adds numbers.</p><h3 id="39215921-b68f-8038-b535-f1cf33027f0c" class="" dir="auto">43. What does  do?</h3><p id="39215921-b68f-80c0-a546-e86e775962d1" class="" dir="auto">Subtracts numbers.</p><h3 id="39215921-b68f-8094-bad6-e9fcc66fafcf" class="" dir="auto">44. What does  do?</h3><p id="39215921-b68f-80a6-9e4d-eba1e39b6e24" class="" dir="auto">Multiplies numbers.</p><h3 id="39215921-b68f-80d7-a4b0-ccd2c972c07f" class="" dir="auto">45. What does <code>/</code> do?</h3><p id="39215921-b68f-80a8-bc26-f164a753c07d" class="" dir="auto">Divides numbers.</p><h3 id="39215921-b68f-8043-ab95-f3413602b2e8" class="" dir="auto">46. What does <code>%</code> do?</h3><p id="39215921-b68f-8027-ac65-d35a9cdd0c26" class="" dir="auto">Finds the remainder after division.</p><h3 id="39215921-b68f-809f-9357-d6bc2bff9d15" class="" dir="auto">47. When is <code>%</code> useful?</h3><p id="39215921-b68f-8039-8cbc-d155fe47b194" class="" dir="auto">When checking if numbers are even or odd.</p><h3 id="39215921-b68f-805c-85e0-d303c103e07f" class="" dir="auto">48. What does <code>++</code> do?</h3><p id="39215921-b68f-8000-af45-d8a22a67ab0f" class="" dir="auto">Adds one to a variable.</p><h3 id="39215921-b68f-8041-bd55-d68ff948befa" class="" dir="auto">49. What does <code>-</code> do?</h3><p id="39215921-b68f-805c-882b-f3a70e4aff01" class="" dir="auto">Subtracts one from a variable.</p><h3 id="39215921-b68f-80fd-8393-fd30ac84913b" class="" dir="auto">50. Why is math important in programming?</h3><p id="39215921-b68f-8009-9814-cb7b9f0d2832" class="" dir="auto">Many programs need calculations for games, finance, science, and everyday apps.</p></div></details><hr id="39215921-b68f-807b-bc88-e49f38f497d1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80c5-86ca-daa45ce60cbb" style="display:inline-block">Conditionals</h1></summary><div class="indented"><h3 id="39215921-b68f-80d3-ad10-c71a4e89101c" class="" dir="auto">51. What is an if statement?</h3><p id="39215921-b68f-8049-87fc-f6509ab78fcc" class="" dir="auto">It lets your program make decisions.</p><h3 id="39215921-b68f-80f6-bc71-e990eb5b32ea" class="" dir="auto">52. When should I use an if statement?</h3><p id="39215921-b68f-807c-abce-f1179fb78a63" class="" dir="auto">Whenever different situations need different actions.</p><h3 id="39215921-b68f-8043-bf9c-d7a17249ae33" class="" dir="auto">53. What is an else statement?</h3><p id="39215921-b68f-80b7-9aba-ee242eb8fd77" class="" dir="auto">It runs if the if statement is false.</p><h3 id="39215921-b68f-8073-8348-d47218c05cbd" class="" dir="auto">54. Why use if/else?</h3><p id="39215921-b68f-8030-a6cf-d17d7314d22d" class="" dir="auto">It allows your app to react differently based on information.</p><h3 id="39215921-b68f-80ab-b24c-ed8e00506887" class="" dir="auto">55. What does <code>==</code> mean?</h3><p id="39215921-b68f-806a-89c6-c48a6d653497" class="" dir="auto">Checks if two values are equal.</p><h3 id="39215921-b68f-8088-9e62-ed806fe40459" class="" dir="auto">56. What does <code>&gt;</code> mean?</h3><p id="39215921-b68f-8081-bf69-c11cf444f921" class="" dir="auto">Checks if one value is greater than another.</p><h3 id="39215921-b68f-80f5-b773-e34e1c194a39" class="" dir="auto">57. What does <code>&lt;</code> mean?</h3><p id="39215921-b68f-8012-8c91-ff35385d216e" class="" dir="auto">Checks if one value is less than another.</p><h3 id="39215921-b68f-8012-9f0e-e7f8beacfcb8" class="" dir="auto">58. Why are conditionals important?</h3><p id="39215921-b68f-802e-835f-ea41dab1170d" class="" dir="auto">Without them, every program would always do the exact same thing.</p></div></details><hr id="39215921-b68f-8088-8d23-c610808cf300" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80c3-ba59-d427863fdf8a" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><h3 id="39215921-b68f-80fe-971f-d6f81027b16a" class="" dir="auto">59. What are random numbers?</h3><p id="39215921-b68f-8043-ad17-c621ba7f6f49" class="" dir="auto">Numbers chosen unpredictably by the computer.</p><h3 id="39215921-b68f-8054-810b-d8ae5cffe37b" class="" dir="auto">60. When should I use random numbers?</h3><p id="39215921-b68f-809a-878d-fb66484fa0c7" class="" dir="auto">Use them for dice rolls, card games, enemy behavior, loot drops, quizzes, and guessing games.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8012-9f96-fdddcb929b2f" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80a5-b984-f48c97cc3d2e" style="display:inline-block">Variables and Constants</h1></summary><div class="indented"><p id="39215921-b68f-801b-a90f-fad9c6d714bc" class="" dir="auto">Q1:<br/>How do I create a variable that stores the player&#x27;s score?</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js" integrity="sha512-nLUQ1JXk2Kj5a8FlfriL+WmiGbAq3W/dQirx3IlVfkpU7byrzLD19pJnYsG8vPTDvsRMpQDVSezvzkKUNcqUSw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39215921-b68f-80e7-a9c6-dae2baaf98d2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var score = 0</code></pre><p id="39215921-b68f-80b8-8e7a-c64f5b0fc2ff" class="" dir="auto">Q2:<br/>How do I create a constant that stores the app name?</p><pre id="39215921-b68f-8014-9821-dba4d677db57" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val appName = &quot;My App&quot;</code></pre><p id="39215921-b68f-80fd-82c2-c64ae948931a" class="" dir="auto">Q3:<br/>How do I store the user&#x27;s name from an EditText?</p><pre id="39215921-b68f-800c-bd93-c71a2fbebe8b" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val name = editTextName.text.toString()</code></pre><p id="39215921-b68f-806a-adca-e9c2b0959959" class="" dir="auto">Q4:<br/>How do I change a variable when a button is clicked?</p><pre id="39215921-b68f-8076-80a0-f59e8950312c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">buttonIncrease.setOnClickListener {
+    score++
+}</code></pre><p id="39215921-b68f-8000-9818-d53ddfb9bd9a" class="" dir="auto">Q5:<br/>How do I display the value of a variable inside a TextView?</p><pre id="39215921-b68f-8057-b0c1-dfb1b727b24c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = score.toString()</code></pre><p id="39215921-b68f-80e2-b37f-e2467299a015" class="" dir="auto">Q6:<br/>How do I reset a variable back to zero?</p><pre id="39215921-b68f-8015-85cd-d9b113bea5e6" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">score = 0</code></pre><p id="39215921-b68f-804f-a1d1-c4764e9f979c" class="" dir="auto">Q7:<br/>How do I swap two integer variables?</p><pre id="39215921-b68f-80b3-9cb9-cd9bdbb77834" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val temp = a
+a = b
+b = temp</code></pre><p id="39215921-b68f-8011-b2c4-e11ce17850f3" class="" dir="auto">Q8:<br/>How do I copy one variable into another?</p><pre id="39215921-b68f-80c7-a5f9-c0a8f2ee6801" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val backupScore = score</code></pre><p id="39215921-b68f-80f0-8e3e-f8fdef4c7a27" class="" dir="auto">Q9:<br/>How do I store today&#x27;s message as a constant?</p><pre id="39215921-b68f-804e-8c71-ce490a5cf0f6" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val message = &quot;Welcome!&quot;</code></pre><p id="39215921-b68f-80b0-bf30-d8af667ae9cb" class="" dir="auto">Q10:<br/>How do I create a Boolean variable that tracks whether the player has won?</p><pre id="39215921-b68f-802d-9b67-f7a683496981" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var hasWon = false</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8038-9957-c42bc514c151" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39215921-b68f-8038-8ba2-cbf9d95c1f38" class="" dir="auto">Q11:<br/>How do I create an Int variable?</p><pre id="39215921-b68f-803c-87df-e34744bb7a8d" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var age: Int = 25</code></pre><p id="39215921-b68f-80eb-ad62-f2ca7b0228f4" class="" dir="auto">Q12:<br/>How do I create a Double variable?</p><pre id="39215921-b68f-806b-8263-e53f8f5fae15" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var price: Double = 19.99</code></pre><p id="39215921-b68f-80e5-88c5-ec9817cdb4e4" class="" dir="auto">Q13:<br/>How do I create a Boolean variable?</p><pre id="39215921-b68f-80c0-ab08-f337c7c4a34c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var isOnline: Boolean = true</code></pre><p id="39215921-b68f-8068-90a3-fadcadc4abbb" class="" dir="auto">Q14:<br/>How do I create a String variable?</p><pre id="39215921-b68f-8054-971f-c00c2fa37bd3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var city: String = &quot;Kansas City&quot;</code></pre><p id="39215921-b68f-8094-9753-f9d1ce78462c" class="" dir="auto">Q15:<br/>How do I convert text from an EditText into an Int?</p><pre id="39215921-b68f-80a0-8957-f370663668d4" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val number = editTextNumber.text.toString().toInt()</code></pre><p id="39215921-b68f-8005-85b2-f58012f79df3" class="" dir="auto">Q16:<br/>How do I convert text into a Double?</p><pre id="39215921-b68f-8073-b8f1-e37283136f71" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val amount = editTextAmount.text.toString().toDouble()</code></pre><p id="39215921-b68f-8067-82c1-d7542fd866dd" class="" dir="auto">Q17:<br/>How do I convert an Int into text for a TextView?</p><pre id="39215921-b68f-801d-9ae7-e7ba470bbffb" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = score.toString()</code></pre><p id="39215921-b68f-80b7-896e-c6eb0fc094ae" class="" dir="auto">Q18:<br/>How do I store the first character of a String?</p><pre id="39215921-b68f-80b9-9e1d-df729461c9a3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val firstLetter = name[0]</code></pre><p id="39215921-b68f-8012-912f-d90bfc1115eb" class="" dir="auto">Q19:<br/>How do I create a Float variable?</p><pre id="39215921-b68f-8089-bd4c-f2193ba72f1f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var temperature: Float = 72.5f</code></pre><p id="39215921-b68f-8047-b146-cfb730cbedb9" class="" dir="auto">Q20:<br/>How do I create a Long variable?</p><pre id="39215921-b68f-80cf-b7ac-f8b9eca580c1" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var population: Long = 8000000L</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-803d-a0aa-cb211e264207" style="display:inline-block">Input / Output</h1></summary><div class="indented"><p id="39215921-b68f-80d6-ab2b-f6ae3c5ebad6" class="" dir="auto">Q21:<br/>How do I display &quot;Hello World&quot; inside a TextView?</p><pre id="39215921-b68f-807e-a3c3-da744d7428c8" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = &quot;Hello World&quot;</code></pre><p id="39215921-b68f-8046-baec-eab423c8f3c0" class="" dir="auto">Q22:<br/>How do I display the text entered by the user?</p><pre id="39215921-b68f-8039-91be-c893b37160f5" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val input = editTextInput.text.toString()
+textViewResult.text = input</code></pre><p id="39215921-b68f-801c-8011-f450a7a35618" class="" dir="auto">Q23:<br/>How do I clear an EditText?</p><pre id="39215921-b68f-8032-adb8-d5bdd957342e" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">editTextInput.setText(&quot;&quot;)</code></pre><p id="39215921-b68f-8032-8567-d8f24b8af8ca" class="" dir="auto">Q24:<br/>How do I append new text onto an existing TextView?</p><pre id="39215921-b68f-8021-9deb-d4ccaeccdf55" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.append(&quot;\nNew Message&quot;)</code></pre><p id="39215921-b68f-80d7-b3ff-e857d36c6603" class="" dir="auto">Q25:<br/>How do I display a Toast message?</p><pre id="39215921-b68f-8063-8669-f0fa34fbf1fb" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">Toast.makeText(this, &quot;Saved!&quot;, Toast.LENGTH_SHORT).show()</code></pre><p id="39215921-b68f-8044-918e-efeb1a33f336" class="" dir="auto">Q26:<br/>How do I display two variables in one TextView?</p><pre id="39215921-b68f-8050-86e3-d4fb55652d77" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = &quot;$firstName $lastName&quot;</code></pre><p id="39215921-b68f-809e-a7b4-f0e45c7eb538" class="" dir="auto">Q27:<br/>How do I display an integer with descriptive text?</p><pre id="39215921-b68f-80b8-bce6-d854c51b09b0" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = &quot;Score: $score&quot;</code></pre><p id="39215921-b68f-8077-9170-e59f8c89503f" class="" dir="auto">Q28:<br/>How do I remove all text from a TextView?</p><pre id="39215921-b68f-8067-88d5-e1f3efc129ef" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = &quot;&quot;</code></pre><p id="39215921-b68f-80d7-96c1-cbcfbfcd34b4" class="" dir="auto">Q29:<br/>How do I display multiple lines of text?</p><pre id="39215921-b68f-803a-8980-f01555169786" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = &quot;Red\nGreen\nBlue&quot;</code></pre><p id="39215921-b68f-8010-bef5-e8abf79814fb" class="" dir="auto">Q30:<br/>How do I display the length of the user&#x27;s input?</p><pre id="39215921-b68f-8003-8bb1-d6694865cd24" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val length = editTextInput.text.toString().length
+textViewResult.text = length.toString()</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8054-9612-cfe4a275756f" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39215921-b68f-8047-a6d6-e317a3d849a1" class="" dir="auto">Q31:<br/>How do I add two numbers entered by the user?</p><pre id="39215921-b68f-809b-8d55-dfd4934d6bff" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val result = num1 + num2
+textViewResult.text = result.toString()</code></pre><p id="39215921-b68f-808d-8b7e-d61bfca3eb41" class="" dir="auto">Q32:<br/>How do I subtract two numbers?</p><pre id="39215921-b68f-8082-9eaf-d4765362123f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val result = num1 - num2</code></pre><p id="39215921-b68f-80ac-b0b9-f0051cb95d52" class="" dir="auto">Q33:<br/>How do I multiply two numbers?</p><pre id="39215921-b68f-803d-8e14-ccf79a692d74" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val result = num1 * num2</code></pre><p id="39215921-b68f-80c4-b7b4-d1c0eb953888" class="" dir="auto">Q34:<br/>How do I divide two numbers?</p><pre id="39215921-b68f-800e-8fc3-c1916ef0aa49" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val result = num1 / num2</code></pre><p id="39215921-b68f-8089-9de4-cd62329a5c22" class="" dir="auto">Q35:<br/>How do I calculate the remainder after division?</p><pre id="39215921-b68f-80ef-a36b-c99214458730" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val remainder = num1 % num2</code></pre><p id="39215921-b68f-80de-851d-eb9b1ca025c6" class="" dir="auto">Q36:<br/>How do I increase a variable by one?</p><pre id="39215921-b68f-801b-a155-f9fd1030685d" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">counter++</code></pre><p id="39215921-b68f-807b-b5fd-c382599cfa5c" class="" dir="auto">Q37:<br/>How do I decrease a variable by one?</p><pre id="39215921-b68f-8079-9add-f39669d88c87" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">counter--</code></pre><p id="39215921-b68f-80cf-b22c-fb7daa02dec8" class="" dir="auto">Q38:<br/>How do I double a variable?</p><pre id="39215921-b68f-802f-8809-e8883f6ca591" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">number *= 2</code></pre><p id="39215921-b68f-808e-81ab-e04c541b0b6d" class="" dir="auto">Q39:<br/>How do I calculate the average of two numbers?</p><pre id="39215921-b68f-80fc-ac0f-e6fecb6631db" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val average = (num1 + num2) / 2.0</code></pre><p id="39215921-b68f-801f-960a-fcad45e8df58" class="" dir="auto">Q40:<br/>How do I square a number?</p><pre id="39215921-b68f-80e5-bb81-c3d30bb7d6f3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val square = number * number</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8068-b1ac-d40ff30b2a4f" style="display:inline-block">Conditionals</h1></summary><div class="indented"><p id="39215921-b68f-806a-ac12-f93fc1cffe06" class="" dir="auto">Q41:<br/>How do I display &quot;Adult&quot; if the age is at least 18?</p><pre id="39215921-b68f-8053-9471-e33f13cab102" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    textViewResult.text = &quot;Adult&quot;
+}</code></pre><p id="39215921-b68f-804a-a06d-f9a67575a57e" class="" dir="auto">Q42:<br/>How do I display &quot;Minor&quot; if the age is below 18?</p><pre id="39215921-b68f-80a9-8739-f03eb92592f4" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (age &lt; 18) {
+    textViewResult.text = &quot;Minor&quot;
+}</code></pre><p id="39215921-b68f-80a2-9f59-f35a65320c38" class="" dir="auto">Q43:<br/>How do I display &quot;Positive&quot; or &quot;Negative&quot; based on a number?</p><pre id="39215921-b68f-80f1-8d4c-e7e5200ff3a8" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (number &gt;= 0) {
+    textViewResult.text = &quot;Positive&quot;
+} else {
+    textViewResult.text = &quot;Negative&quot;
+}</code></pre><p id="39215921-b68f-8057-a57b-c91b9b934932" class="" dir="auto">Q44:<br/>How do I check whether two passwords match?</p><pre id="39215921-b68f-80fa-bc9a-c956cd3229ea" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (password1 == password2) {
+    textViewResult.text = &quot;Match&quot;
+}</code></pre><p id="39215921-b68f-80dd-9738-cdf570e783a0" class="" dir="auto">Q45:<br/>How do I check whether an EditText is empty?</p><pre id="39215921-b68f-8069-ad88-d3ca189d44be" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (editTextInput.text.toString().isEmpty()) {
+    textViewResult.text = &quot;Please enter text.&quot;
+}</code></pre><p id="39215921-b68f-803d-a388-dff36f6feb14" class="" dir="auto">Q46:<br/>How do I display &quot;Even&quot; or &quot;Odd&quot;?</p><pre id="39215921-b68f-80a3-b685-e6cf4326e3e3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (number % 2 == 0) {
+    textViewResult.text = &quot;Even&quot;
+} else {
+    textViewResult.text = &quot;Odd&quot;
+}</code></pre><p id="39215921-b68f-807c-8425-c65b29faa1a6" class="" dir="auto">Q47:<br/>How do I check whether a Boolean variable is true?</p><pre id="39215921-b68f-8014-8a40-e7f2e4c413c8" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (isOnline) {
+    textViewResult.text = &quot;Connected&quot;
+}</code></pre><p id="39215921-b68f-8050-aa54-f5c74d9701a1" class="" dir="auto">Q48:<br/>How do I display the larger of two numbers?</p><pre id="39215921-b68f-8003-9428-cfcd910164be" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (num1 &gt; num2) {
+    textViewResult.text = num1.toString()
+} else {
+    textViewResult.text = num2.toString()
+}</code></pre><p id="39215921-b68f-8025-8d76-f082bea92a6a" class="" dir="auto">Q49:<br/>How do I display &quot;Pass&quot; if the grade is at least 70?</p><pre id="39215921-b68f-80ef-bde3-fdd6dbc01f57" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (grade &gt;= 70) {
+    textViewResult.text = &quot;Pass&quot;
+} else {
+    textViewResult.text = &quot;Fail&quot;
+}</code></pre><p id="39215921-b68f-806e-b495-e0914611057f" class="" dir="auto">Q50:<br/>How do I display a message only if the username is &quot;admin&quot;?</p><pre id="39215921-b68f-8029-8fab-e7b8e195b82e" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (username == &quot;admin&quot;) {
+    textViewResult.text = &quot;Welcome Administrator&quot;
+}</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80e8-980f-e28891e492b9" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39215921-b68f-80e3-bd43-fc87d874b59c" class="" dir="auto">Q51:<br/>How do I generate a random number from 1 to 10?</p><pre id="39215921-b68f-8045-af30-fff7c5c9a4dc" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val randomNumber = (1..10).random()</code></pre><p id="39215921-b68f-8088-addb-ccc62c746dec" class="" dir="auto">Q52:<br/>How do I display a random number inside a TextView?</p><pre id="39215921-b68f-804f-822d-e99f95c8b98c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">textViewResult.text = (1..100).random().toString()</code></pre><p id="39215921-b68f-8031-ad6e-ee34911ec155" class="" dir="auto">Q53:<br/>How do I generate a random Boolean?</p><pre id="39215921-b68f-80e2-8aa6-c74d3f58ae4f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val randomValue = kotlin.random.Random.nextBoolean()</code></pre><p id="39215921-b68f-802e-9b64-c461b8d266ad" class="" dir="auto">Q54:<br/>How do I simulate a coin flip?</p><pre id="39215921-b68f-80ac-9c1d-f0665876870b" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val coin = if ((0..1).random() == 0) &quot;Heads&quot; else &quot;Tails&quot;</code></pre><p id="39215921-b68f-80b5-a2d9-d31ecb8da4a1" class="" dir="auto">Q55:<br/>How do I simulate rolling a six-sided die?</p><pre id="39215921-b68f-8060-a3f5-f5a9b365860d" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val roll = (1..6).random()</code></pre><p id="39215921-b68f-80b3-b385-cd0c6befbf34" class="" dir="auto">Q56:<br/>How do I generate a random number from 50 to 100?</p><pre id="39215921-b68f-809a-8bb9-d7e0e7e9637e" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val randomNumber = (50..100).random()</code></pre><p id="39215921-b68f-8070-8eeb-d364715a5292" class="" dir="auto">Q57:<br/>How do I display &quot;Winner!&quot; only if a random number is 10?</p><pre id="39215921-b68f-807f-b4f7-f6dc4554e441" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val number = (1..10).random()
+
+if (number == 10) {
+    textViewResult.text = &quot;Winner!&quot;
+}</code></pre><p id="39215921-b68f-803e-a3a2-e27d56767400" class="" dir="auto">Q58:<br/>How do I randomly choose between two messages?</p><pre id="39215921-b68f-8096-9e9c-e456765c1e15" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val message = if ((0..1).random() == 0) {
+    &quot;Attack&quot;
+} else {
+    &quot;Defend&quot;
+}</code></pre><p id="39215921-b68f-8081-937b-da5040b3e694" class="" dir="auto">Q59:<br/>How do I generate three random numbers?</p><pre id="39215921-b68f-80b4-a118-e88b950cd75b" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val a = (1..100).random()
+val b = (1..100).random()
+val c = (1..100).random()</code></pre><p id="39215921-b68f-80bd-af5b-d4f73e99e52e" class="" dir="auto">Q60:<br/>How do I display a random lucky number when the user presses a button?</p><pre id="39215921-b68f-80e1-b682-d7cc6d6bde2c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">buttonGenerate.setOnClickListener {
+    val lucky = (1..100).random()
+    textViewResult.text = lucky.toString()
+}</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8008-b353-eba44e8f7a46" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-80bf-ba0c-f40a08268763" class="" dir="auto">Flowchart Shape Key</h3><table id="3e315921-b68f-8039-b58f-e76f70028238" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-8054-af75-c75a09fbfad6" dir="ltr"><th id="@BzM" class="simple-table-header-color simple-table-header">Shape</th><th id="lo{G" class="simple-table-header-color simple-table-header">Meaning</th><th id="J&lt;S^" class="simple-table-header-color simple-table-header">Kotlin Android examples</th></tr></thead><tbody><tr id="3e315921-b68f-8021-80b5-cb6568ee0521" dir="ltr"><td id="@BzM" class=""><code>([ START / END ])</code></td><td id="lo{G" class=""><strong>Oval / Terminator</strong></td><td id="J&lt;S^" class="">App/activity start or flow end</td></tr><tr id="3e315921-b68f-8094-ad38-d405df88d73d" dir="ltr"><td id="@BzM" class=""><code>[ Process ]</code></td><td id="lo{G" class=""><strong>Rectangle</strong></td><td id="J&lt;S^" class="">Setup, variable creation, conversions, calculations</td></tr><tr id="3e315921-b68f-80a3-af3d-f21824e71d90" dir="ltr"><td id="@BzM" class=""><code>[/ Input / Output /]</code></td><td id="lo{G" class=""><strong>Parallelogram</strong></td><td id="J&lt;S^" class="">Reading <code>EditText</code>, displaying <code>TextView</code></td></tr><tr id="3e315921-b68f-804a-9a69-e4b4f14bef8d" dir="ltr"><td id="@BzM" class=""><code>{ Condition? }</code></td><td id="lo{G" class=""><strong>Diamond</strong></td><td id="J&lt;S^" class=""><code>if</code> / <code>else</code> decisions</td></tr><tr id="3e315921-b68f-805f-ae69-fbab4d761538" dir="ltr"><td id="@BzM" class=""><code>↓</code></td><td id="lo{G" class=""><strong>Arrow</strong></td><td id="J&lt;S^" class="">Flow direction</td></tr><tr id="3e315921-b68f-805a-8733-f53b38a358a8" dir="ltr"><td id="@BzM" class=""><code>⏸ WAIT</code></td><td id="lo{G" class=""><strong>Event/Wait</strong></td><td id="J&lt;S^" class="">App waits for button click</td></tr></tbody></table><hr id="3e315921-b68f-80e8-8d90-ecb7c6089050" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80d9-8c0a-ef884663b0ba" style="display:inline-block">Project 1 — Simple Greeting App</h1></summary><div class="indented"><h3 id="3e315921-b68f-80be-a886-fd06dfd83d99" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-805b-9147-f8eddd9166d5" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Load activity_main.xml layout ]
+     ↓
+[ Connect EditText to editName ]
+     ↓
+[ Connect Button to buttonHello ]
+     ↓
+[ Connect TextView to textResult ]
+     ↓
+⏸ WAIT FOR BUTTON CLICK
+     ↓
+[ Button clicked ]
+     ↓
+[/ Read editName text /]
+     ↓
+[ Convert text to String ]
+     ↓
+[ Store String in name ]
+     ↓
+[ Create &quot;Hello, $name!&quot; ]
+     ↓
+[/ Display greeting in textResult /]
+     ↓
+⏸ WAIT FOR NEXT BUTTON CLICK</code></pre><h3 id="3e315921-b68f-8089-883e-e117b80eb87a" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-807b-8512-e0eb1ee4f878" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-801c-a879-effe40fab596" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Load XML layout</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8031-afba-d249b23209de" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect </strong><code><strong>EditText</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8071-bee7-d08aec120854" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect </strong><code><strong>Button</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80b9-8753-da41f9a05f2f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect </strong><code><strong>TextView</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80e4-a644-fc35869e3e93" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Wait for button click</strong> → Event/Wait</li></ul><ul id="3e315921-b68f-80e6-8da8-fbdf6d6011ce" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Button clicked</strong> → Process</li></ul><ul id="3e315921-b68f-805f-b393-de207f4e73d4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read EditText</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80ec-b813-fea69de868da" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to String</strong> → Rectangle</li></ul><ul id="3e315921-b68f-809f-8ffe-da085bf14394" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store in </strong><code><strong>name</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-807b-9afb-c7f2c086c5cb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Create greeting</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8025-934d-e6ec76502422" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display greeting</strong> → Parallelogram</li></ul><h3 id="3e315921-b68f-8001-be3c-c4890c57da27" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-80fd-9de5-ee791163712e" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">APP START
+   ↓
+SET UP UI
+   ↓
+WAIT
+   ↓
+BUTTON CLICK
+   ↓
+INPUT → PROCESS → OUTPUT
+   ↓
+WAIT AGAIN</code></pre></div></details><hr id="3e315921-b68f-803c-8fa1-e91038d73ccd" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-803c-9516-ced2167d04c9" style="display:inline-block">Project 2 — Two Number Adder</h1></summary><div class="indented"><h3 id="3e315921-b68f-80a0-8be7-fa9e7f3f5e3c" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80d1-bb34-f1cf04fe74d4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Load activity_main.xml layout ]
+     ↓
+[ Connect editNum1 ]
+     ↓
+[ Connect editNum2 ]
+     ↓
+[ Connect buttonAdd ]
+     ↓
+[ Connect textAnswer ]
+     ↓
+⏸ WAIT FOR BUTTON CLICK
+     ↓
+[ Button clicked ]
+     ↓
+[/ Read editNum1 /]
+     ↓
+[ Convert first value to Int ]
+     ↓
+[ Store as num1 ]
+     ↓
+[/ Read editNum2 /]
+     ↓
+[ Convert second value to Int ]
+     ↓
+[ Store as num2 ]
+     ↓
+[ Calculate sum = num1 + num2 ]
+     ↓
+[ Convert sum to String ]
+     ↓
+[/ Display sum in textAnswer /]
+     ↓
+⏸ WAIT FOR NEXT BUTTON CLICK</code></pre><h3 id="3e315921-b68f-80a2-b653-fc7ed0516549" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8089-9673-cbe5d88132eb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-8012-9bad-fb6ac6dc7a8a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Load layout</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80e3-a378-f2d9d54ea6d6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect UI controls</strong> → Rectangles</li></ul><ul id="3e315921-b68f-805f-837d-cc9eec5655d8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Wait for button click</strong> → Event/Wait</li></ul><ul id="3e315921-b68f-8012-a7f3-cdba683e9dc7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read first number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80d8-863f-d33f43935109" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Int</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80ee-bf07-fa5f92f6792d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store </strong><code><strong>num1</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80bd-aa15-d569f7aa9139" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read second number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8049-924a-ff5140d30e89" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Int</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80ee-9632-d96f7875afa9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store </strong><code><strong>num2</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-8052-9730-d0d7de5484ac" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Add numbers</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80cd-9cbe-e7b282344352" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert answer to String</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8035-90ac-cb03c950f828" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display answer</strong> → Parallelogram</li></ul><h3 id="3e315921-b68f-804a-a33b-f581b66ec0cf" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-808e-ba1c-e57e76904316" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">INPUT 1
+   ↓
+STRING → INT
+   ↓
+INPUT 2
+   ↓
+STRING → INT
+   ↓
+   ADD
+   ↓
+OUTPUT</code></pre></div></details><hr id="3e315921-b68f-806d-8e32-fa06014bd023" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-807b-a42b-f6acbd4848ba" style="display:inline-block">Project 3 — Even or Odd Checker</h1></summary><div class="indented"><h3 id="3e315921-b68f-805f-86dc-d4522cd5ab4f" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-808b-b6c1-cf8771b42956" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Load activity_main.xml layout ]
+     ↓
+[ Connect editNumber ]
+     ↓
+[ Connect buttonCheck ]
+     ↓
+[ Connect textResult ]
+     ↓
+⏸ WAIT FOR BUTTON CLICK
+     ↓
+[ Button clicked ]
+     ↓
+[/ Read editNumber /]
+     ↓
+[ Convert text to Int ]
+     ↓
+[ Store as number ]
+     ↓
+{ number % 2 == 0? }
+       ↙              ↘
+     YES              NO
+      ↓                ↓
+[/ Display &quot;Even&quot; /] [/ Display &quot;Odd&quot; /]
+       ↘              ↙
+          ↓
+     ⏸ WAIT FOR
+       NEXT CLICK</code></pre><h3 id="3e315921-b68f-801f-b4ba-dff48f821b2f" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8011-9a2c-d42ba0f82c8c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-808b-81bd-d9b0fb8c065d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Load layout</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80bb-aec0-ff9e092ec245" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect controls</strong> → Rectangles</li></ul><ul id="3e315921-b68f-80d8-9257-e90c9b4994f0" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Wait for button click</strong> → Event/Wait</li></ul><ul id="3e315921-b68f-8094-9c88-e754a5be9466" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read number</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8041-bade-ef3ec0ae2fd4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Int</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8002-a9cb-ed68a46066ae" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store number</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8088-9724-daea444e4f1e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>number % 2 == 0?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8085-a0ac-e9ea35c62089" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Even</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-809d-9d77-fb7061593332" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Odd</strong> → Parallelogram</li></ul><h3 id="3e315921-b68f-803a-8d6d-eac0c77b6072" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-807f-8aa3-ca5cbe99adca" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">       INPUT
+         ↓
+      CONVERT
+         ↓
+     number % 2
+         ↓
+      EVEN?
+     ↙     ↘
+   YES     NO
+    ↓       ↓
+  EVEN     ODD</code></pre><p id="3e315921-b68f-808c-ada6-e25787ca22af" class="" dir="auto">The <strong>diamond</strong> is the important part: the program has to make a decision before determining the output.</p></div></details><hr id="3e315921-b68f-80e9-a752-f0c7a977b6d1" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8071-86aa-d53dec6b3b6b" style="display:inline-block">Project 4 — Random Dice Roller</h1></summary><div class="indented"><h3 id="3e315921-b68f-80fe-ada0-e6520aa23ce6" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-806d-b5c0-d6a09f52ded0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Load activity_main.xml layout ]
+     ↓
+[ Connect buttonRoll ]
+     ↓
+[ Connect textRoll ]
+     ↓
+⏸ WAIT FOR BUTTON CLICK
+     ↓
+[ Button clicked ]
+     ↓
+[ Generate random number from 1–6 ]
+     ↓
+[ Store result in roll ]
+     ↓
+[ Convert roll to String ]
+     ↓
+[/ Display roll in textRoll /]
+     ↓
+⏸ WAIT FOR NEXT BUTTON CLICK</code></pre><h3 id="3e315921-b68f-80e2-9069-fe1b4e233657" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-8051-b84f-e12d88379bc5" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-808a-95ac-d4f85de72eed" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Load layout</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80d6-8f41-d3ed29389eb6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect Button</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80d9-8098-d28f37efefab" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect TextView</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8070-8f60-e931562f68b8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Wait for button click</strong> → Event/Wait</li></ul><ul id="3e315921-b68f-8070-83d6-d787355486d2" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Button clicked</strong> → Rectangle/Process</li></ul><ul id="3e315921-b68f-80dc-96e8-e8a8e560366f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate random number</strong> → Rectangle</li></ul><ul id="3e315921-b68f-803a-9cc0-eafa45abc1a0" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store </strong><code><strong>roll</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-801b-b2f6-e138d227f26b" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to String</strong> → Rectangle</li></ul><ul id="3e315921-b68f-805b-9bb5-cd2d895219f3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display roll</strong> → Parallelogram</li></ul><h3 id="3e315921-b68f-80e3-846e-d96b536972ed" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-8060-93cc-ced2fcb82baa" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">BUTTON CLICK
+     ↓
+RANDOM 1–6
+     ↓
+STORE ROLL
+     ↓
+DISPLAY ROLL
+     ↓
+WAIT</code></pre><p id="3e315921-b68f-8008-91bb-e0ff3a69d73f" class="" dir="auto">Notice there is <strong>no decision diamond</strong> in this project. It&#x27;s simply an event → process → output application.</p></div></details><hr id="3e315921-b68f-803a-afbb-ed1140c51838" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8086-8e80-ccdece3bb927" style="display:inline-block">Project 5 — Pass or Fail Checker</h1></summary><div class="indented"><h3 id="3e315921-b68f-80fd-9dd8-fcfc28ba4a16" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80e7-b224-ffcafae61274" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Load activity_main.xml layout ]
+     ↓
+[ Connect editGrade ]
+     ↓
+[ Connect buttonCheck ]
+     ↓
+[ Connect textResult ]
+     ↓
+⏸ WAIT FOR BUTTON CLICK
+     ↓
+[ Button clicked ]
+     ↓
+[/ Read editGrade /]
+     ↓
+[ Convert text to Int ]
+     ↓
+[ Store as grade ]
+     ↓
+{ grade &gt;= 70? }
+       ↙          ↘
+     YES          NO
+      ↓            ↓
+[/ Display       [/ Display
+  &quot;Pass&quot; /]        &quot;Fail&quot; /]
+       ↘          ↙
+          ↓
+     ⏸ WAIT FOR
+       NEXT CLICK</code></pre><h3 id="3e315921-b68f-8087-ae6b-f4522291fb8b" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80ce-b68d-f631e6183c17" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80f1-bfc4-d671ec178dd6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Load layout</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80c1-8667-f1a0c3e854e1" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Connect UI controls</strong> → Rectangles</li></ul><ul id="3e315921-b68f-80da-8868-ef8c7cae4c41" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Wait for button click</strong> → Event/Wait</li></ul><ul id="3e315921-b68f-807a-9ebe-ea707505b664" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read grade</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80e1-bb11-f221dc5dd130" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Int</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8070-8c22-e6739eb5e4e3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store </strong><code><strong>grade</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-807f-92c5-fac3ec0a1ca8" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>grade &gt;= 70?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-804b-9c52-f3991153b8bd" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Pass</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80b9-9df5-ca937e676dcb" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Fail</strong> → Parallelogram</li></ul></div></details><hr id="3e315921-b68f-804e-ba40-c7fed3898900" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8037-a90f-c597b0b8e557" style="display:inline-block">Kotlin Android Master Flowchart</h1></summary><div class="indented"><p id="3e315921-b68f-808e-b500-cc819186982d" class="" dir="auto">These five projects introduce an important architectural pattern that differs from your CLI programs:</p><pre id="3e315921-b68f-8008-b0ca-cd7c95f9dd43" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">                 ([ APP START ])
+                       ↓
+              [ LOAD XML LAYOUT ]
+                       ↓
+              [ CONNECT UI VIEWS ]
+                       ↓
+                  ⏸ WAIT
+                       ↓
+                [ USER ACTION ]
+                       ↓
+                [ EVENT FIRES ]
+                       ↓
+               [/ GET INPUT /]
+                       ↓
+                 [ PROCESS ]
+                       ↓
+              { DECISION? }
+                ↙       ↘
+              YES       NO
+               ↓         ↓
+          [ PROCESS ] [ PROCESS ]
+                ↘       ↙
+                   ↓
+              [/ OUTPUT /]
+                   ↓
+                  ⏸
+                WAIT
+                   ↓
+             [ NEXT EVENT ]</code></pre><h3 id="3e315921-b68f-80de-8a7f-c6f519040aa7" class="" dir="auto">The big conceptual difference</h3><p id="3e315921-b68f-80b2-9a3b-ed2c2c29af93" class="" dir="auto">Your earlier CLI programs generally followed:</p><pre id="3e315921-b68f-807b-b1c2-cb6265a7c26b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">START
+ ↓
+INPUT
+ ↓
+PROCESS
+ ↓
+OUTPUT
+ ↓
+END</code></pre><p id="3e315921-b68f-8082-b4c2-c327db88e9f6" class="" dir="auto">Kotlin Android introduces:</p><pre id="3e315921-b68f-8048-be07-ce8cc92adb79" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">START
+ ↓
+SETUP UI
+ ↓
+WAIT
+ ↓
+EVENT
+ ↓
+INPUT
+ ↓
+PROCESS
+ ↓
+OUTPUT
+ ↓
+WAIT
+ ↓
+EVENT
+ ↓
+...</code></pre><p id="3e315921-b68f-8097-b559-d8501ce3db7a" class="" dir="auto">That&#x27;s the beginning of <strong>event-driven programming</strong>.</p><p id="3e315921-b68f-8000-ab3e-de0ffdad5a15" class="" dir="auto">The five projects progressively teach:</p><table id="3e315921-b68f-8037-8b0a-ca95c8305d97" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-8096-9125-e7aff3875514" dir="ltr"><th id="h\eM" class="simple-table-header-color simple-table-header">Project</th><th id="XdD=" class="simple-table-header-color simple-table-header">Main concept</th></tr></thead><tbody><tr id="3e315921-b68f-8068-9553-ecdd321f85e2" dir="ltr"><td id="h\eM" class=""><strong>1. Greeting App</strong></td><td id="XdD=" class="">UI controls + button events + Strings</td></tr><tr id="3e315921-b68f-809c-a6a2-dd370ce23aab" dir="ltr"><td id="h\eM" class=""><strong>2. Two Number Adder</strong></td><td id="XdD=" class="">UI input + type conversion + arithmetic</td></tr><tr id="3e315921-b68f-8067-bae0-cd7578ce0403" dir="ltr"><td id="h\eM" class=""><strong>3. Even/Odd Checker</strong></td><td id="XdD=" class="">UI input + modulo + decision</td></tr><tr id="3e315921-b68f-806f-832e-eded29db3688" dir="ltr"><td id="h\eM" class=""><strong>4. Dice Roller</strong></td><td id="XdD=" class="">Events + randomization + output</td></tr><tr id="3e315921-b68f-80e8-b0f5-c5536f976f65" dir="ltr"><td id="h\eM" class=""><strong>5. Pass/Fail Checker</strong></td><td id="XdD=" class="">Events + comparison + branching</td></tr></tbody></table></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-802b-9f47-f018132894d9" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80d3-9ae8-d263126919ae" style="display:inline-block">Project 1 - Simple Greeting App</h1></summary><div class="indented"><h2 id="39215921-b68f-8014-9475-e388a98398e4" class="" dir="auto">Step 1</h2><p id="39215921-b68f-80d1-96d4-ccfe7121da04" class="" dir="auto">Create the layout.</p><ul id="39215921-b68f-8050-aabb-f9bbbd0b3709" class="bulleted-list" dir="auto"><li style="list-style-type:disc">EditText</li></ul><ul id="39215921-b68f-8048-b1de-d934b54d5e17" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button</li></ul><ul id="39215921-b68f-8055-9a34-ccaf7a0fce45" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TextView</li></ul><h2 id="39215921-b68f-8066-8052-fe0da69aaccf" class="" dir="auto">Step 2</h2><p id="39215921-b68f-80ef-97d6-f12cc760ce53" class="" dir="auto">Create variables that connect to each XML control.</p><h2 id="39215921-b68f-8024-a574-df57b675fddf" class="" dir="auto">Step 3</h2><p id="39215921-b68f-808c-9be8-c13777c1ac33" class="" dir="auto">When the button is clicked:</p><ul id="39215921-b68f-8004-b9a5-c9d3724fd0fc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read the EditText</li></ul><ul id="39215921-b68f-80c1-b4f9-e7ccf653e6d2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Store it in a String</li></ul><h2 id="39215921-b68f-804d-b989-df98d9b866f5" class="" dir="auto">Step 4</h2><p id="39215921-b68f-805d-a583-e7110de3f427" class="" dir="auto">Display:<br/>&quot;Hello, &lt;name&gt;!&quot;</p><pre id="39215921-b68f-8041-9100-d37f6153d46a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Step 2
+        val editName = findViewById&lt;EditText&gt;(R.id.editName)
+        val buttonHello = findViewById&lt;Button&gt;(R.id.buttonHello)
+        val textResult = findViewById&lt;TextView&gt;(R.id.textResult)
+
+        // Step 3
+        buttonHello.setOnClickListener {
+
+            // Step 3.1
+            val name = editName.text.toString()
+
+            // Step 4
+            textResult.text = &quot;Hello, $name!&quot;
+        }
+    }
+}</code></pre></div></details><hr id="39215921-b68f-808d-87b2-d7a666b1d3bb" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8076-bcc0-e63b65adb5e9" style="display:inline-block">Project 2 - Two Number Adder</h1></summary><div class="indented"><h2 id="39215921-b68f-8066-859b-d75ea1d73b8f" class="" dir="auto">Step 1</h2><p id="39215921-b68f-80aa-bda4-c41ba4b90350" class="" dir="auto">Create:</p><ul id="39215921-b68f-809f-9204-d4038f39add2" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Number EditText</li></ul><ul id="39215921-b68f-8080-a097-de553d44b243" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Number EditText</li></ul><ul id="39215921-b68f-8000-aaf5-c06513b30239" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button</li></ul><ul id="39215921-b68f-804b-9b85-f3ed6da00dcc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TextView</li></ul><h2 id="39215921-b68f-80d3-839c-f7188d17fbfb" class="" dir="auto">Step 2</h2><p id="39215921-b68f-801e-8347-d2b03c203578" class="" dir="auto">Read both numbers.</p><h2 id="39215921-b68f-801a-93ac-f602c8678b24" class="" dir="auto">Step 3</h2><p id="39215921-b68f-808c-bec1-c8285d2afd14" class="" dir="auto">Convert both Strings into Ints.</p><h2 id="39215921-b68f-8093-ba81-fa2c02e1505f" class="" dir="auto">Step 4</h2><p id="39215921-b68f-80bd-bf6a-e1a774c3f0d8" class="" dir="auto">Add them together.</p><h2 id="39215921-b68f-80a4-91d8-c494059ad5ef" class="" dir="auto">Step 5</h2><p id="39215921-b68f-805d-9ef6-de5b309cb37d" class="" dir="auto">Display the answer.</p><pre id="39215921-b68f-80e8-bdae-f342dc3d4095" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Step 2
+        val editNum1 = findViewById&lt;EditText&gt;(R.id.editNum1)
+        val editNum2 = findViewById&lt;EditText&gt;(R.id.editNum2)
+        val buttonAdd = findViewById&lt;Button&gt;(R.id.buttonAdd)
+        val textAnswer = findViewById&lt;TextView&gt;(R.id.textAnswer)
+
+        buttonAdd.setOnClickListener {
+
+            // Step 2
+            val num1 = editNum1.text.toString().toInt()
+
+            // Step 3
+            val num2 = editNum2.text.toString().toInt()
+
+            // Step 4
+            val sum = num1 + num2
+
+            // Step 5
+            textAnswer.text = sum.toString()
+        }
+    }
+}</code></pre></div></details><hr id="39215921-b68f-80ac-8a24-febe48d41cc9" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-80dc-8605-d0fddff37343" style="display:inline-block">Project 3 - Even or Odd Checker</h1></summary><div class="indented"><h2 id="39215921-b68f-80d7-ac81-fb1ea54d262f" class="" dir="auto">Step 1</h2><p id="39215921-b68f-8066-a726-f387a1c61ba9" class="" dir="auto">Create:</p><ul id="39215921-b68f-80ec-bd86-f6a58b68122f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">EditText</li></ul><ul id="39215921-b68f-808a-a8fa-f18fc0ba451c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button</li></ul><ul id="39215921-b68f-808a-bee6-f020f722913c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TextView</li></ul><h2 id="39215921-b68f-80e4-bb52-f00cea8bf5fb" class="" dir="auto">Step 2</h2><p id="39215921-b68f-80d0-99ec-eb8a206ff10f" class="" dir="auto">Read the number.</p><h2 id="39215921-b68f-80a6-a7d1-d6792bd80f49" class="" dir="auto">Step 3</h2><p id="39215921-b68f-80b8-913b-ff37acdcfb49" class="" dir="auto">Determine whether it is even or odd.</p><h2 id="39215921-b68f-80ef-af26-d162e2005d6f" class="" dir="auto">Step 4</h2><p id="39215921-b68f-806e-8b19-dd25c4c4ed68" class="" dir="auto">Display the result.</p><pre id="39215921-b68f-800c-9e24-c47000ded938" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val editNumber = findViewById&lt;EditText&gt;(R.id.editNumber)
+        val buttonCheck = findViewById&lt;Button&gt;(R.id.buttonCheck)
+        val textResult = findViewById&lt;TextView&gt;(R.id.textResult)
+
+        buttonCheck.setOnClickListener {
+
+            // Step 2
+            val number = editNumber.text.toString().toInt()
+
+            // Step 3
+            if (number % 2 == 0) {
+
+                // Step 4
+                textResult.text = &quot;Even&quot;
+
+            } else {
+
+                // Step 4
+                textResult.text = &quot;Odd&quot;
+            }
+        }
+    }
+}</code></pre></div></details><hr id="39215921-b68f-802d-9303-e72df8ac2693" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-8058-9ef6-c945f777ec0d" style="display:inline-block">Project 4 - Random Dice Roller</h1></summary><div class="indented"><h2 id="39215921-b68f-8090-aaa7-e7f3bcddb5f4" class="" dir="auto">Step 1</h2><p id="39215921-b68f-8036-b6f3-c7e45eeb7d3b" class="" dir="auto">Create:</p><ul id="39215921-b68f-8090-ad80-d5195db21adb" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button</li></ul><ul id="39215921-b68f-80d7-ba55-e14e5199c69c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TextView</li></ul><h2 id="39215921-b68f-80ba-ae23-f57d71ea9778" class="" dir="auto">Step 2</h2><p id="39215921-b68f-8036-87fd-e28223c46a6e" class="" dir="auto">Generate a random number from 1 to 6.</p><h2 id="39215921-b68f-8092-bae0-efb3a7672321" class="" dir="auto">Step 3</h2><p id="39215921-b68f-8057-875f-d2d38b0aed22" class="" dir="auto">Display it.</p><pre id="39215921-b68f-80dd-a41e-ff3b70942cf9" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val buttonRoll = findViewById&lt;Button&gt;(R.id.buttonRoll)
+        val textRoll = findViewById&lt;TextView&gt;(R.id.textRoll)
+
+        buttonRoll.setOnClickListener {
+
+            // Step 2
+            val roll = (1..6).random()
+
+            // Step 3
+            textRoll.text = roll.toString()
+        }
+    }
+}</code></pre></div></details><hr id="39215921-b68f-80fb-8789-e8a6830f13ea" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39215921-b68f-808d-ba07-da7cd134ca32" style="display:inline-block">Project 5 - Pass or Fail Checker</h1></summary><div class="indented"><h2 id="39215921-b68f-80be-a089-eff06ba51dc0" class="" dir="auto">Step 1</h2><p id="39215921-b68f-805c-9759-d08f320c402b" class="" dir="auto">Create:</p><ul id="39215921-b68f-80e7-97d1-cadb0c8b34cd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">EditText</li></ul><ul id="39215921-b68f-8006-87a7-ee2e20f5d4e8" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button</li></ul><ul id="39215921-b68f-80cc-a4f7-d939b019a4ca" class="bulleted-list" dir="auto"><li style="list-style-type:disc">TextView</li></ul><h2 id="39215921-b68f-8048-8544-d7ac3bd6f264" class="" dir="auto">Step 2</h2><p id="39215921-b68f-80d7-ac5e-d3fc373ea0b9" class="" dir="auto">Read the user&#x27;s grade.</p><h2 id="39215921-b68f-8073-be5a-c4a985d445c5" class="" dir="auto">Step 3</h2><p id="39215921-b68f-80a2-a3bb-fa10d5c2981d" class="" dir="auto">Compare it to 70.</p><h2 id="39215921-b68f-804c-8b47-f60803adcb93" class="" dir="auto">Step 4</h2><p id="39215921-b68f-8052-bded-f13345535b7b" class="" dir="auto">Display Pass or Fail.</p><pre id="39215921-b68f-80d8-908b-e22070d794f0" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">class MainActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val editGrade = findViewById&lt;EditText&gt;(R.id.editGrade)
+        val buttonCheck = findViewById&lt;Button&gt;(R.id.buttonCheck)
+        val textResult = findViewById&lt;TextView&gt;(R.id.textResult)
+
+        buttonCheck.setOnClickListener {
+
+            // Step 2
+            val grade = editGrade.text.toString().toInt()
+
+            // Step 3
+            if (grade &gt;= 70) {
+
+                // Step 4
+                textResult.text = &quot;Pass&quot;
+
+            } else {
+
+                // Step 4
+                textResult.text = &quot;Fail&quot;
+            }
+        }
+    }
+}</code></pre></div></details></div></details><p id="39215921-b68f-802e-b811-c32a7c996b53" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

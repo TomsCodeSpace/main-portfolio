@@ -1,0 +1,1290 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Kotlin + CLI</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39315921-b68f-8098-9f57-fc0b0ab80df3" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Kotlin + CLI</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-805c-9d12-ccb368eb83e5" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d7-adb8-dbc972857fbe" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8000-9d1a-dac281fac024" style="display:inline-block">Variables and Constants</h1></summary><div class="indented"><p id="39315921-b68f-80c3-89a4-f41769156731" class="" dir="auto">Q1: What is a variable?<br/>A: A variable is a labeled box that stores information you can change later.</p><p id="39315921-b68f-80c7-8123-fcd68f841255" class="" dir="auto">Q2: When should I use a variable?<br/>A: Use a variable when the value might change while your program runs.</p><p id="39315921-b68f-80ce-a16b-c713fa5a306c" class="" dir="auto">Q3: What is a constant?<br/>A: A constant is a labeled box whose value cannot change after it is created.</p><p id="39315921-b68f-805c-8064-c18ed7a279fd" class="" dir="auto">Q4: When should I use a constant?<br/>A: Use a constant for values that should always stay the same, like PI or a tax rate.</p><p id="39315921-b68f-8042-8184-c0dc9cf90a76" class="" dir="auto">Q5: Why use constants instead of variables?<br/>A: They prevent accidental changes and make code safer.</p><p id="39315921-b68f-800f-9f21-f26c1161de4e" class="" dir="auto">Q6: How do I create a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js" integrity="sha512-nLUQ1JXk2Kj5a8FlfriL+WmiGbAq3W/dQirx3IlVfkpU7byrzLD19pJnYsG8vPTDvsRMpQDVSezvzkKUNcqUSw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-809f-81e4-d8efc5a058f2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var score = 0</code></pre><p id="39315921-b68f-800f-b1bb-ce0dbd086d17" class="" dir="auto">Q7: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-804f-af87-f1240a6219c0" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val maxLives = 3</code></pre><p id="39315921-b68f-8057-9674-eacff2ce9bec" class="" dir="auto">Q8: What is the difference between var and val?<br/>A: var can change. val cannot.</p><p id="39315921-b68f-8094-9216-ecb996b28f44" class="" dir="auto">Q9: Can I change a val?<br/>A: No. Once assigned, its value stays the same.</p><p id="39315921-b68f-8067-a44a-f690382733e1" class="" dir="auto">Q10: Should I use val or var by default?<br/>A: Use val unless you know the value needs to change.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80d0-a7f3-fd1fdd7f9a8c" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-801e-8058-f19918d0162d" class="" dir="auto">Q11: What is a data type?<br/>A: A data type tells Kotlin what kind of information is stored.</p><p id="39315921-b68f-80d8-b986-d46cd6fff507" class="" dir="auto">Q12: What is an Int?<br/>A: An Int stores whole numbers.</p><p id="39315921-b68f-8044-a0b2-fa09b7fb1f87" class="" dir="auto">Q13: What is a Double?<br/>A: A Double stores numbers with decimal places.</p><p id="39315921-b68f-8060-8f7c-df07e0c92084" class="" dir="auto">Q14: What is a String?<br/>A: A String stores text.</p><p id="39315921-b68f-8057-9586-fbe50a9e6eb8" class="" dir="auto">Q15: What is a Boolean?<br/>A: A Boolean stores either true or false.</p><p id="39315921-b68f-80c0-8965-cfe876501d3a" class="" dir="auto">Q16: When should I use an Int?<br/>A: Use it for counting things like lives or scores.</p><p id="39315921-b68f-80e1-ad23-e5e6d9029d5c" class="" dir="auto">Q17: When should I use a Double?<br/>A: Use it when decimals matter, like money or measurements.</p><p id="39315921-b68f-8073-974f-fd24a3182209" class="" dir="auto">Q18: When should I use a String?<br/>A: Use it for names, messages, and sentences.</p><p id="39315921-b68f-8067-ad04-cca22c58add1" class="" dir="auto">Q19: When should I use a Boolean?<br/>A: Use it when something has only two states, like on/off.</p><p id="39315921-b68f-8017-be90-ef10c229ca23" class="" dir="auto">Q20: How do I create variables of different types?<br/>A:</p><pre id="39315921-b68f-8029-8bab-ca5856db0548" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val age = 25
+val height = 5.9
+val name = &quot;Alex&quot;
+val online = true</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800e-b08c-c3a5c451c4f4" style="display:inline-block">Input and Output</h1></summary><div class="indented"><p id="39315921-b68f-8000-8e81-d22b4bcb1cfd" class="" dir="auto">Q21: What is output?<br/>A: Output is information your program shows to the user.</p><p id="39315921-b68f-80e4-954d-cfd1017b2ce0" class="" dir="auto">Q22: How do I print text?<br/>A:</p><pre id="39315921-b68f-8052-a220-c619062c93c3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(&quot;Hello!&quot;)</code></pre><p id="39315921-b68f-8029-8e91-f9ee787ba292" class="" dir="auto">Q23: What is println()?<br/>A: It prints text and moves to the next line.</p><p id="39315921-b68f-8016-a80e-ca8afddf3826" class="" dir="auto">Q24: What is print()?<br/>A: It prints text without moving to the next line.</p><p id="39315921-b68f-8045-9bba-f0d7ac668a4a" class="" dir="auto">Q25: What is input?<br/>A: Input is information the user gives the program.</p><p id="39315921-b68f-80b2-9ddf-f9d881f445b5" class="" dir="auto">Q26: How do I read user input?<br/>A:</p><pre id="39315921-b68f-80f3-b64e-f7b6d6503ca6" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val name = readln()</code></pre><p id="39315921-b68f-8032-af9c-c68a98b43a64" class="" dir="auto">Q27: Why do I need input?<br/>A: It lets the user interact with your program.</p><p id="39315921-b68f-8057-a8ed-f903b9a4434a" class="" dir="auto">Q28: How do I ask the user a question?<br/>A:</p><pre id="39315921-b68f-8059-a9e9-f94516aaf62b" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">print(&quot;Enter your name: &quot;)
+val name = readln()</code></pre><p id="39315921-b68f-80ee-8114-f97b4f397560" class="" dir="auto">Q29: How do I print a variable?<br/>A:</p><pre id="39315921-b68f-801c-94d5-ee0029a8453a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val score = 100
+println(score)</code></pre><p id="39315921-b68f-8002-81c6-ff3af596a236" class="" dir="auto">Q30: How do I combine text and variables?<br/>A:</p><pre id="39315921-b68f-80e6-a38c-f5167781ce7a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val name = &quot;Alex&quot;
+println(&quot;Hello, $name&quot;)</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8008-8d88-e7da54db91fc" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-804c-83b2-f94cba7c9da4" class="" dir="auto">Q31: Why can Kotlin do math?<br/>A: It has built-in math operators just like a calculator.</p><p id="39315921-b68f-80ca-a87d-e82e25477cb1" class="" dir="auto">Q32: How do I add numbers?<br/>A:</p><pre id="39315921-b68f-80bd-b700-dae375666849" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val total = 5 + 3</code></pre><p id="39315921-b68f-80b6-bcfc-f8c86c02af51" class="" dir="auto">Q33: How do I subtract numbers?<br/>A:</p><pre id="39315921-b68f-8039-bd07-efcc69314ceb" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val total = 10 - 4</code></pre><p id="39315921-b68f-80a0-a0b1-c2d4c6dab8a5" class="" dir="auto">Q34: How do I multiply numbers?<br/>A:</p><pre id="39315921-b68f-80e9-bad6-e25a708c423a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val total = 6 * 7</code></pre><p id="39315921-b68f-8065-9c65-f26f79f5e960" class="" dir="auto">Q35: How do I divide numbers?<br/>A:</p><pre id="39315921-b68f-80b0-85f9-d83d6460b623" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val total = 20 / 5</code></pre><p id="39315921-b68f-8072-8a2c-cc2fa7b2ba7a" class="" dir="auto">Q36: What does % do?<br/>A: It gives the remainder after division.</p><p id="39315921-b68f-80c6-80ad-db27d7230e4c" class="" dir="auto">Q37: When is % useful?<br/>A: To check if a number is even or odd.</p><p id="39315921-b68f-8056-bd39-dc2869fa00f4" class="" dir="auto">Q38: How do I increase a variable?<br/>A:</p><pre id="39315921-b68f-8029-97c3-e2b931921acd" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">score++</code></pre><p id="39315921-b68f-8055-9b92-cf95564a44fb" class="" dir="auto">Q39: How do I decrease a variable?<br/>A:</p><pre id="39315921-b68f-80ef-80d6-cdcba025e2c7" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">score--</code></pre><p id="39315921-b68f-8090-8ee1-c4da82e59418" class="" dir="auto">Q40: Why store math results in variables?<br/>A: So you can reuse the answer later.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8063-98d6-d9f132a3eb1d" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-80db-857a-cc509001cba7" class="" dir="auto">Q41: What is an if statement?<br/>A: It lets your program make decisions.</p><p id="39315921-b68f-8093-8722-e045d57ee954" class="" dir="auto">Q42: When should I use if?<br/>A: When different situations need different actions.</p><p id="39315921-b68f-8000-94d7-cbd0cfcaf09a" class="" dir="auto">Q43: How do I check if something is true?<br/>A:</p><pre id="39315921-b68f-8090-ac82-c8aa00279a61" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 50) {
+    println(&quot;You win!&quot;)
+}</code></pre><p id="39315921-b68f-80a2-a6c2-d6b9c29b7186" class="" dir="auto">Q44: What does else do?<br/>A: It runs if the if condition is false.</p><p id="39315921-b68f-8060-a663-e059cd7d2082" class="" dir="auto">Q45: Why use else?<br/>A: So every situation has a response.</p><p id="39315921-b68f-80ed-9781-ef3d66189024" class="" dir="auto">Q46: What is else if?<br/>A: It checks another condition if the first one fails.</p><p id="39315921-b68f-80b7-a520-ddcc5ac7d8a4" class="" dir="auto">Q47: How do I compare two values?<br/>A:</p><pre id="39315921-b68f-8017-8b61-dec166ac98c7" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (age == 18)</code></pre><p id="39315921-b68f-8069-a85e-e39cdc7c4121" class="" dir="auto">Q48: What are common comparison operators?<br/>A: ==, !=, &lt;, &gt;, &lt;=, &gt;=</p><p id="39315921-b68f-80a5-871a-d39295c4b5e5" class="" dir="auto">Q49: What happens if the condition is false?<br/>A: Kotlin skips that block of code.</p><p id="39315921-b68f-8036-92a6-d5a2cf033cae" class="" dir="auto">Q50: Why are conditionals important?<br/>A: They let programs react to different situations.</p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-803c-b054-c38036fdf0a7" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-80ed-af69-f2a2c675b39f" class="" dir="auto">Q51: What is a random number?<br/>A: A number chosen unpredictably by the computer.</p><p id="39315921-b68f-80e6-86b8-eade571b6dae" class="" dir="auto">Q52: When should I use random numbers?<br/>A: For games, simulations, and choosing random items.</p><p id="39315921-b68f-8088-83f8-d8d5aca153bf" class="" dir="auto">Q53: Why use randomness?<br/>A: It makes programs less predictable.</p><p id="39315921-b68f-8027-8c29-cd59b9b0c876" class="" dir="auto">Q54: How do I generate a random number?<br/>A:</p><pre id="39315921-b68f-80d2-816a-fce01e144a81" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val number = Random.nextInt(1, 11)</code></pre><p id="39315921-b68f-80dd-9855-cb5380d612d2" class="" dir="auto">Q55: What does Random.nextInt(1, 11) do?<br/>A: It picks a random number from 1 through 10.</p><p id="39315921-b68f-8089-b889-d56c7ecb2504" class="" dir="auto">Q56: How do I simulate a coin flip?<br/>A:</p><pre id="39315921-b68f-8074-b0b3-e16462ad588e" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val coin = Random.nextInt(2)</code></pre><p id="39315921-b68f-80b3-9871-d22338964aa6" class="" dir="auto">Q57: How do I simulate a six-sided die?<br/>A:</p><pre id="39315921-b68f-8041-b86b-d40d51707e98" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val roll = Random.nextInt(1, 7)</code></pre><p id="39315921-b68f-80cf-9f35-f47f6381e954" class="" dir="auto">Q58: Can I use random numbers in if statements?<br/>A: Yes. They work great together.</p><p id="39315921-b68f-80d9-b933-f81073918d2d" class="" dir="auto">Q59: What kinds of programs use random numbers?<br/>A: Games, quizzes, lotteries, AI, and simulations.</p><p id="39315921-b68f-809e-8e37-fadecb2b5e19" class="" dir="auto">Q60: What is a simple random number game?<br/>A:</p><pre id="39315921-b68f-8084-b1f6-c5e0e16c56d6" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val secret = Random.nextInt(1, 11)
+
+print(&quot;Guess a number (1-10): &quot;)
+val guess = readln().toInt()
+
+if (guess == secret) {
+    println(&quot;Correct!&quot;)
+} else {
+    println(&quot;Wrong! The number was $secret&quot;)
+}</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8094-84fd-e244d6092fc2" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e0-b2c5-f33d5bf76c2c" style="display:inline-block">Variables and Constants</h1></summary><div class="indented"><p id="39315921-b68f-80a1-9125-e25644466df7" class="" dir="auto">Q1: Add a variable to store the player&#x27;s score.</p><pre id="39315921-b68f-80e4-ac5e-da8fa79e9fc2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var score = 0</code></pre><p id="39315921-b68f-8064-8c3d-d524627511d7" class="" dir="auto">Q2: Add a constant for the maximum number of lives.</p><pre id="39315921-b68f-80f0-8c3d-ff382dcf6e39" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val MAX_LIVES = 3</code></pre><p id="39315921-b68f-80d1-97ab-e8378ad9c99b" class="" dir="auto">Q3: Add a variable to store the player&#x27;s name.</p><pre id="39315921-b68f-806f-9ec7-d6251fbba318" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var playerName = &quot;Unknown&quot;</code></pre><p id="39315921-b68f-80d9-8d0a-f7d7877b45f0" class="" dir="auto">Q4: Add a variable to track whether the game is running.</p><pre id="39315921-b68f-8066-ade5-f9270e00e8c6" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var gameRunning = true</code></pre><p id="39315921-b68f-80b0-a83c-cc05102b96a6" class="" dir="auto">Q5: Add a constant for the game&#x27;s title.</p><pre id="39315921-b68f-809a-9ff3-f6921bb94fb8" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val GAME_TITLE = &quot;Adventure Quest&quot;</code></pre><p id="39315921-b68f-8094-aefc-da3dc943e36d" class="" dir="auto">Q6: Add a variable to store the player&#x27;s level.</p><pre id="39315921-b68f-8020-8237-e31dad5627e5" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var level = 1</code></pre><p id="39315921-b68f-8040-8576-e0167f64eea7" class="" dir="auto">Q7: Add a variable to store today&#x27;s temperature.</p><pre id="39315921-b68f-80a1-8abe-ff01dc1880c2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var temperature = 72.5</code></pre><p id="39315921-b68f-806b-8945-d2d2d4e01336" class="" dir="auto">Q8: Add a variable to store whether music is enabled.</p><pre id="39315921-b68f-80e1-b16c-c26e40085f90" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var musicEnabled = true</code></pre><p id="39315921-b68f-80ae-bee7-ce3f04935381" class="" dir="auto">Q9: Add a variable to store the user&#x27;s age.</p><pre id="39315921-b68f-80d3-9d9f-f1b738677ccf" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var age = 18</code></pre><p id="39315921-b68f-8064-90d6-c515e4802e3e" class="" dir="auto">Q10: Add a constant for the speed of light.</p><pre id="39315921-b68f-8086-83ca-cf4f79ef6a41" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val SPEED_OF_LIGHT = 299792458</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8089-a665-e23019930597" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8052-bbf2-e96bcc40bef0" class="" dir="auto">Q11: Add an Int variable for a player&#x27;s health.</p><pre id="39315921-b68f-802f-9c46-c7ec43fee26e" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var health: Int = 100</code></pre><p id="39315921-b68f-801e-b759-c0e0a03d3d23" class="" dir="auto">Q12: Add a Double variable for a bank balance.</p><pre id="39315921-b68f-8072-95cc-e80be47d6d9f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var balance: Double = 150.75</code></pre><p id="39315921-b68f-80c9-abe4-c6a5d3314e0c" class="" dir="auto">Q13: Add a String variable for a city name.</p><pre id="39315921-b68f-80c7-8f13-d7607a77bd6a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var city: String = &quot;Dallas&quot;</code></pre><p id="39315921-b68f-8015-8e71-c54321febf53" class="" dir="auto">Q14: Add a Boolean variable to track login status.</p><pre id="39315921-b68f-8080-90a2-c923cafa5c2d" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var loggedIn: Boolean = false</code></pre><p id="39315921-b68f-802c-a6d6-c064e26c36b0" class="" dir="auto">Q15: Add a String for a password.</p><pre id="39315921-b68f-80eb-a72b-dd500b6d6adb" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var password = &quot;abc123&quot;</code></pre><p id="39315921-b68f-80be-a919-eba41a032e95" class="" dir="auto">Q16: Add an Int variable for an inventory count.</p><pre id="39315921-b68f-80c6-8def-d21b670fcf1f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var inventory = 12</code></pre><p id="39315921-b68f-804a-ba74-d8017b46b781" class="" dir="auto">Q17: Add a Double variable for fuel remaining.</p><pre id="39315921-b68f-80dc-94e9-c281e05d991b" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var fuel = 42.8</code></pre><p id="39315921-b68f-806a-a919-f3bc38fe14f9" class="" dir="auto">Q18: Add a Boolean indicating if the player has a key.</p><pre id="39315921-b68f-80de-a793-cb0c330d4a83" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var hasKey = false</code></pre><p id="39315921-b68f-80cc-8ff1-e00cbca96554" class="" dir="auto">Q19: Add a String variable for an email address.</p><pre id="39315921-b68f-8085-8aa7-cff699e3c629" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var email = &quot;user@example.com&quot;</code></pre><p id="39315921-b68f-80bf-8cb9-dfb13a305bc5" class="" dir="auto">Q20: Add an Int variable for a timer.</p><pre id="39315921-b68f-803a-b20e-f3bdf73883b5" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">var timer = 60</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8075-a08d-c6e78140e945" style="display:inline-block">Input and Output</h1></summary><div class="indented"><p id="39315921-b68f-8001-836c-fa93d807ae9b" class="" dir="auto">Q21: Print &quot;Hello, World!&quot;.</p><pre id="39315921-b68f-8052-8d21-f6684ccfdd29" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(&quot;Hello, World!&quot;)</code></pre><p id="39315921-b68f-8017-97eb-d37521b542b4" class="" dir="auto">Q22: Ask the user for their name.</p><pre id="39315921-b68f-804e-b5d7-e9df8b954956" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">print(&quot;Enter your name: &quot;)
+val name = readln()</code></pre><p id="39315921-b68f-804c-8b21-edd88c04657f" class="" dir="auto">Q23: Print the user&#x27;s name.</p><pre id="39315921-b68f-8029-9df1-c030986da744" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(name)</code></pre><p id="39315921-b68f-80c1-bbc5-c5cbbb4b35d2" class="" dir="auto">Q24: Ask the user for their age.</p><pre id="39315921-b68f-80f2-be93-db649c43668f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">print(&quot;Enter your age: &quot;)
+val age = readln().toInt()</code></pre><p id="39315921-b68f-808b-9d21-e284ec9c3a04" class="" dir="auto">Q25: Print a welcome message with the user&#x27;s name.</p><pre id="39315921-b68f-809d-afd3-c36602a11789" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(&quot;Welcome, $name!&quot;)</code></pre><p id="39315921-b68f-8055-90c7-c6940bee2d5b" class="" dir="auto">Q26: Print two blank lines.</p><pre id="39315921-b68f-8010-a18a-ca10d4f12c70" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println()
+println()</code></pre><p id="39315921-b68f-8012-a185-e8fc4c2f8d69" class="" dir="auto">Q27: Print a menu.</p><pre id="39315921-b68f-80a8-93f4-de4e957e8bd9" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(&quot;1. Start&quot;)
+println(&quot;2. Options&quot;)
+println(&quot;3. Exit&quot;)</code></pre><p id="39315921-b68f-809b-afa7-eb58afbe1f8b" class="" dir="auto">Q28: Ask the user for a decimal number.</p><pre id="39315921-b68f-80b2-9055-e0cd28a75df3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">print(&quot;Enter a decimal number: &quot;)
+val number = readln().toDouble()</code></pre><p id="39315921-b68f-80f9-a7f0-dc76f11c4600" class="" dir="auto">Q29: Print multiple variables.</p><pre id="39315921-b68f-8006-86bd-e0d9bf80295c" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">println(&quot;Name: $name&quot;)
+println(&quot;Age: $age&quot;)</code></pre><p id="39315921-b68f-8078-a2c5-cdbd763c6065" class="" dir="auto">Q30: Prompt the user before reading input.</p><pre id="39315921-b68f-80bd-b35e-e56592ea0f28" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">print(&quot;Enter anything: &quot;)
+val input = readln()</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-800a-8cb5-cf9f8e3aed71" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-80f3-aa82-d3b0bbddcfeb" class="" dir="auto">Q31: Add two numbers together.</p><pre id="39315921-b68f-805e-be1a-c86fcb59e702" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val sum = 8 + 4</code></pre><p id="39315921-b68f-800c-ab9c-db65064409c9" class="" dir="auto">Q32: Subtract two numbers.</p><pre id="39315921-b68f-805c-ae6f-edd5cf81d674" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val difference = 20 - 5</code></pre><p id="39315921-b68f-808c-bfcb-f781804e5daf" class="" dir="auto">Q33: Multiply two numbers.</p><pre id="39315921-b68f-80b3-bed1-eb40061655ba" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val product = 7 * 9</code></pre><p id="39315921-b68f-8027-9a93-d182a7a1c5e9" class="" dir="auto">Q34: Divide two numbers.</p><pre id="39315921-b68f-805d-b0f5-fdefc443e989" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val quotient = 50 / 5</code></pre><p id="39315921-b68f-80f9-8cc3-f5a21be7b179" class="" dir="auto">Q35: Find the remainder after division.</p><pre id="39315921-b68f-8004-b19b-e5bbd6e05782" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val remainder = 17 % 5</code></pre><p id="39315921-b68f-8089-96ba-d483ee806ff8" class="" dir="auto">Q36: Increase a score by one.</p><pre id="39315921-b68f-801a-bfc0-fca701c6cc33" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">score++</code></pre><p id="39315921-b68f-80e2-9e8a-ff20d64629b0" class="" dir="auto">Q37: Decrease the number of lives.</p><pre id="39315921-b68f-8001-9bbd-da3e89842650" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">lives--</code></pre><p id="39315921-b68f-80a6-8f3a-fcfd3eff1a9f" class="" dir="auto">Q38: Add 10 points to the score.</p><pre id="39315921-b68f-8043-8c59-e48a0e4a8e61" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">score += 10</code></pre><p id="39315921-b68f-8054-8817-fcab7f91f351" class="" dir="auto">Q39: Double the player&#x27;s money.</p><pre id="39315921-b68f-80f3-8541-fe8fae11e9f4" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">money *= 2</code></pre><p id="39315921-b68f-80a5-8242-e4d1a383b15a" class="" dir="auto">Q40: Calculate the average of two numbers.</p><pre id="39315921-b68f-808f-9a6f-c151703350a3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">val average = (a + b) / 2.0</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ba-81da-d3e88ba99c8a" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-800c-b790-fc843d25070f" class="" dir="auto">Q41: Print &quot;Winner!&quot; if the score is above 100.</p><pre id="39315921-b68f-808d-8f36-d78ff63a4598" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (score &gt; 100) {
+    println(&quot;Winner!&quot;)
+}</code></pre><p id="39315921-b68f-8026-a110-c325b363e5ed" class="" dir="auto">Q42: Print whether someone is an adult.</p><pre id="39315921-b68f-803a-977d-eaa5bdba93e9" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    println(&quot;Adult&quot;)
+} else {
+    println(&quot;Minor&quot;)
+}</code></pre><p id="39315921-b68f-804d-9e07-da9d75f2ac16" class="" dir="auto">Q43: Check if a password is correct.</p><pre id="39315921-b68f-8005-be1a-e4b74dc4d6f0" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (password == &quot;secret&quot;) {
+    println(&quot;Access Granted&quot;)
+}</code></pre><p id="39315921-b68f-80e0-91f3-e7658dde165a" class="" dir="auto">Q44: Check if the player has a key.</p><pre id="39315921-b68f-8061-bfc7-ccc18ba87e9a" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (hasKey) {
+    println(&quot;Door unlocked.&quot;)
+}</code></pre><p id="39315921-b68f-8052-a04f-c78cc35bf27b" class="" dir="auto">Q45: Print if a number is positive.</p><pre id="39315921-b68f-8001-b099-d408733aeab0" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (number &gt; 0) {
+    println(&quot;Positive&quot;)
+}</code></pre><p id="39315921-b68f-805b-ad71-e9968160b2e5" class="" dir="auto">Q46: Check if a number is even.</p><pre id="39315921-b68f-80ba-b356-e46a3914d7c1" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (number % 2 == 0) {
+    println(&quot;Even&quot;)
+}</code></pre><p id="39315921-b68f-80bd-a04d-f14aadb72b60" class="" dir="auto">Q47: Print a warning if health is low.</p><pre id="39315921-b68f-80bc-9d5d-ed3255c63fee" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (health &lt; 25) {
+    println(&quot;Low Health!&quot;)
+}</code></pre><p id="39315921-b68f-80d6-b580-cf71d092eae5" class="" dir="auto">Q48: Print &quot;Correct&quot; or &quot;Incorrect&quot;.</p><pre id="39315921-b68f-8015-a20c-c6f173dfde02" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (guess == answer) {
+    println(&quot;Correct&quot;)
+} else {
+    println(&quot;Incorrect&quot;)
+}</code></pre><p id="39315921-b68f-803f-84fc-f622b04c4553" class="" dir="auto">Q49: Check whether someone can vote.</p><pre id="39315921-b68f-804c-b61b-d0f2f22d62a2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18) {
+    println(&quot;Can Vote&quot;)
+}</code></pre><p id="39315921-b68f-80ea-9862-ed84ad6441f4" class="" dir="auto">Q50: Choose between three grades.</p><pre id="39315921-b68f-800c-ad7e-fbf4219c575f" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">if (grade &gt;= 90) {
+    println(&quot;A&quot;)
+} else if (grade &gt;= 80) {
+    println(&quot;B&quot;)
+} else {
+    println(&quot;C or Below&quot;)
+}</code></pre></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80a6-bd91-f80d522edef1" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8074-bff7-f03ff61b820a" class="" dir="auto">Q51: Generate a random number from 1 to 10.</p><pre id="39315921-b68f-80c6-aa38-dc2e051eb6b9" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val number = Random.nextInt(1, 11)</code></pre><p id="39315921-b68f-8090-b4ac-f8584820ceae" class="" dir="auto">Q52: Simulate rolling a six-sided die.</p><pre id="39315921-b68f-8026-8241-d8160087ccbf" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val roll = Random.nextInt(1, 7)</code></pre><p id="39315921-b68f-800b-b67f-c1d2169bedeb" class="" dir="auto">Q53: Simulate flipping a coin.</p><pre id="39315921-b68f-80e4-b7ae-e08aafc4cafc" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val coin = Random.nextInt(2)</code></pre><p id="39315921-b68f-8056-b2e6-c50a932bbee2" class="" dir="auto">Q54: Pick a random number from 100 to 999.</p><pre id="39315921-b68f-804a-90b5-d0743f1414d8" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val code = Random.nextInt(100, 1000)</code></pre><p id="39315921-b68f-8027-bc28-f5d592557fdc" class="" dir="auto">Q55: Generate a random health bonus.</p><pre id="39315921-b68f-80e3-b4cc-fce5291b04ae" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val bonus = Random.nextInt(5, 21)</code></pre><p id="39315921-b68f-808d-b7c1-d1fd4e746dd2" class="" dir="auto">Q56: Generate a random damage amount.</p><pre id="39315921-b68f-804d-a64e-c9ed79739a65" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val damage = Random.nextInt(10, 51)</code></pre><p id="39315921-b68f-8043-afaf-f2630cc0fde0" class="" dir="auto">Q57: Randomly choose between two outcomes.</p><pre id="39315921-b68f-8058-9961-c9ab7af12f24" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+if (Random.nextBoolean()) {
+    println(&quot;Heads&quot;)
+} else {
+    println(&quot;Tails&quot;)
+}</code></pre><p id="39315921-b68f-80f0-9261-d615306cb33a" class="" dir="auto">Q58: Print a random number every time the program starts.</p><pre id="39315921-b68f-8015-b136-cb0b0f23aae3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+println(Random.nextInt(1, 101))</code></pre><p id="39315921-b68f-80d1-94ba-edacafda75e3" class="" dir="auto">Q59: Give the player a random amount of gold.</p><pre id="39315921-b68f-807d-85ad-fbd7a8b29dd2" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val gold = Random.nextInt(50, 201)</code></pre><p id="39315921-b68f-80f4-abd8-e13df3e0b672" class="" dir="auto">Q60: Create a random guessing game.</p><pre id="39315921-b68f-80e0-a87b-f8b42eea7ee5" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+val secret = Random.nextInt(1, 11)
+
+print(&quot;Guess (1-10): &quot;)
+val guess = readln().toInt()
+
+if (guess == secret) {
+    println(&quot;Correct!&quot;)
+} else {
+    println(&quot;Wrong! The answer was $secret&quot;)
+}</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80d7-b12d-fc5c140d2d4a" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-80d3-82ab-c62daebbbc8b" class="" dir="auto">Flowchart Shape Key</h3><table id="3e315921-b68f-8029-8c83-e8c7aa930ec1" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-808d-9613-c10bada3e418" dir="ltr"><th id="_KiD" class="simple-table-header-color simple-table-header">Shape</th><th id="hdv;" class="simple-table-header-color simple-table-header">Meaning</th><th id="QQX^" class="simple-table-header-color simple-table-header">Kotlin examples</th></tr></thead><tbody><tr id="3e315921-b68f-80c8-b0f5-fd0eaedf3f51" dir="ltr"><td id="_KiD" class=""><code>([ START / END ])</code></td><td id="hdv;" class=""><strong>Oval / Terminator</strong></td><td id="QQX^" class="">Program start/end</td></tr><tr id="3e315921-b68f-800f-a25a-fb4ad301ce6b" dir="ltr"><td id="_KiD" class=""><code>[ Process ]</code></td><td id="hdv;" class=""><strong>Rectangle</strong></td><td id="QQX^" class="">Variables, calculations, random generation</td></tr><tr id="3e315921-b68f-808b-9420-cd54a12f1a4e" dir="ltr"><td id="_KiD" class=""><code>[/ Input / Output /]</code></td><td id="hdv;" class=""><strong>Parallelogram</strong></td><td id="QQX^" class=""><code>readln()</code>, <code>print()</code>, <code>println()</code></td></tr><tr id="3e315921-b68f-801d-85b5-d640c99b93e6" dir="ltr"><td id="_KiD" class=""><code>{ Condition? }</code></td><td id="hdv;" class=""><strong>Diamond</strong></td><td id="QQX^" class=""><code>if</code>, <code>when</code>, comparisons</td></tr><tr id="3e315921-b68f-800b-bfff-e385bba5a2b7" dir="ltr"><td id="_KiD" class=""><code>↓</code></td><td id="hdv;" class=""><strong>Arrow</strong></td><td id="QQX^" class="">Program flow</td></tr></tbody></table><hr id="3e315921-b68f-80af-9bff-f79956fe714c" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8050-af35-fb6617a86816" style="display:inline-block">Project 1: Number Guessing Game</h1></summary><div class="indented"><h3 id="3e315921-b68f-8033-8eb3-fee03f65817c" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-80a1-a3d4-d1f4153641a0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Import Random library ]
+     ↓
+[ Generate secret number from 1–10 ]
+     ↓
+[/ Display &quot;Guess a number (1-10):&quot; /]
+     ↓
+[/ Read user input /]
+     ↓
+[ Convert input to Int ]
+     ↓
+[ Store input as guess ]
+     ↓
+{ guess == secret? }
+       ↙          ↘
+     YES          NO
+      ↓            ↓
+[/ Display      [/ Display
+  &quot;Correct!&quot; /]   &quot;Wrong! The number
+                   was secret&quot; /]
+       ↘          ↙
+          ↓
+      ([ END ])</code></pre><h3 id="3e315921-b68f-8073-a9a1-f33d82d6a267" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80ff-87d9-f611dada7d8f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-80e7-9bac-f306d69c9cb0" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Import Random library</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80da-b18d-c4d23a104367" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate secret number</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80b1-aee9-d723424e1e9a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display guess prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8096-b85d-c0426282a626" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read input</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-802f-afe3-d85651f7b006" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Int</strong> → Rectangle</li></ul><ul id="3e315921-b68f-803d-93dd-ff18a17832d7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store as </strong><code><strong>guess</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-800a-b179-ed21bed6ea11" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>guess == secret?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-80c5-a66c-fd326067c898" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Correct</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80be-9261-d47ea83ab9ec" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display Wrong</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-805d-a2b8-f5aa5c069060" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-8050-8d60-cd5c3e3c8164" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-807c-94d0-f797c580c71b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">GENERATE
+   ↓
+INPUT
+   ↓
+CONVERT
+   ↓
+COMPARE
+ ↙     ↘
+YES    NO
+ ↓      ↓
+OUTPUT OUTPUT
+   ↘   ↙
+    END</code></pre></div></details><hr id="3e315921-b68f-80a7-902c-e95a19d4a1f8" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8008-9ca2-dd1d4c84c2b5" style="display:inline-block">Project 2: Simple Calculator</h1></summary><div class="indented"><p id="3e315921-b68f-8000-94d2-d59f478275d9" class="" dir="auto">This one uses a <code>when</code> statement, so the flowchart is essentially a <strong>multi-way decision</strong>.</p><h3 id="3e315921-b68f-806f-90df-e6385270a2e2" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8073-a948-e7ba10dbad3b" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[/ Ask for first number /]
+     ↓
+[/ Read input /]
+     ↓
+[ Convert to Double ]
+     ↓
+[ Store as num1 ]
+     ↓
+[/ Ask for second number /]
+     ↓
+[/ Read input /]
+     ↓
+[ Convert to Double ]
+     ↓
+[ Store as num2 ]
+     ↓
+[/ Ask for operation (+, -, *, /) /]
+     ↓
+[/ Read operation /]
+     ↓
+[ Store as op ]
+     ↓
+{ Which operation? }
+   ↙      ↓       ↓       ↘
+  &quot;+&quot;     &quot;-&quot;     &quot;*&quot;      &quot;/&quot;
+   ↓       ↓       ↓        ↓
+[ num1   [ num1   [ num1    [ num1
+  + num2 ]  - num2 ]  * num2 ]  / num2 ]
+   ↘       ↓       ↓        ↙
+      ↘    ↓       ↓      ↙
+          [ result ]
+              ↑
+              │
+          &quot;else&quot;
+              ↓
+      [/ Display &quot;Invalid
+          operation&quot; /]
+              ↓
+        [ result = 0.0 ]
+              ↓
+              └──────────┐
+                         ↓
+              [/ Display result /]
+                         ↓
+                     ([ END ])</code></pre><p id="3e315921-b68f-8087-b43b-f64df76af545" class="" dir="auto">A cleaner conceptual version:</p><pre id="3e315921-b68f-8058-b0df-c7bbef1ca2b0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">                { op? }
+          ↙       ↓       ↓       ↘
+        &quot;+&quot;      &quot;-&quot;      &quot;*&quot;      &quot;/&quot;
+         ↓        ↓        ↓        ↓
+       ADD      SUBTRACT MULTIPLY DIVIDE
+          ↘       ↓       ↓       ↙
+                  ↓
+              [ result ]
+                  ↑
+                  │
+               &quot;else&quot;
+                  ↓
+          [/ Invalid operation /]
+                  ↓
+             [ result = 0 ]
+                  ↓
+                  └──────→ [ result ]
+                              ↓
+                         [/ Output /]
+                              ↓
+                           ([ END ])</code></pre><h3 id="3e315921-b68f-8066-a2f9-fc8596ad4fec" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-801f-95cd-f16a34399245" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-8013-b1c2-db52ab8c17a0" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Ask for numbers/operation</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8019-9cb4-daf121f38047" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read input</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-800c-9524-da19b6d87f8d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Convert to Double</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80a1-b4cd-e78591b00581" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store </strong><code><strong>num1</strong></code><strong>, </strong><code><strong>num2</strong></code><strong>, </strong><code><strong>op</strong></code> → Rectangles</li></ul><ul id="3e315921-b68f-80ec-9469-c9f7e27b2873" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>Which operation?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-803f-bb3a-db8b79f8cc7d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Addition</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8091-88af-cd1181915f82" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Subtraction</strong> → Rectangle</li></ul><ul id="3e315921-b68f-809d-8669-ee5282e7d3f3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Multiplication</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8028-a8b7-da0acf58591d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Division</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80dc-bf3d-ff0dfcb32eed" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Invalid operation</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8091-a9b6-e8e6b2bb4993" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>result = 0.0</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80d9-82f9-ea7476ffe2ad" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display result</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80c7-8310-d84d295f16a3" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-801b-997e-d07f0be3f8c6" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-8008-8837-f2c14fa8205a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">INPUT
+  ↓
+CONVERT
+  ↓
+STORE
+  ↓
+{ OPERATION? }
+ ↙   ↓   ↓   ↘
++    -   *    /
+↓    ↓   ↓    ↓
+ADD SUB MUL DIV
+ ↘   ↓   ↓   ↙
+    RESULT
+       ↓
+    OUTPUT
+       ↓
+      END</code></pre></div></details><hr id="3e315921-b68f-80ca-8008-db328360d767" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-8089-9a01-f087cd971eab" style="display:inline-block">Project 3: Health Battle Simulator</h1></summary><div class="indented"><p id="3e315921-b68f-808c-beb0-cf7075064744" class="" dir="auto">There aren&#x27;t actually any decision branches in this version. It is a straight sequence of calculations.</p><h3 id="3e315921-b68f-8045-b309-fd77568743f1" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8077-96aa-e03c791c72cb" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Import Random library ]
+     ↓
+[ Set playerHealth = 100 ]
+     ↓
+[ Set enemyHealth = 100 ]
+     ↓
+[ Generate playerDamage from 10–30 ]
+     ↓
+[ Subtract playerDamage from enemyHealth ]
+     ↓
+[ Generate enemyDamage from 5–20 ]
+     ↓
+[ Subtract enemyDamage from playerHealth ]
+     ↓
+[/ Display player damage /]
+     ↓
+[/ Display enemy damage /]
+     ↓
+[/ Display Player Health /]
+     ↓
+[/ Display Enemy Health /]
+     ↓
+([ END ])</code></pre><h3 id="3e315921-b68f-801f-a6b3-c7e9ebddffe5" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-805f-ab7c-ffa2afa2ab55" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-801d-9b5c-e5d320f7263d" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Import Random</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80b7-9f1c-ff3204458e3c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Set player health</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8054-901f-dd30c229a26f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Set enemy health</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80de-84dc-cb7b49763c14" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate player damage</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8065-80f9-f4c9296de5df" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Subtract damage from enemy</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8080-a935-c6bce58bf967" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate enemy damage</strong> → Rectangle</li></ul><ul id="3e315921-b68f-807c-a6e2-e8892e1e5d19" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Subtract damage from player</strong> → Rectangle</li></ul><ul id="3e315921-b68f-802d-b565-ef5ad865b45e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display damage values</strong> → Parallelograms</li></ul><ul id="3e315921-b68f-8039-a1ad-f562b6422274" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display health values</strong> → Parallelograms</li></ul><ul id="3e315921-b68f-807b-ab10-d40516126ce6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-8082-ace5-d8b06ea1d062" class="" dir="auto">Core Pattern</h3><pre id="3e315921-b68f-8081-ac1e-f685e7e00e74" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">SETUP
+  ↓
+RANDOM DAMAGE
+  ↓
+MODIFY ENEMY
+  ↓
+RANDOM DAMAGE
+  ↓
+MODIFY PLAYER
+  ↓
+OUTPUT
+  ↓
+END</code></pre><p id="3e315921-b68f-80ad-85da-d5be624f9d61" class="" dir="auto"><strong>Important:</strong> There is no <code>{ Condition? }</code> diamond because the code never checks whether someone is dead or whether one player won.</p></div></details><hr id="3e315921-b68f-804d-a6b1-e8d03d672358" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80d8-ad09-face8f160420" style="display:inline-block">Project 4: Login System</h1></summary><div class="indented"><h3 id="3e315921-b68f-80d0-9279-c9a4a746138d" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8015-bd45-db62a34a2b57" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Store correctUsername = &quot;admin&quot; ]
+     ↓
+[ Store correctPassword = &quot;1234&quot; ]
+     ↓
+[/ Display &quot;Enter username:&quot; /]
+     ↓
+[/ Read username /]
+     ↓
+[/ Display &quot;Enter password:&quot; /]
+     ↓
+[/ Read password /]
+     ↓
+{ username == correctUsername
+  AND
+  password == correctPassword? }
+       ↙                  ↘
+     YES                  NO
+      ↓                    ↓
+[/ Display              [/ Display
+  &quot;Access                &quot;Access
+  Granted&quot; /]             Denied&quot; /]
+       ↘                  ↙
+           ↓
+       ([ END ])</code></pre><h3 id="3e315921-b68f-8043-bd14-e7c6a668a48f" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-800e-af60-d630c3458163" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-809c-aa48-e91cfdaba5c4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store credentials</strong> → Rectangles</li></ul><ul id="3e315921-b68f-804b-b3f6-d1e449dc53ec" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display username prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80a2-8046-c23915906af4" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read username</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-80f6-8a0b-d801e9d8d822" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display password prompt</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8005-9457-cff6cf84f803" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Read password</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8033-91e1-fecf25ec1bca" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Credentials correct?</strong> → Diamond</li></ul><ul id="3e315921-b68f-8088-ae26-e8e95e78339c" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Granted</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8077-863e-d4d56983d8ec" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Access Denied</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-809b-b5f6-c74bf49a3070" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul><h3 id="3e315921-b68f-80c7-b98c-c72908ec3ba6" class="" dir="auto">Core Logic</h3><pre id="3e315921-b68f-80b9-ab68-e0039b7b50d0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">username correct ──┐
+                   ├── AND ──→ { Valid credentials? }
+password correct ──┘
+                              ↙       ↘
+                            YES       NO
+                             ↓         ↓
+                          GRANTED    DENIED</code></pre><p id="3e315921-b68f-800f-8995-cc5116c9fc05" class="" dir="auto">Both conditions have to be true.</p></div></details><hr id="3e315921-b68f-8052-a20e-c9e656c4337a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-80ac-84c7-e6db18170015" style="display:inline-block">Project 5: Random Loot Box System</h1></summary><div class="indented"><p id="3e315921-b68f-806c-90c4-d041cc63f746" class="" dir="auto">This one is another <code>when</code>-based <strong>multi-way decision</strong>.</p><h3 id="3e315921-b68f-8062-bacc-db3a6df1f745" class="" dir="auto">Text-Based Flowchart</h3><pre id="3e315921-b68f-8051-819a-fc21d9bab6c1" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">([ START ])
+     ↓
+[ Define item1 = &quot;Wooden Sword&quot; ]
+     ↓
+[ Define item2 = &quot;Iron Sword&quot; ]
+     ↓
+[ Define item3 = &quot;Golden Sword&quot; ]
+     ↓
+[ Generate random roll from 1–3 ]
+     ↓
+[ Store roll ]
+     ↓
+{ What is roll? }
+    ↙       ↓       ↘
+   1        2        3
+   ↓        ↓        ↓
+[ loot =  [ loot =  [ loot =
+  item1 ]   item2 ]   item3 ]
+    ↘        ↓        ↙
+       ↘     ↓     ↙
+          [ loot ]
+             ↑
+             │
+          &quot;else&quot;
+             ↓
+      [ loot = &quot;Nothing&quot; ]
+             ↓
+             └─────────┐
+                       ↓
+            [/ Display &quot;You opened
+                a loot box...&quot; /]
+                       ↓
+            [/ Display received loot /]
+                       ↓
+                   ([ END ])</code></pre><h3 id="3e315921-b68f-80e6-9c0c-f6b8eaa4d316" class="" dir="auto">Cleaner Conceptual Version</h3><pre id="3e315921-b68f-80ba-9cfe-dd501c622093" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">          [ RANDOM ROLL 1–3 ]
+                  ↓
+             { roll? }
+           ↙     ↓     ↘
+          1      2      3
+          ↓      ↓      ↓
+       WOODEN   IRON   GOLDEN
+       SWORD   SWORD   SWORD
+          ↘      ↓      ↙
+             [ LOOT ]
+                ↓
+             OUTPUT
+                ↓
+               END</code></pre><h3 id="3e315921-b68f-806e-81f5-c90d009570a1" class="" dir="auto">Flowchart Shapes</h3><ul id="3e315921-b68f-80a4-b4a6-e9133f9dcb55" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>START</strong> → Oval</li></ul><ul id="3e315921-b68f-8002-9be5-e2d542e7725e" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Define loot items</strong> → Rectangles</li></ul><ul id="3e315921-b68f-80de-81d2-f4600bf2a231" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Generate random roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-8014-8662-db5db726686f" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Store roll</strong> → Rectangle</li></ul><ul id="3e315921-b68f-805a-b855-d93d031e7b15" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code><strong>What is roll?</strong></code> → Diamond</li></ul><ul id="3e315921-b68f-8037-a248-d22647d12900" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Select item 1</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80fd-81e2-c5a72c8beb50" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Select item 2</strong> → Rectangle</li></ul><ul id="3e315921-b68f-80fe-9012-ef76f1c2692a" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Select item 3</strong> → Rectangle</li></ul><ul id="3e315921-b68f-805f-9be0-dac34e4b9837" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Fallback </strong><code><strong>&quot;Nothing&quot;</strong></code> → Rectangle</li></ul><ul id="3e315921-b68f-80a6-a29b-c07274873ea7" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display loot-box message</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8061-a431-cf8ea6ed47cc" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>Display received item</strong> → Parallelogram</li></ul><ul id="3e315921-b68f-8055-bde1-c918b7036b37" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><strong>END</strong> → Oval</li></ul></div></details><hr id="3e315921-b68f-80df-bd61-f3ca22ad40c2" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-807d-abc3-dacdddb9ac64" style="display:inline-block">Kotlin CLI Master Flowchart</h1></summary><div class="indented"><p id="3e315921-b68f-80c7-95ae-fc8176dead08" class="" dir="auto">These five give you a nice progression because they introduce several different control-flow patterns:</p><pre id="3e315921-b68f-80cd-9245-e2455b5dd1b9" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">                    ([ START ])
+                         ↓
+                    [ SETUP ]
+                         ↓
+                      INPUT
+                         ↓
+                    [ PROCESS ]
+                         ↓
+                 { DECISION? }
+                  ↙         ↘
+                YES         NO
+                 ↓           ↓
+            [ PROCESS ] [ PROCESS ]
+                  ↘         ↙
+                     ↓
+                   OUTPUT
+                     ↓
+                  ([ END ])</code></pre><p id="3e315921-b68f-80e8-beb7-d99f0bf4255e" class="" dir="auto">But there are actually <strong>three important flow patterns</strong> represented by your projects:</p><h3 id="3e315921-b68f-80e0-97b8-d1354ab388fd" class="" dir="auto">1. Straight-line sequence</h3><p id="3e315921-b68f-80dc-b0a7-cb9bc66513f0" class="" dir="auto"><strong>Health Battle</strong></p><pre id="3e315921-b68f-80d5-95ac-eb767d15e738" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">START
+ ↓
+PROCESS
+ ↓
+PROCESS
+ ↓
+PROCESS
+ ↓
+OUTPUT
+ ↓
+END</code></pre><h3 id="3e315921-b68f-80ce-a84e-c7dad6e2ad6e" class="" dir="auto">2. Binary decision</h3><p id="3e315921-b68f-8037-9ac9-d90ea3a92f31" class="" dir="auto"><strong>Number Guessing / Login</strong></p><pre id="3e315921-b68f-804d-a787-ddfea3a3d878" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">       { CONDITION? }
+         ↙       ↘
+       YES       NO
+        ↓         ↓
+     OUTPUT     OUTPUT
+         ↘     ↙
+           END</code></pre><h3 id="3e315921-b68f-80c9-a4e8-e55512f83337" class="" dir="auto">3. Multi-way decision</h3><p id="3e315921-b68f-80dd-8bab-d5be65a90d57" class="" dir="auto"><strong>Calculator / Loot Box</strong></p><pre id="3e315921-b68f-801a-bd8a-fdbd0b9b1c24" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">            { VALUE? }
+          ↙    ↓    ↘
+        CASE  CASE  CASE
+          ↓    ↓    ↓
+       PROCESS PROCESS PROCESS
+          ↘    ↓    ↙
+            OUTPUT
+               ↓
+              END</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8097-b0ad-e0dcb6b7e7f5" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-805c-893f-c2cc63ceb6dc" style="display:inline-block">Project 1: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-804b-9818-f98a6d6e32b1" class="" dir="auto">Steps:</h2><ol type="1" id="39315921-b68f-8053-87e7-d65cd3304989" class="numbered-list" start="1" dir="auto"><li>Generate a random number</li></ol><ol type="1" id="39315921-b68f-8082-8b4d-cb268ef19dcf" class="numbered-list" start="2" dir="auto"><li>Ask user to guess</li></ol><ol type="1" id="39315921-b68f-80ef-9a27-fc76fffce9e1" class="numbered-list" start="3" dir="auto"><li>Read input</li></ol><ol type="1" id="39315921-b68f-80ca-93a7-ed9dc73682e7" class="numbered-list" start="4" dir="auto"><li>Compare guess</li></ol><ol type="1" id="39315921-b68f-8004-9586-ff34096fad8b" class="numbered-list" start="5" dir="auto"><li>Print result</li></ol><pre id="39315921-b68f-8057-95dc-f218a2962f8d" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+fun main() {
+
+    // STEP 1: Generate a secret random number between 1 and 10
+    val secret = Random.nextInt(1, 11)
+
+    // STEP 2: Ask the user for a guess
+    print(&quot;Guess a number (1-10): &quot;)
+
+    // STEP 3: Read user input and convert to Int
+    val guess = readln().toInt()
+
+    // STEP 4: Compare guess to secret number
+    if (guess == secret) {
+
+        // STEP 5A: Correct guess
+        println(&quot;Correct!&quot;)
+    } else {
+
+        // STEP 5B: Wrong guess
+        println(&quot;Wrong! The number was $secret&quot;)
+    }
+}</code></pre></div></details><hr id="39315921-b68f-809e-8b2c-d85338b98624" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-809b-94c8-ee5e2131083b" style="display:inline-block">Project 2: Simple Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-80ea-9405-f011e2ac4d4a" class="" dir="auto">Steps:</h2><ol type="1" id="39315921-b68f-80e6-bff4-cd6645d4c6b3" class="numbered-list" start="1" dir="auto"><li>Ask for first number</li></ol><ol type="1" id="39315921-b68f-809c-91a2-ff05a9ebe57b" class="numbered-list" start="2" dir="auto"><li>Ask for second number</li></ol><ol type="1" id="39315921-b68f-8096-99bb-e857ce7b89aa" class="numbered-list" start="3" dir="auto"><li>Ask for operation</li></ol><ol type="1" id="39315921-b68f-80f5-bb0c-d90324a640e9" class="numbered-list" start="4" dir="auto"><li>Perform calculation</li></ol><ol type="1" id="39315921-b68f-802c-943e-e92ce550db68" class="numbered-list" start="5" dir="auto"><li>Print result</li></ol><pre id="39315921-b68f-80dd-903c-fb5a2ac213b3" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">fun main() {
+
+    // STEP 1: Get first number
+    print(&quot;Enter first number: &quot;)
+    val num1 = readln().toDouble()
+
+    // STEP 2: Get second number
+    print(&quot;Enter second number: &quot;)
+    val num2 = readln().toDouble()
+
+    // STEP 3: Get operation (+, -, *, /)
+    print(&quot;Enter operation (+, -, *, /): &quot;)
+    val op = readln()
+
+    // STEP 4: Perform calculation based on operation
+    val result = when (op) {
+
+        &quot;+&quot; -&gt; num1 + num2
+        &quot;-&quot; -&gt; num1 - num2
+        &quot;*&quot; -&gt; num1 * num2
+        &quot;/&quot; -&gt; num1 / num2
+
+        // Default case if invalid input
+        else -&gt; {
+            println(&quot;Invalid operation&quot;)
+            0.0
+        }
+    }
+
+    // STEP 5: Print result
+    println(&quot;Result: $result&quot;)
+}</code></pre></div></details><hr id="39315921-b68f-80bd-8c3b-d3bf0aac7707" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80bb-90e3-e8c21d3581f1" style="display:inline-block">Project 3: Health Battle Simulator</h1></summary><div class="indented"><h2 id="39315921-b68f-8003-af3e-d333daaf5c83" class="" dir="auto">Steps:</h2><ol type="1" id="39315921-b68f-804e-8af4-dd6638553b68" class="numbered-list" start="1" dir="auto"><li>Set player and enemy health</li></ol><ol type="1" id="39315921-b68f-80db-b2a5-f95af98acae3" class="numbered-list" start="2" dir="auto"><li>Generate random damage</li></ol><ol type="1" id="39315921-b68f-802d-9925-c5661d7be3da" class="numbered-list" start="3" dir="auto"><li>Player attacks enemy</li></ol><ol type="1" id="39315921-b68f-800f-bdac-e45b4dbc94b7" class="numbered-list" start="4" dir="auto"><li>Enemy attacks player</li></ol><ol type="1" id="39315921-b68f-8063-b964-fd4e97c11ef3" class="numbered-list" start="5" dir="auto"><li>Print final health</li></ol><pre id="39315921-b68f-80f1-83b6-f0d3b0347c28" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+fun main() {
+
+    // STEP 1: Set starting health values
+    var playerHealth = 100
+    var enemyHealth = 100
+
+    // STEP 2: Player attacks first (random damage)
+    val playerDamage = Random.nextInt(10, 31)
+    enemyHealth -= playerDamage
+
+    // STEP 3: Enemy attacks back (random damage)
+    val enemyDamage = Random.nextInt(5, 21)
+    playerHealth -= enemyDamage
+
+    // STEP 4: Print damage results
+    println(&quot;Player dealt $playerDamage damage&quot;)
+    println(&quot;Enemy dealt $enemyDamage damage&quot;)
+
+    // STEP 5: Print final health values
+    println(&quot;Player Health: $playerHealth&quot;)
+    println(&quot;Enemy Health: $enemyHealth&quot;)
+}</code></pre></div></details><hr id="39315921-b68f-80ae-97e4-d6b108a0675a" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8011-bb23-d8c3847b1df1" style="display:inline-block">Project 4: Login System (Basic CLI)</h1></summary><div class="indented"><h2 id="39315921-b68f-8093-87f2-e7b9ba74d6d8" class="" dir="auto">Steps:</h2><ol type="1" id="39315921-b68f-80ba-9d50-d15e8d14d4ac" class="numbered-list" start="1" dir="auto"><li>Store correct username/password</li></ol><ol type="1" id="39315921-b68f-8022-af3b-dd3d7308d9ab" class="numbered-list" start="2" dir="auto"><li>Ask user for username</li></ol><ol type="1" id="39315921-b68f-80de-981e-e0f70f260182" class="numbered-list" start="3" dir="auto"><li>Ask user for password</li></ol><ol type="1" id="39315921-b68f-800b-935b-ea45181866f0" class="numbered-list" start="4" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-80bd-8826-f0b08fcc12c3" class="numbered-list" start="5" dir="auto"><li>Print access result</li></ol><pre id="39315921-b68f-80bc-922c-c556e44cf114" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">fun main() {
+
+    // STEP 1: Stored credentials
+    val correctUsername = &quot;admin&quot;
+    val correctPassword = &quot;1234&quot;
+
+    // STEP 2: Ask for username
+    print(&quot;Enter username: &quot;)
+    val username = readln()
+
+    // STEP 3: Ask for password
+    print(&quot;Enter password: &quot;)
+    val password = readln()
+
+    // STEP 4: Check credentials
+    if (username == correctUsername &amp;&amp; password == correctPassword) {
+
+        // STEP 5A: Successful login
+        println(&quot;Access Granted&quot;)
+    } else {
+
+        // STEP 5B: Failed login
+        println(&quot;Access Denied&quot;)
+    }
+}</code></pre></div></details><hr id="39315921-b68f-805c-8801-d271a536acc7" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e1-a9a6-dd4b55340b13" style="display:inline-block">Project 5: Random Loot Box System</h1></summary><div class="indented"><h2 id="39315921-b68f-8039-9bbc-e951eba42bca" class="" dir="auto">Steps:</h2><ol type="1" id="39315921-b68f-8086-b4ac-cb0b9856d79f" class="numbered-list" start="1" dir="auto"><li>Define possible loot items</li></ol><ol type="1" id="39315921-b68f-80e9-94b3-d9ae9b6f9b8d" class="numbered-list" start="2" dir="auto"><li>Generate random selection</li></ol><ol type="1" id="39315921-b68f-80de-bc6c-c132e78dd139" class="numbered-list" start="3" dir="auto"><li>Pick item based on random number</li></ol><ol type="1" id="39315921-b68f-80d0-af43-e3eb546ed278" class="numbered-list" start="4" dir="auto"><li>Assign item to player</li></ol><ol type="1" id="39315921-b68f-8004-9f77-c145ab15d02e" class="numbered-list" start="5" dir="auto"><li>Print result</li></ol><pre id="39315921-b68f-80e5-aad5-db1389816529" class="code code-wrap" data-notion-code-syntax="kotlin"><code class="language-kotlin" style="white-space:pre-wrap;word-break:break-all">import kotlin.random.Random
+
+fun main() {
+
+    // STEP 1: Define loot items (simple pool)
+    val item1 = &quot;Wooden Sword&quot;
+    val item2 = &quot;Iron Sword&quot;
+    val item3 = &quot;Golden Sword&quot;
+
+    // STEP 2: Generate random number
+    val roll = Random.nextInt(1, 4)
+
+    // STEP 3: Choose item based on roll
+    val loot = when (roll) {
+
+        1 -&gt; item1
+        2 -&gt; item2
+        3 -&gt; item3
+
+        // fallback (should never happen)
+        else -&gt; &quot;Nothing&quot;
+    }
+
+    // STEP 4: Assign loot to player (conceptual)
+    println(&quot;You opened a loot box...&quot;)
+
+    // STEP 5: Print result
+    println(&quot;You received: $loot&quot;)
+}</code></pre></div></details><hr id="39315921-b68f-80bb-ad7b-ef4c9b66bd73" dir="auto"/><p id="39315921-b68f-8042-a8ef-f7d5ab6fe660" class="" dir="auto">
+</p></div></details><p id="39315921-b68f-807b-8c05-eb63642910c1" class="" dir="auto">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,1306 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Coding Basics/White Belt/Javascript + GUI (HTML/CSS)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style></head><body><article id="39215921-b68f-800c-8e14-cd725f1147a8" class="page sans"><header><h1 class="page-title" dir="auto">Coding Basics/White Belt/Javascript + GUI (HTML/CSS)</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><p id="39315921-b68f-807a-9551-c667289a4b97" class="" dir="auto">💡 Tip: Click the arrows next to each heading to expand or collapse the content underneath.</p><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80cb-9f5f-c61c9ad4a675" style="display:inline-block">Key Concepts</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8042-b29a-c6c466f060f2" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-8045-9bf7-f25d87d53209" class="" dir="auto">Q1: What is a variable?<br/>A: A variable is a named box that stores information your web page can use or change.</p><p id="39315921-b68f-8029-89eb-f89d9fffcf91" class="" dir="auto">Q2: When should I use a variable?<br/>A: Use a variable whenever a value might change, like a score, username, or counter.</p><p id="39315921-b68f-8001-906e-f97f3a0f9595" class="" dir="auto">Q3: What is a constant?<br/>A: A constant is a value that should never change after it is created.</p><p id="39315921-b68f-80c8-8765-c234ab983f80" class="" dir="auto">Q4: When should I use a constant instead of a variable?<br/>A: Use a constant for fixed values like tax rates or your application&#x27;s name.</p><p id="39315921-b68f-80ec-b507-d037adedb3c2" class="" dir="auto">Q5: Why should I use meaningful variable names?<br/>A: Good names make your code easier to read and maintain.</p><p id="39315921-b68f-8026-974e-f21229a04baa" class="" dir="auto">Q6: How do I create a variable?<br/>A:</p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js" integrity="sha512-m3JYEI6gx5fh9jF10FjGoMzVKcV2N6nchcDcqPCdI1L3R2WQV7br2XVNR8iTLb2daOMRl3zldbcfT40xU2ntVw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="39315921-b68f-80e3-be00-d67c4c053527" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score = 0;</code></pre><p id="39315921-b68f-80ce-8fdc-e1ee6ac7bb99" class="" dir="auto">Q7: How do I create a constant?<br/>A:</p><pre id="39315921-b68f-8095-86ab-ce0b8dcfbe45" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const APP_NAME = &quot;My Website&quot;;</code></pre><p id="39315921-b68f-8036-9155-f36a05b1ac55" class="" dir="auto">Q8: Can I change a variable later?<br/>A: Yes.</p><pre id="39315921-b68f-8026-a348-f5014119386a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score = 10;
+score = 20;</code></pre><p id="39315921-b68f-805b-883d-f862e76154bd" class="" dir="auto">Q9: Can I change a constant later?<br/>A: No. Constants cannot be reassigned.</p><p id="39315921-b68f-8075-a90e-efed7d6fda47" class="" dir="auto">Q10: Why are variables important in web pages?<br/>A: They let your page remember information while the user interacts with it.</p></div></details><hr id="39315921-b68f-8037-b756-cb2c0976170b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8083-a249-cf4f3c5b8480" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-8049-9044-c4a4636e5f76" class="" dir="auto">Q11: What is a data type?<br/>A: A data type tells JavaScript what kind of information is stored.</p><p id="39315921-b68f-8028-873c-e28b84beba86" class="" dir="auto">Q12: What is a number?<br/>A: A number stores whole numbers and decimals.</p><pre id="39315921-b68f-8022-8056-e407e340e027" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = 25;</code></pre><p id="39315921-b68f-80bf-88a6-f13186271969" class="" dir="auto">Q13: What is a string?<br/>A: A string stores text.</p><pre id="39315921-b68f-805b-92e5-c986b0a1b725" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let name = &quot;Alice&quot;;</code></pre><p id="39315921-b68f-808b-97d3-fce3bd16dd7a" class="" dir="auto">Q14: What is a boolean?<br/>A: A boolean stores either true or false.</p><pre id="39315921-b68f-806c-9585-c5cddd8d5b61" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let isLoggedIn = true;</code></pre><p id="39315921-b68f-806e-904a-f7220aba7f41" class="" dir="auto">Q15: What is null?<br/>A: Null means a variable intentionally has no value.</p><p id="39315921-b68f-80bc-b3f8-cc5257526003" class="" dir="auto">Q16: What is undefined?<br/>A: Undefined means a variable hasn&#x27;t been given a value yet.</p><p id="39315921-b68f-8071-8e79-c3e91d8fe265" class="" dir="auto">Q17: When should I use a string instead of a number?<br/>A: Use strings for text and numbers for calculations.</p><p id="39315921-b68f-80d8-9518-d93dee5465e6" class="" dir="auto">Q18: Why should I use the correct data type?<br/>A: It helps prevent bugs and makes your code easier to understand.</p><p id="39315921-b68f-8053-bf2a-dbe43e3c3e96" class="" dir="auto">Q19: Can JavaScript change a variable&#x27;s data type?<br/>A: Yes, but it&#x27;s usually better to keep variables consistent.</p><p id="39315921-b68f-80d5-916f-c6069ec9ce7c" class="" dir="auto">Q20: How do I choose the right data type?<br/>A: Decide whether you&#x27;re storing text, numbers, or true/false values.</p></div></details><hr id="39315921-b68f-8097-9f01-d6f479537207" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e6-9015-e39bbef4641e" style="display:inline-block">Input / Output (HTML/CSS + JavaScript)</h1></summary><div class="indented"><p id="39315921-b68f-8029-a620-cf59aaf38a3c" class="" dir="auto">Q21: What is input?<br/>A: Input is information the user enters into your webpage.</p><p id="39315921-b68f-809f-9307-e5cbc20d77cb" class="" dir="auto">Q22: How do I get text from a textbox?<br/>A:</p><pre id="39315921-b68f-80cd-bd8b-c567c979847c" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let name = document.getElementById(&quot;txtName&quot;).value;</code></pre><p id="39315921-b68f-8099-89ce-eaee84e2c1ca" class="" dir="auto">Q23: What is output?<br/>A: Output is information displayed on the webpage.</p><p id="39315921-b68f-802e-b1ac-c90ec9b8d975" class="" dir="auto">Q24: How do I display text inside a label or paragraph?<br/>A:</p><pre id="39315921-b68f-8018-80c5-e1fdba0c90f4" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;output&quot;).textContent = &quot;Hello!&quot;;</code></pre><p id="39315921-b68f-80f4-a6ae-db500737b839" class="" dir="auto">Q25: How do I display a popup message?<br/>A:</p><pre id="39315921-b68f-8060-b334-c1e77d8cd5a7" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">alert(&quot;Hello!&quot;);</code></pre><p id="39315921-b68f-8087-9f37-e60fcde8cdba" class="" dir="auto">Q26: Why use HTML elements instead of console.log()?<br/>A: Because website users see the webpage, not the browser console.</p><p id="39315921-b68f-80f2-a13b-d4f074e9b26a" class="" dir="auto">Q27: How do I change button text?<br/>A:</p><pre id="39315921-b68f-80da-9e97-fe503d12d75e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;btnSave&quot;).textContent = &quot;Saved!&quot;;</code></pre><p id="39315921-b68f-80d6-bb2d-c21bbc261f18" class="" dir="auto">Q28: How do I clear a textbox?<br/>A:</p><pre id="39315921-b68f-80b2-ab5d-fd19dbaf0183" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;txtName&quot;).value = &quot;&quot;;</code></pre><p id="39315921-b68f-80e5-ae37-e5063d41a79d" class="" dir="auto">Q29: Why do I use document.getElementById()?<br/>A: It finds an HTML element so JavaScript can use it.</p><p id="39315921-b68f-8026-978a-c8646e828f68" class="" dir="auto">Q30: What is the .value property?<br/>A: It gets or sets the text inside input controls.</p></div></details><hr id="39315921-b68f-80db-b641-c1c5264a2948" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8040-bbae-feb20eb27e47" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-8007-b070-e9fdaf4c30e2" class="" dir="auto">Q31: How do I add two numbers?<br/>A:</p><pre id="39315921-b68f-800b-a08a-d7fb409aa55c" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let total = a + b;</code></pre><p id="39315921-b68f-805c-8869-d4e603ecd750" class="" dir="auto">Q32: How do I subtract two numbers?<br/>A:</p><pre id="39315921-b68f-80b0-a38a-d90082117da1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a - b;</code></pre><p id="39315921-b68f-802d-a7b9-fa870f0f03cb" class="" dir="auto">Q33: How do I multiply two numbers?<br/>A:</p><pre id="39315921-b68f-8025-85e0-da6c7155d1b5" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let area = width * height;</code></pre><p id="39315921-b68f-8086-87fd-c7542eb687c2" class="" dir="auto">Q34: How do I divide two numbers?<br/>A:</p><pre id="39315921-b68f-8029-b673-d2ec6e86aeca" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let answer = total / count;</code></pre><p id="39315921-b68f-80f3-a192-c7c0bce98b4f" class="" dir="auto">Q35: What does the % operator do?<br/>A: It gives the remainder after division.</p><p id="39315921-b68f-8008-a7fa-ea0bf39f1942" class="" dir="auto">Q36: How do I increase a counter by 1?<br/>A:</p><pre id="39315921-b68f-806d-a25a-d9a3c23e81a9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count++;</code></pre><p id="39315921-b68f-803e-bb67-d67ed897ef96" class="" dir="auto">Q37: How do I decrease a counter by 1?<br/>A:</p><pre id="39315921-b68f-802f-b17a-ee3e35e4a60f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count--;</code></pre><p id="39315921-b68f-80ce-affa-f224883164cc" class="" dir="auto">Q38: Why store math results in variables?<br/>A: So you can display or reuse them later.</p><p id="39315921-b68f-80c0-b68f-cc549c6deedc" class="" dir="auto">Q39: How do I calculate the average of two numbers?<br/>A:</p><pre id="39315921-b68f-80d8-8073-c788ae202210" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let average = (a + b) / 2;</code></pre><p id="39315921-b68f-8039-ac20-edb10e658cfa" class="" dir="auto">Q40: Why is math useful in websites?<br/>A: Websites often calculate prices, scores, totals, and statistics.</p></div></details><hr id="39315921-b68f-8047-9cbb-ea2dca36d824" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ed-917d-e1d29a37e2a9" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8040-b41b-ed38594b75b6" class="" dir="auto">Q41: What is an if statement?<br/>A: It lets your webpage make decisions.</p><p id="39315921-b68f-80ba-9d59-dd160fe96b26" class="" dir="auto">Q42: When should I use an if statement?<br/>A: Whenever something should only happen if a condition is true.</p><p id="39315921-b68f-80dd-9457-df35d14a87f1" class="" dir="auto">Q43: What is an else statement?<br/>A: It runs when the if condition is false.</p><p id="39315921-b68f-80af-a3bf-de33efe953a7" class="" dir="auto">Q44: How do I write an if statement?<br/>A:</p><pre id="39315921-b68f-80f3-b4b3-fdd3a6b37cca" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18)
+{
+    alert(&quot;Adult&quot;);
+}</code></pre><p id="39315921-b68f-800e-9409-e7a647b6e198" class="" dir="auto">Q45: How do I use if and else together?<br/>A:</p><pre id="39315921-b68f-808b-b326-c2467c5fcf2d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 60)
+{
+    alert(&quot;Pass&quot;);
+}
+else
+{
+    alert(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-8081-8ade-c0a4ef87e53e" class="" dir="auto">Q46: What is a condition?<br/>A: A condition is a question that is either true or false.</p><p id="39315921-b68f-80e2-b3a2-c3d04dea77d6" class="" dir="auto">Q47: What comparison operators are commonly used?<br/>A:</p><pre id="39315921-b68f-8091-8ead-e84661fe5f01" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">==
+===
+!=
+&lt;
+&gt;
+&lt;=
+&gt;=</code></pre><p id="39315921-b68f-805c-94c8-f4ccaf6f0d6d" class="" dir="auto">Q48: Why are conditionals important?<br/>A: They let your webpage react differently based on user input.</p><p id="39315921-b68f-802c-95ce-d7c8e48be46a" class="" dir="auto">Q49: How do I check multiple conditions?<br/>A:</p><pre id="39315921-b68f-80f2-b794-caca7be26f78" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18 &amp;&amp; hasID)
+{
+    alert(&quot;Access Granted&quot;);
+}</code></pre><p id="39315921-b68f-806e-b812-fec328919cd6" class="" dir="auto">Q50: What is the easiest way to think about an if statement?<br/>A: Think of it as asking a yes-or-no question before doing something.</p></div></details><hr id="39315921-b68f-80c0-9a20-c2e8261590f2" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8096-9517-c0ac5458017b" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-80da-bb8a-e3c972348c05" class="" dir="auto">Q51: What is a random number?<br/>A: A number chosen unpredictably.</p><p id="39315921-b68f-803f-830a-c749e70d82b2" class="" dir="auto">Q52: When should I use random numbers?<br/>A: For games, quizzes, random colors, or random choices.</p><p id="39315921-b68f-8005-9f53-ca07c368b529" class="" dir="auto">Q53: How do I generate a random decimal?<br/>A:</p><pre id="39315921-b68f-807b-a40b-d6c0b6efc0a9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.random();</code></pre><p id="39315921-b68f-8069-b34d-d2cb011286a4" class="" dir="auto">Q54: How do I generate a random whole number from 1 to 10?<br/>A:</p><pre id="39315921-b68f-8024-8ce0-e8f96e9868e9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let number = Math.floor(Math.random() * 10) + 1;</code></pre><p id="39315921-b68f-8047-806a-c2e0d22200f9" class="" dir="auto">Q55: Why do I use Math.floor()?<br/>A: It removes the decimal part to make a whole number.</p><p id="39315921-b68f-800d-ab27-f82deb180fba" class="" dir="auto">Q56: What does Math.random() return?<br/>A: A decimal from 0 up to (but not including) 1.</p><p id="39315921-b68f-8051-8996-c3564f1f6d10" class="" dir="auto">Q57: How do I simulate rolling a die?<br/>A:</p><pre id="39315921-b68f-806c-be2f-f58ff47f97a4" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let roll = Math.floor(Math.random() * 6) + 1;</code></pre><p id="39315921-b68f-8057-b22a-dd60e6c2b776" class="" dir="auto">Q58: How do I randomly choose true or false?<br/>A:</p><pre id="39315921-b68f-8007-be62-d3f0b4d455b9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = Math.random() &lt; 0.5;</code></pre><p id="39315921-b68f-800b-aab7-d73aa1f1ee35" class="" dir="auto">Q59: How do I randomly choose an item from an array?<br/>A:</p><pre id="39315921-b68f-80cd-babe-c38263650ef4" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let names = [&quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot;];
+let pick = names[Math.floor(Math.random() * names.length)];</code></pre><p id="39315921-b68f-8037-afae-c7b3e6dc5658" class="" dir="auto">Q60: Why are random numbers useful on websites?<br/>A: They make web pages more interactive, dynamic, and fun.</p></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e2-87fa-dc3e02202a8a" style="display:inline-block">Code Syntax</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8083-80e0-d93fa439df84" style="display:inline-block">Variables &amp; Constants</h1></summary><div class="indented"><p id="39315921-b68f-8056-8701-dd5731e4cb2d" class="" dir="auto">Q1: I want to store the user&#x27;s name from a textbox.<br/>A:</p><pre id="39315921-b68f-80e7-8b21-d0e8dd7d8c07" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let name = document.getElementById(&quot;txtName&quot;).value;</code></pre><p id="39315921-b68f-8031-9598-cf656a116571" class="" dir="auto">Q2: I want to store a score that changes while the app runs.<br/>A:</p><pre id="39315921-b68f-8028-951b-cab57c16e75b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let score = 0;</code></pre><p id="39315921-b68f-803c-a98b-df2f8e6f510d" class="" dir="auto">Q3: I want to store a fixed app title.<br/>A:</p><pre id="39315921-b68f-80d1-a683-c890e7d632ae" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">const APP_NAME = &quot;My App&quot;;</code></pre><p id="39315921-b68f-8013-9ec4-e160b9b5e18e" class="" dir="auto">Q4: I want to store whether a checkbox is checked.<br/>A:</p><pre id="39315921-b68f-8019-a03a-edae26672399" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let isChecked = document.getElementById(&quot;chkAgree&quot;).checked;</code></pre><p id="39315921-b68f-80a5-8aa9-fe1176ab6573" class="" dir="auto">Q5: I want to increase a score by 10.<br/>A:</p><pre id="39315921-b68f-804f-ace1-c68c7d5b5199" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += 10;</code></pre><p id="39315921-b68f-80eb-a061-fb73a17e9713" class="" dir="auto">Q6: I want to reset a score to zero.<br/>A:</p><pre id="39315921-b68f-8003-8ad6-d45307f745fc" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score = 0;</code></pre><p id="39315921-b68f-802f-bb37-dfc2a07ae498" class="" dir="auto">Q7: I want to store a decimal price.<br/>A:</p><pre id="39315921-b68f-804e-ab44-dfbb596295e9" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let price = 19.99;</code></pre><p id="39315921-b68f-80f8-bdff-ec94be5d01f8" class="" dir="auto">Q8: I want to update a username variable.<br/>A:</p><pre id="39315921-b68f-80ca-ae8e-f958113e25e1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">username = &quot;Alex&quot;;</code></pre><p id="39315921-b68f-80b9-ba86-e1e40bcaf439" class="" dir="auto">Q9: I want to store a player&#x27;s health.<br/>A:</p><pre id="39315921-b68f-8065-a914-e796735c5b38" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let health = 100;</code></pre><p id="39315921-b68f-80f1-b2d4-e889efcb4c3a" class="" dir="auto">Q10: I want to store whether dark mode is enabled.<br/>A:</p><pre id="39315921-b68f-805f-9e54-d1c6fe0eeb5b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let darkMode = true;</code></pre></div></details><hr id="39315921-b68f-805c-a60f-ffd6d53921fb" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-805b-9dca-f196c76bfb48" style="display:inline-block">Data Types</h1></summary><div class="indented"><p id="39315921-b68f-803c-a235-c40b2ed3194f" class="" dir="auto">Q11: I want to convert textbox input into a number.<br/>A:</p><pre id="39315921-b68f-80c7-915a-e6e3b5e9eee1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let age = Number(document.getElementById(&quot;txtAge&quot;).value);</code></pre><p id="39315921-b68f-80a9-8c0e-eaa32b426ae7" class="" dir="auto">Q12: I want to store text entered by the user.<br/>A:</p><pre id="39315921-b68f-801e-8f34-caf1ae9a2070" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let message = document.getElementById(&quot;txtMessage&quot;).value;</code></pre><p id="39315921-b68f-803a-a3ca-e4f4d7031cad" class="" dir="auto">Q13: I want to store a true/false value.<br/>A:</p><pre id="39315921-b68f-807e-857f-f4a81de5668a" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let loggedIn = false;</code></pre><p id="39315921-b68f-80c4-8570-e8618d8a618a" class="" dir="auto">Q14: I want to store a decimal number.<br/>A:</p><pre id="39315921-b68f-80b2-9718-d2cbb16da78f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let temperature = 72.5;</code></pre><p id="39315921-b68f-80fc-a749-ef053920de04" class="" dir="auto">Q15: I want to convert text into a decimal number.<br/>A:</p><pre id="39315921-b68f-80fa-a776-f94bd77b4907" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let price = parseFloat(document.getElementById(&quot;txtPrice&quot;).value);</code></pre><p id="39315921-b68f-8028-a070-e64dbc989dcc" class="" dir="auto">Q16: I want to store a large number.<br/>A:</p><pre id="39315921-b68f-80ed-86d4-cda2c5ac1b35" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let population = 8000000;</code></pre><p id="39315921-b68f-8048-9c07-c7a80efe5621" class="" dir="auto">Q17: I want to store multiple words.<br/>A:</p><pre id="39315921-b68f-80b5-9959-dcb32efa7edb" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let title = &quot;Hello World&quot;;</code></pre><p id="39315921-b68f-80cb-8dac-fc18060a9953" class="" dir="auto">Q18: I want to store whether a button is enabled.<br/>A:</p><pre id="39315921-b68f-8080-b01a-cce002873ea6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let enabled = true;</code></pre><p id="39315921-b68f-801e-ad62-eafa6771c76c" class="" dir="auto">Q19: I want to convert a string into an integer.<br/>A:</p><pre id="39315921-b68f-802e-9b67-c1382b833819" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let quantity = parseInt(document.getElementById(&quot;txtQuantity&quot;).value);</code></pre><p id="39315921-b68f-80e0-8e0e-c75878526283" class="" dir="auto">Q20: I want to store a product name.<br/>A:</p><pre id="39315921-b68f-807c-82c6-d73f75013271" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let product = &quot;Laptop&quot;;</code></pre></div></details><hr id="39315921-b68f-8096-960f-cad132a38c37" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e9-a811-d484f50643ed" style="display:inline-block">Input / Output (HTML/CSS)</h1></summary><div class="indented"><p id="39315921-b68f-80d1-b69f-c61dcddee7d9" class="" dir="auto">Q21: I want to display text inside a paragraph.<br/>A:</p><pre id="39315921-b68f-80f5-8422-c1bbe1f2d367" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;output&quot;).textContent = &quot;Hello!&quot;;</code></pre><p id="39315921-b68f-8017-968c-c041c6ca8a68" class="" dir="auto">Q22: I want to read text from a textbox.<br/>A:</p><pre id="39315921-b68f-801e-a0fc-d07678ad80db" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let input = document.getElementById(&quot;txtInput&quot;).value;</code></pre><p id="39315921-b68f-806c-8d27-f925026b7c31" class="" dir="auto">Q23: I want to display a popup message.<br/>A:</p><pre id="39315921-b68f-80c9-9ffd-d1b62e62d5bd" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">alert(&quot;Welcome!&quot;);</code></pre><p id="39315921-b68f-8044-9263-f352d5ced2f2" class="" dir="auto">Q24: I want to clear a textbox.<br/>A:</p><pre id="39315921-b68f-80cc-a5ba-d04f3eae6c5c" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;txtInput&quot;).value = &quot;&quot;;</code></pre><p id="39315921-b68f-80ea-88d8-c34c8d8af4b2" class="" dir="auto">Q25: I want to change the text of a button.<br/>A:</p><pre id="39315921-b68f-80b4-8fe1-c1807361ca6c" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;btnSave&quot;).textContent = &quot;Saved&quot;;</code></pre><p id="39315921-b68f-80c7-aed8-c61f66c11493" class="" dir="auto">Q26: I want to display the user&#x27;s name.<br/>A:</p><pre id="39315921-b68f-806a-9c60-c8c47ae76680" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;lblName&quot;).textContent = name;</code></pre><p id="39315921-b68f-808f-a7c7-f205e797abc6" class="" dir="auto">Q27: I want to change a heading.<br/>A:</p><pre id="39315921-b68f-8036-91bc-ed63bba64924" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;title&quot;).textContent = &quot;Dashboard&quot;;</code></pre><p id="39315921-b68f-8083-b60c-c17c510d22b8" class="" dir="auto">Q28: I want to display a calculation result.<br/>A:</p><pre id="39315921-b68f-8017-8d30-c090e2d04e5e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;result&quot;).textContent = total;</code></pre><p id="39315921-b68f-80bc-b29a-c537874c7e3e" class="" dir="auto">Q29: I want to display multiple lines.<br/>A:</p><pre id="39315921-b68f-804f-bfb1-dd485c20e0d5" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;output&quot;).innerHTML = &quot;Line 1&lt;br&gt;Line 2&quot;;</code></pre><p id="39315921-b68f-8047-9d76-eda350bcd7d8" class="" dir="auto">Q30: I want to clear displayed text.<br/>A:</p><pre id="39315921-b68f-8095-83ef-ebaf7509e89f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">document.getElementById(&quot;output&quot;).textContent = &quot;&quot;;</code></pre></div></details><hr id="39315921-b68f-807a-9c6f-edc01184257b" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80af-b0af-d2f33762e93a" style="display:inline-block">Basic Math Operations</h1></summary><div class="indented"><p id="39315921-b68f-8096-abf5-df83fb4e1648" class="" dir="auto">Q31: I want to add two textbox numbers.<br/>A:</p><pre id="39315921-b68f-809c-b664-f63ef37eceeb" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let total =
+    Number(document.getElementById(&quot;txtA&quot;).value) +
+    Number(document.getElementById(&quot;txtB&quot;).value);</code></pre><p id="39315921-b68f-80f1-99c4-cbec356a1c5d" class="" dir="auto">Q32: I want to subtract two numbers.<br/>A:</p><pre id="39315921-b68f-80d3-aba0-ffa9479512a6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a - b;</code></pre><p id="39315921-b68f-804a-991f-f9716264ef2c" class="" dir="auto">Q33: I want to multiply two numbers.<br/>A:</p><pre id="39315921-b68f-80b3-bdd3-e764a932f0be" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a * b;</code></pre><p id="39315921-b68f-80be-9976-d4be9b2e06cf" class="" dir="auto">Q34: I want to divide two numbers.<br/>A:</p><pre id="39315921-b68f-80d7-8b9d-f3bc57cfd302" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = a / b;</code></pre><p id="39315921-b68f-804a-a551-dd17e7f7c634" class="" dir="auto">Q35: I want to find the remainder after division.<br/>A:</p><pre id="39315921-b68f-80a1-8927-d89e4b4e0fcd" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let remainder = a % b;</code></pre><p id="39315921-b68f-80ac-bdea-c925a599fd64" class="" dir="auto">Q36: I want to increase a counter.<br/>A:</p><pre id="39315921-b68f-802c-a5b0-f249e7fdd4c1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count++;</code></pre><p id="39315921-b68f-8012-95e0-fc9b7f6022f6" class="" dir="auto">Q37: I want to decrease a counter.<br/>A:</p><pre id="39315921-b68f-8018-b06a-ddd7009e5a96" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">count--;</code></pre><p id="39315921-b68f-80ec-b861-d5b57207b332" class="" dir="auto">Q38: I want to add 5 to a score.<br/>A:</p><pre id="39315921-b68f-8005-8acc-f213dd31d0b8" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += 5;</code></pre><p id="39315921-b68f-80de-a9fa-faae9b7c2699" class="" dir="auto">Q39: I want to double a value.<br/>A:</p><pre id="39315921-b68f-8071-a1b5-f417b68c0a9f" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">value *= 2;</code></pre><p id="39315921-b68f-80cb-ab69-df471ab466d2" class="" dir="auto">Q40: I want to average two numbers.<br/>A:</p><pre id="39315921-b68f-80ef-8ac6-f721cc448411" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let average = (a + b) / 2;</code></pre></div></details><hr id="39315921-b68f-8006-93a7-d1ddcf46e912" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80e2-b81b-ff96f636507b" style="display:inline-block">Conditionals (if / else)</h1></summary><div class="indented"><p id="39315921-b68f-8029-9f8d-ff9d859ba098" class="" dir="auto">Q41: I want to check if a textbox is empty.<br/>A:</p><pre id="39315921-b68f-802d-a7fc-ced584728982" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (document.getElementById(&quot;txtName&quot;).value === &quot;&quot;)
+{
+    alert(&quot;Please enter a name.&quot;);
+}</code></pre><p id="39315921-b68f-80d3-9520-eac9d6f3a7c6" class="" dir="auto">Q42: I want to check if someone is 18 or older.<br/>A:</p><pre id="39315921-b68f-804b-be38-c8f15a5a63d0" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (age &gt;= 18)
+{
+    alert(&quot;Access Granted&quot;);
+}</code></pre><p id="39315921-b68f-8002-80bd-d94d1aecccd9" class="" dir="auto">Q43: I want to show pass or fail.<br/>A:</p><pre id="39315921-b68f-80f4-99e9-d575f0f100c3" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 60)
+{
+    alert(&quot;Pass&quot;);
+}
+else
+{
+    alert(&quot;Fail&quot;);
+}</code></pre><p id="39315921-b68f-8049-bcba-e91852b13566" class="" dir="auto">Q44: I want to check if two values are equal.<br/>A:</p><pre id="39315921-b68f-8014-b98f-d45fdaaa488d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (a === b)
+{
+    alert(&quot;Equal&quot;);
+}</code></pre><p id="39315921-b68f-80ee-90c9-f7b8df3dde0a" class="" dir="auto">Q45: I want to check if both conditions are true.<br/>A:</p><pre id="39315921-b68f-804a-9fca-c242f2bddc56" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (loggedIn &amp;&amp; isAdmin)
+{
+    alert(&quot;Welcome Admin&quot;);
+}</code></pre><p id="39315921-b68f-80d2-b76e-cc3934c145d6" class="" dir="auto">Q46: I want to check if either condition is true.<br/>A:</p><pre id="39315921-b68f-807d-8d5d-e4d4ecc802fd" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (isAdmin || isModerator)
+{
+    alert(&quot;Access Granted&quot;);
+}</code></pre><p id="39315921-b68f-80b3-858b-d58672a973c3" class="" dir="auto">Q47: I want to check if a number is not zero.<br/>A:</p><pre id="39315921-b68f-8092-a6e4-f22357042568" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (number !== 0)
+{
+    alert(&quot;Valid&quot;);
+}</code></pre><p id="39315921-b68f-8021-aac3-dbab9bbd8f1d" class="" dir="auto">Q48: I want to display a letter grade.<br/>A:</p><pre id="39315921-b68f-80cb-83e8-cf92bb8a4e0d" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (score &gt;= 90)
+{
+    grade = &quot;A&quot;;
+}
+else if (score &gt;= 80)
+{
+    grade = &quot;B&quot;;
+}
+else
+{
+    grade = &quot;C&quot;;
+}</code></pre><p id="39315921-b68f-8078-82d3-d5137267540f" class="" dir="auto">Q49: I want to check if a checkbox is checked.<br/>A:</p><pre id="39315921-b68f-80ea-889c-f8a2238c6a79" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (document.getElementById(&quot;chkAgree&quot;).checked)
+{
+    alert(&quot;Thank you!&quot;);
+}</code></pre><p id="39315921-b68f-8044-b5a2-e237e07f64c1" class="" dir="auto">Q50: I want to display a message only when the user is logged in.<br/>A:</p><pre id="39315921-b68f-803f-a223-d9ba1afd480e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">if (loggedIn)
+{
+    alert(&quot;Welcome Back!&quot;);
+}</code></pre></div></details><hr id="39315921-b68f-80b1-9a88-f035b24ca9e3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80b0-96fc-eb9c30d27bb4" style="display:inline-block">Random Numbers</h1></summary><div class="indented"><p id="39315921-b68f-8067-8a25-d543b09118ab" class="" dir="auto">Q51: I want to generate a random number from 1 to 10.<br/>A:</p><pre id="39315921-b68f-8022-a2b6-fc1d116f92e0" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let number = Math.floor(Math.random() * 10) + 1;</code></pre><p id="39315921-b68f-8057-8bb7-f7649e0799f0" class="" dir="auto">Q52: I want to simulate rolling a die.<br/>A:</p><pre id="39315921-b68f-80b8-9e9b-e05397908037" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let roll = Math.floor(Math.random() * 6) + 1;</code></pre><p id="39315921-b68f-8069-ac8f-fc8bbd112236" class="" dir="auto">Q53: I want to randomly choose true or false.<br/>A:</p><pre id="39315921-b68f-806c-8b85-ef642755fca1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let result = Math.random() &lt; 0.5;</code></pre><p id="39315921-b68f-8000-9e5c-f50db9c9c816" class="" dir="auto">Q54: I want to generate a random decimal.<br/>A:</p><pre id="39315921-b68f-8089-90d6-d908e6eabbb1" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.random();</code></pre><p id="39315921-b68f-804a-9a7f-e07199e65d96" class="" dir="auto">Q55: I want to generate a random number between 50 and 100.<br/>A:</p><pre id="39315921-b68f-80b8-8f8c-d780a7e8f93b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let value = Math.floor(Math.random() * 51) + 50;</code></pre><p id="39315921-b68f-808a-99fa-c356e2d0cbdb" class="" dir="auto">Q56: I want to simulate a coin flip.<br/>A:</p><pre id="39315921-b68f-8065-b310-e6fc6f20929e" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let flip = Math.random() &lt; 0.5 ? &quot;Heads&quot; : &quot;Tails&quot;;</code></pre><p id="39315921-b68f-8083-9759-c0a563b5c693" class="" dir="auto">Q57: I want to randomly increase score by 1–5.<br/>A:</p><pre id="39315921-b68f-809e-abb6-fa408dcfe4a6" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">score += Math.floor(Math.random() * 5) + 1;</code></pre><p id="39315921-b68f-80a8-b8fa-e35a58d92d76" class="" dir="auto">Q58: I want to randomly choose a color.<br/>A:</p><pre id="39315921-b68f-8042-adca-c23843d67ed7" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let colors = [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;];
+let color = colors[Math.floor(Math.random() * colors.length)];</code></pre><p id="39315921-b68f-8029-a151-cd2e6d16d0d9" class="" dir="auto">Q59: I want to randomly choose a player&#x27;s name.<br/>A:</p><pre id="39315921-b68f-8025-a6e7-c5328befc96b" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let players = [&quot;Alex&quot;, &quot;Sam&quot;, &quot;Jordan&quot;];
+let player = players[Math.floor(Math.random() * players.length)];</code></pre><p id="39315921-b68f-80e0-805c-f756a6d7ad8a" class="" dir="auto">Q60: I want to randomly decide whether an attack hits.<br/>A:</p><pre id="39315921-b68f-80b1-aa0d-d5ca529ffea2" class="code code-wrap" data-notion-code-syntax="jsx"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">let hit = Math.random() &lt; 0.75;</code></pre></div></details></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="3e315921-b68f-804c-a800-e4e1fa6bb748" style="display:inline-block">Flowcharts + Key</h1></summary><div class="indented"><h3 id="3e315921-b68f-8038-8f93-f8b6f70988d4" class="" dir="auto">Flowchart shape key</h3><table id="3e315921-b68f-803b-aba8-dafa7c903c5c" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="3e315921-b68f-80c1-9b7d-c5d305d4656e" dir="ltr"><th id="wpG\" class="simple-table-header-color simple-table-header">Text notation</th><th id="umsp" class="simple-table-header-color simple-table-header">Actual flowchart shape</th><th id="R`Z{" class="simple-table-header-color simple-table-header">Purpose</th></tr></thead><tbody><tr id="3e315921-b68f-80b2-adef-ce661439f90c" dir="ltr"><td id="wpG\" class=""><code>([ START / END ])</code></td><td id="umsp" class=""><strong>Oval / Terminator</strong></td><td id="R`Z{" class="">Start or end</td></tr><tr id="3e315921-b68f-802b-bb42-ebc3bcc95c3c" dir="ltr"><td id="wpG\" class=""><code>[ Process ]</code></td><td id="umsp" class=""><strong>Rectangle</strong></td><td id="R`Z{" class="">Calculation, assignment, transformation</td></tr><tr id="3e315921-b68f-80fd-a3a4-eaaa4d77b1b8" dir="ltr"><td id="wpG\" class=""><code>[/ Input / Output /]</code></td><td id="umsp" class=""><strong>Parallelogram</strong></td><td id="R`Z{" class="">User input or webpage output</td></tr><tr id="3e315921-b68f-805a-acd6-c826790257b1" dir="ltr"><td id="wpG\" class=""><code>{ Condition? }</code></td><td id="umsp" class=""><strong>Diamond</strong></td><td id="R`Z{" class="">Decision / branching</td></tr><tr id="3e315921-b68f-8089-97ec-e62214a32dbe" dir="ltr"><td id="wpG\" class=""><code>↓</code></td><td id="umsp" class=""><strong>Arrow</strong></td><td id="R`Z{" class="">Direction of execution</td></tr></tbody></table><hr id="3e315921-b68f-807f-922c-d77d42f07e66" dir="auto"/><h1 id="3e315921-b68f-80b5-b0d1-ce91eee75545" class="" dir="auto">Project 1: Simple Web Calculator</h1><h3 id="3e315921-b68f-8012-adb5-eb7747c13a51" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-809c-a840-f08dd19d13af" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ User clicks &quot;Add&quot; button ]
+                  |
+                  ↓
+       [ Call addNumbers() ]
+                  |
+                  ↓
+       [/ Get value from num1 /]
+                  |
+                  ↓
+       [ Convert value to Number ]
+                  |
+                  ↓
+       [/ Get value from num2 /]
+                  |
+                  ↓
+       [ Convert value to Number ]
+                  |
+                  ↓
+       [ Calculate:
+         sum = a + b ]
+                  |
+                  ↓
+       [/ Display sum in
+          result element /]
+                  |
+                  ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-8016-b409-e02209f73c16" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80de-a82e-c39175629c0a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">User clicks button → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80b6-87cb-cd073a371271" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Call <code>addNumbers()</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8009-a0dc-d21b8109a73d" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Get input value → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8033-95af-ef751088f553" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>Number()</code> conversion → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80d0-92fe-c2d1eb72e0dd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Addition → <strong>Process</strong></li></ul><ul id="3e315921-b68f-809d-b6e9-d60542867313" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Update HTML element → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80b4-b48e-fc7172d10d94" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-807d-bdcd-d7091e1df9b9" class="" dir="auto">Core architecture</h3><pre id="3e315921-b68f-8041-8eab-f6be11786713" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">HTML Input
+    ↓
+Button Click
+    ↓
+JavaScript Function
+    ↓
+Get Values
+    ↓
+Process
+    ↓
+DOM Update
+    ↓
+HTML Output</code></pre><hr id="3e315921-b68f-801a-a9d2-e9925f334e2a" dir="auto"/><h1 id="3e315921-b68f-8097-beea-c64a78671989" class="" dir="auto">Project 2: Name Greeting App</h1><h3 id="3e315921-b68f-8040-8ebe-cfa4410eaee8" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-803b-827e-c8e1f58ac065" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ User clicks &quot;Greet&quot; ]
+                  |
+                  ↓
+          [ Call greet() ]
+                  |
+                  ↓
+       [/ Get nameInput value /]
+                  |
+                  ↓
+       [ Create message:
+         &quot;Hello, &quot; + name + &quot;!&quot; ]
+                  |
+                  ↓
+       [/ Display message
+          in output element /]
+                  |
+                  ↓
+              ([ END ])</code></pre><h3 id="3e315921-b68f-8044-8053-fcfa581ec7ae" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8031-aa04-d041db9bbbc1" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button click → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80d1-bc64-ed6e15704fba" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Call function → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80e1-99c5-c06182de55dd" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Get name → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80c2-ab4e-fc986435e28b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Build greeting → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80f9-a1d6-fbb7f3ce032a" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Update <code>&lt;h2&gt;</code> → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8063-88e9-fd19a12da0c9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-806b-bb99-c01add6b5dc5" class="" dir="auto">Core logic</h3><pre id="3e315921-b68f-8028-8ead-de30da375013" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">User
+ ↓
+Input
+ ↓
+JavaScript
+ ↓
+Create String
+ ↓
+DOM
+ ↓
+Webpage</code></pre><hr id="3e315921-b68f-80d1-b173-ce44b80c0e04" dir="auto"/><h1 id="3e315921-b68f-807b-b051-c5762b7f409e" class="" dir="auto">Project 3: Number Guessing Game</h1><h3 id="3e315921-b68f-8075-9fbf-dea8e3e87a6b" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-8063-b646-e5226d364a51" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ User clicks &quot;Guess&quot; ]
+                  |
+                  ↓
+       [ Call checkGuess() ]
+                  |
+                  ↓
+       [ Generate random
+         number from 1–10 ]
+                  |
+                  ↓
+       [/ Get guessInput value /]
+                  |
+                  ↓
+       [ Convert guess to Number ]
+                  |
+                  ↓
+          { guess === secret? }
+             /            \
+           YES             NO
+            |               |
+            ↓               ↓
+ [/ Set result to       [/ Set result to
+      &quot;Correct!&quot; /]       &quot;Wrong! It was&quot;
+                          + secret /]
+            |               |
+            └───────┬───────┘
+                    ↓
+        [/ Update result element /]
+                    |
+                    ↓
+                ([ END ])</code></pre><h3 id="3e315921-b68f-80aa-a71e-fff1c17c631b" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-8088-a246-dc7dae381509" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button click → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8026-8416-f4c75b43795b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Call function → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8032-93c4-c55381fbfb0f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate random number → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8056-89b2-d1621a801e38" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Get guess → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80ec-802e-db2a8be44e39" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert guess → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80c1-9a2b-ce6a2147472b" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Compare values → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8062-bf1d-fcdbf6145053" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Set result → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8033-855b-ebdeacee1798" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80bc-b263-d463ffa83526" class="" dir="auto">Core decision</h3><pre id="3e315921-b68f-806e-ab8d-ff3c674b75a4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">              { guess === secret? }
+                  /          \
+                YES           NO
+                 ↓             ↓
+             Correct         Wrong</code></pre><p id="3e315921-b68f-8053-a705-cf062cb52b9d" class="" dir="auto">This is the first project in the group that introduces a <strong>branch in program execution</strong>.</p><hr id="3e315921-b68f-8029-a316-fc6eaae9022f" dir="auto"/><h1 id="3e315921-b68f-804f-8e44-c0134cebb017" class="" dir="auto">Project 4: Simple Grade Checker</h1><p id="3e315921-b68f-80a0-9bdd-deb699955973" class="" dir="auto">This one demonstrates a <strong>multi-branch decision tree</strong>.</p><h3 id="3e315921-b68f-80c0-b46f-db2308771fe0" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80e7-a8c0-e052eceda7cc" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ User clicks &quot;Check Grade&quot; ]
+                  |
+                  ↓
+          [ Call checkGrade() ]
+                  |
+                  ↓
+       [/ Get scoreInput value /]
+                  |
+                  ↓
+       [ Convert score to Number ]
+                  |
+                  ↓
+           { score &gt;= 90? }
+             /          \
+           YES           NO
+            |             |
+            ↓             ↓
+        [ grade = &quot;A&quot; ] { score &gt;= 80? }
+                           /         \
+                         YES          NO
+                          |            |
+                          ↓            ↓
+                    [ grade = &quot;B&quot; ] { score &gt;= 70? }
+                                      /        \
+                                    YES         NO
+                                     |           |
+                                     ↓           ↓
+                               [ grade = &quot;C&quot; ] { score &gt;= 60? }
+                                                   /       \
+                                                 YES        NO
+                                                  |          |
+                                                  ↓          ↓
+                                            [ grade = &quot;D&quot; ] [ grade = &quot;F&quot; ]
+                                                  |          |
+                                                  └────┬─────┘
+                                                       ↓
+                                           [/ Display grade
+                                              in grade element /]
+                                                       |
+                                                       ↓
+                                                   ([ END ])</code></pre><h3 id="3e315921-b68f-809c-babf-da8fbf46604e" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-805d-a0fc-c19b9470a6dc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button click → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8063-97c6-e6b39975b3da" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Call function → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80bd-a4ac-c8010938b0db" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Read score → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-80b3-b271-fc0d2b1ee1fc" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Convert score → <strong>Process</strong></li></ul><ul id="3e315921-b68f-804b-be68-fbbf19b25a21" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 90</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-8056-a2b3-eccd5b79abf9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 80</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-808b-bb24-eccfa7f012d6" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 70</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80c1-8c75-f56d60746de9" class="bulleted-list" dir="auto"><li style="list-style-type:disc"><code>score &gt;= 60</code> → <strong>Decision</strong></li></ul><ul id="3e315921-b68f-80c5-8cf7-c184fd5b8ac4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Assign grade → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8025-a0c7-fe9b740fcdcf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Display grade → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8010-aadd-cef5fb0317c4" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-803d-b066-c989b55ea4d0" class="" dir="auto">Logic view</h3><pre id="3e315921-b68f-8036-9b85-d00e691810fe" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">score &gt;= 90?
+   │
+   ├── YES → A
+   │
+   └── NO
+        ↓
+     score &gt;= 80?
+        │
+        ├── YES → B
+        │
+        └── NO
+             ↓
+          score &gt;= 70?
+             │
+             ├── YES → C
+             │
+             └── NO
+                  ↓
+               score &gt;= 60?
+                  │
+                  ├── YES → D
+                  │
+                  └── NO → F</code></pre><p id="3e315921-b68f-803b-97fd-c60d8551f009" class="" dir="auto">One useful distinction here:</p><p id="3e315921-b68f-8017-92c4-e1f275b13e8d" class="" dir="auto"><strong>The diamonds determine the grade; the rectangle assigns it.</strong></p><pre id="3e315921-b68f-8002-a5e7-e2e4d9f30728" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">{ score &gt;= 90? }    ← Decision
+        ↓
+[ grade = &quot;A&quot; ]     ← Process</code></pre><hr id="3e315921-b68f-8005-a15a-d212576edad4" dir="auto"/><h1 id="3e315921-b68f-80f2-b956-f414cd8dc409" class="" dir="auto">Project 5: Random Color Changer</h1><h3 id="3e315921-b68f-80b2-8482-fa58183c8825" class="" dir="auto">Text-based flowchart</h3><pre id="3e315921-b68f-80d2-a3aa-e543acecb0a4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">             ([ START ])
+                  |
+                  ↓
+       [ User clicks &quot;Change Color&quot; ]
+                  |
+                  ↓
+          [ Call changeColor() ]
+                  |
+                  ↓
+       [ Generate random R value
+             between 0–255 ]
+                  |
+                  ↓
+       [ Generate random G value
+             between 0–255 ]
+                  |
+                  ↓
+       [ Generate random B value
+             between 0–255 ]
+                  |
+                  ↓
+       [ Build RGB color string:
+         &quot;rgb(&quot; + r + &quot;,&quot; + g + &quot;,&quot; + b + &quot;)&quot; ]
+                  |
+                  ↓
+       [ Set document.body
+         backgroundColor = color ]
+                  |
+                  ↓
+             ([ END ])</code></pre><h3 id="3e315921-b68f-8049-8c71-ce751359846a" class="" dir="auto">Shape breakdown</h3><ul id="3e315921-b68f-80b2-b636-c46307eb1919" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Button click → <strong>Input/Output</strong></li></ul><ul id="3e315921-b68f-8080-ab78-f3cddeb8645f" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Call function → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8006-aca2-d563d68fe53c" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate <code>r</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80e6-8d80-ef2431c755a9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate <code>g</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-80c8-ac97-c22e95584430" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Generate <code>b</code> → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8091-844f-c136daf3cdde" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Build RGB string → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8047-a880-ed6755db90cf" class="bulleted-list" dir="auto"><li style="list-style-type:disc">Change webpage background → <strong>Process</strong></li></ul><ul id="3e315921-b68f-8005-bdad-e6c70e4af5f9" class="bulleted-list" dir="auto"><li style="list-style-type:disc">End → <strong>Terminator</strong></li></ul><h3 id="3e315921-b68f-80d1-a8b6-c37ceaa13037" class="" dir="auto">Core architecture</h3><pre id="3e315921-b68f-8098-b4f8-d572b90a3ab3" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">Button
+  ↓
+JavaScript Function
+  ↓
+Random R
+  ↓
+Random G
+  ↓
+Random B
+  ↓
+Build RGB String
+  ↓
+Modify DOM/CSS
+  ↓
+Background Changes</code></pre><hr id="3e315921-b68f-80c0-95ad-d54eb78cf624" dir="auto"/><h1 id="3e315921-b68f-80d4-bb7d-c6d092c62f6c" class="" dir="auto">All 5 projects — progression</h1><p id="3e315921-b68f-8074-bdc4-f614497788d8" class="" dir="auto">These five give you a pretty clean progression in <strong>web programming logic</strong>:</p><pre id="3e315921-b68f-8009-9182-d3299fdc86c6" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">PROJECT 1
+Simple Calculator
+        ↓
+DOM INPUT
+        ↓
+JavaScript PROCESSING
+        ↓
+DOM OUTPUT
+        ↓
+PROJECT 2
+Name Greeting
+        ↓
+String Processing
+        ↓
+DOM OUTPUT
+        ↓
+PROJECT 3
+Number Guessing
+        ↓
+Random Data
+        ↓
+Decision
+        ↓
+Different Outputs
+        ↓
+PROJECT 4
+Grade Checker
+        ↓
+Multiple Decisions
+        ↓
+Decision Tree
+        ↓
+PROJECT 5
+Random Color Changer
+        ↓
+Random Data
+        ↓
+String Construction
+        ↓
+DOM/CSS Manipulation</code></pre><h2 id="3e315921-b68f-80e6-bf9b-e2557191a4b5" class="" dir="auto">The common web-programming pattern</h2><p id="3e315921-b68f-8001-84ba-ffaa342b4c89" class="" dir="auto">You can use this as the <strong>master flowchart</strong> for your notes:</p><pre id="3e315921-b68f-80a8-9cf2-d167d580e89f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">              ([ START ])
+                   |
+                   ↓
+          [/ USER INTERACTION /]
+                   |
+                   ↓
+           [ JavaScript Event ]
+                   |
+                   ↓
+          [ JavaScript Function ]
+                   |
+                   ↓
+          [/ GET HTML DATA /]
+                   |
+                   ↓
+             [ PROCESS DATA ]
+                   |
+                   ↓
+              { DECISION? }
+               /        \
+             YES         NO
+              |           |
+              ↓           ↓
+         [ Process ]  [ Process ]
+              |           |
+              └─────┬─────┘
+                    ↓
+             [ UPDATE DOM ]
+                    |
+                    ↓
+          [/ DISPLAY ON PAGE /]
+                    |
+                    ↓
+                ([ END ])</code></pre><p id="3e315921-b68f-8056-86ee-e20e1f90dab6" class="" dir="auto">The big idea you&#x27;re teaching with these projects is:</p><p id="3e315921-b68f-80d1-8922-d8189c382afc" class="" dir="auto"><strong>HTML provides the interface → JavaScript responds to events → JavaScript processes data → JavaScript manipulates the DOM → the webpage changes.</strong></p></div></details><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8015-87f7-e5874f0adcff" style="display:inline-block">Sample Projects</h1></summary><div class="indented"><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-8085-9fa5-fb522825cbe6" style="display:inline-block">Project 1: Simple Web Calculator</h1></summary><div class="indented"><h2 id="39315921-b68f-802a-8e6d-c476e57b7210" class="" dir="auto">What it does</h2><p id="39315921-b68f-807a-a6a1-f7de8a7f52b2" class="" dir="auto">Takes two numbers from input boxes and displays the sum on a webpage.</p><h2 id="39315921-b68f-80cf-80af-ed890fc52e7d" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8060-8431-dad0c499630c" class="numbered-list" start="1" dir="auto"><li>Get number from first input</li></ol><ol type="1" id="39315921-b68f-80b8-bca9-dc0dace05b49" class="numbered-list" start="2" dir="auto"><li>Get number from second input</li></ol><ol type="1" id="39315921-b68f-8053-a396-d339f5336a6e" class="numbered-list" start="3" dir="auto"><li>Convert both to numbers</li></ol><ol type="1" id="39315921-b68f-8002-b33a-d80ea444e867" class="numbered-list" start="4" dir="auto"><li>Add them together</li></ol><ol type="1" id="39315921-b68f-8048-ba0e-fe36e677bed4" class="numbered-list" start="5" dir="auto"><li>Display result in HTML</li></ol><pre id="39315921-b68f-803a-8e07-ca3b3239c912" class="code code-wrap" data-notion-code-syntax="html"><code class="language-html" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Calculator&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;input id=&quot;num1&quot; placeholder=&quot;First number&quot;&gt;
+&lt;input id=&quot;num2&quot; placeholder=&quot;Second number&quot;&gt;
+&lt;button onclick=&quot;addNumbers()&quot;&gt;Add&lt;/button&gt;
+
+&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+// Step 1: Create function triggered by button
+function addNumbers() {
+
+    // Step 2: Get first input value
+    let a = Number(document.getElementById(&quot;num1&quot;).value);
+
+    // Step 3: Get second input value
+    let b = Number(document.getElementById(&quot;num2&quot;).value);
+
+    // Step 4: Add numbers
+    let sum = a + b;
+
+    // Step 5: Display result on page
+    document.getElementById(&quot;result&quot;).textContent = sum;
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details><hr id="39315921-b68f-80c0-8459-e77b97e49512" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80f6-bbfe-c63dd2ce8a59" style="display:inline-block">Project 2: Name Greeting App</h1></summary><div class="indented"><h2 id="39315921-b68f-8041-a424-caf8efbbbe40" class="" dir="auto">What it does</h2><p id="39315921-b68f-8058-8229-e55d4a0f6b87" class="" dir="auto">User enters name → webpage greets them.</p><h2 id="39315921-b68f-8007-8c2c-c6094706a12c" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8069-99e1-efc82892705b" class="numbered-list" start="1" dir="auto"><li>Get name from input</li></ol><ol type="1" id="39315921-b68f-8066-9afb-cc4e3562feaa" class="numbered-list" start="2" dir="auto"><li>Create greeting message</li></ol><ol type="1" id="39315921-b68f-80ac-acf7-f640e58bc2a8" class="numbered-list" start="3" dir="auto"><li>Show message on page</li></ol><pre id="39315921-b68f-806e-9d18-c3330f26fe9d" class="code code-wrap" data-notion-code-syntax="html"><code class="language-html" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;input id=&quot;nameInput&quot; placeholder=&quot;Enter name&quot;&gt;
+&lt;button onclick=&quot;greet()&quot;&gt;Greet&lt;/button&gt;
+
+&lt;h2 id=&quot;output&quot;&gt;&lt;/h2&gt;
+
+&lt;script&gt;
+function greet() {
+
+    // Step 1: Get name from input
+    let name = document.getElementById(&quot;nameInput&quot;).value;
+
+    // Step 2: Create message
+    let message = &quot;Hello, &quot; + name + &quot;!&quot;;
+
+    // Step 3: Display message
+    document.getElementById(&quot;output&quot;).textContent = message;
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details><hr id="39315921-b68f-80f2-9392-d218573663dd" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80ef-961c-c747895545ed" style="display:inline-block">Project 3: Number Guessing Game</h1></summary><div class="indented"><h2 id="39315921-b68f-807f-b681-f7e7ee2ed1fe" class="" dir="auto">What it does</h2><p id="39315921-b68f-801a-b483-e542608b6c47" class="" dir="auto">User guesses a random number between 1–10.</p><h2 id="39315921-b68f-8096-a7ac-c91bd4a453f5" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8023-ba92-fa98a613a0e4" class="numbered-list" start="1" dir="auto"><li>Generate random number</li></ol><ol type="1" id="39315921-b68f-8075-a2a7-c02cbecfd8b8" class="numbered-list" start="2" dir="auto"><li>Get user guess</li></ol><ol type="1" id="39315921-b68f-80bd-b15f-c424a84b4626" class="numbered-list" start="3" dir="auto"><li>Compare values</li></ol><ol type="1" id="39315921-b68f-8034-976e-fcbf99ba82cc" class="numbered-list" start="4" dir="auto"><li>Show result</li></ol><pre id="39315921-b68f-80ef-bfe5-eb358115dca5" class="code code-wrap" data-notion-code-syntax="html"><code class="language-html" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;input id=&quot;guessInput&quot; placeholder=&quot;Guess 1-10&quot;&gt;
+&lt;button onclick=&quot;checkGuess()&quot;&gt;Guess&lt;/button&gt;
+
+&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+function checkGuess() {
+
+    // Step 1: Generate random number
+    let secret = Math.floor(Math.random() * 10) + 1;
+
+    // Step 2: Get user guess
+    let guess = Number(document.getElementById(&quot;guessInput&quot;).value);
+
+    // Step 3: Compare values
+    if (guess === secret) {
+
+        // Step 4A: Correct guess
+        document.getElementById(&quot;result&quot;).textContent = &quot;Correct!&quot;;
+    } else {
+
+        // Step 4B: Wrong guess
+        document.getElementById(&quot;result&quot;).textContent =
+            &quot;Wrong! It was &quot; + secret;
+    }
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details><hr id="39315921-b68f-80e3-b9cc-c7e138e2c2b3" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-808c-a781-c789443aaf5c" style="display:inline-block">Project 4: Simple Grade Checker</h1></summary><div class="indented"><h2 id="39315921-b68f-80a2-b6a1-fd7d8d7c0528" class="" dir="auto">What it does</h2><p id="39315921-b68f-80d4-bed9-ecae97a4a9c6" class="" dir="auto">Converts a score into a letter grade.</p><h2 id="39315921-b68f-808f-b03d-dbd020d3fa5c" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-8026-b7b6-fec332d4b82f" class="numbered-list" start="1" dir="auto"><li>Get score input</li></ol><ol type="1" id="39315921-b68f-80b4-8ae0-fb7bc6cc890f" class="numbered-list" start="2" dir="auto"><li>Convert to number</li></ol><ol type="1" id="39315921-b68f-80d7-81d3-ff3c51ff3530" class="numbered-list" start="3" dir="auto"><li>Check grade range</li></ol><ol type="1" id="39315921-b68f-8062-a418-ecebf5e80a03" class="numbered-list" start="4" dir="auto"><li>Display grade</li></ol><pre id="39315921-b68f-8094-b610-c4b8beaadd7e" class="code code-wrap" data-notion-code-syntax="html"><code class="language-html" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;input id=&quot;scoreInput&quot; placeholder=&quot;Enter score&quot;&gt;
+&lt;button onclick=&quot;checkGrade()&quot;&gt;Check Grade&lt;/button&gt;
+
+&lt;p id=&quot;grade&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+function checkGrade() {
+
+    // Step 1: Get score input
+    let score = Number(document.getElementById(&quot;scoreInput&quot;).value);
+
+    // Step 2: Determine grade
+    let grade;
+
+    if (score &gt;= 90) {
+        grade = &quot;A&quot;;
+    }
+    else if (score &gt;= 80) {
+        grade = &quot;B&quot;;
+    }
+    else if (score &gt;= 70) {
+        grade = &quot;C&quot;;
+    }
+    else if (score &gt;= 60) {
+        grade = &quot;D&quot;;
+    }
+    else {
+        grade = &quot;F&quot;;
+    }
+
+    // Step 3: Display grade
+    document.getElementById(&quot;grade&quot;).textContent = grade;
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details><hr id="39315921-b68f-802c-b30d-db8a241cb824" dir="auto"/><details open="" class="" dir="auto"><summary style="font-weight:600;font-size:1.875em;line-height:1.3;margin:0"><h1 id="39315921-b68f-80cb-890d-fac1501ffcde" style="display:inline-block">Project 5: Random Color Changer</h1></summary><div class="indented"><h2 id="39315921-b68f-8034-98cf-dc0565356cbb" class="" dir="auto">What it does</h2><p id="39315921-b68f-8023-a44f-c1f967319962" class="" dir="auto">Click a button → page background changes color randomly.</p><h2 id="39315921-b68f-80dd-89b5-e7baf38ffa6a" class="" dir="auto">Steps</h2><ol type="1" id="39315921-b68f-80fd-85b7-d7bdf62b9fd0" class="numbered-list" start="1" dir="auto"><li>Create random RGB values</li></ol><ol type="1" id="39315921-b68f-80f2-bc79-f69ccf7d76bd" class="numbered-list" start="2" dir="auto"><li>Build color string</li></ol><ol type="1" id="39315921-b68f-80b5-ba91-fc35306164f2" class="numbered-list" start="3" dir="auto"><li>Apply to page background</li></ol><pre id="39315921-b68f-80f6-9384-cdab2b368670" class="code code-wrap" data-notion-code-syntax="html"><code class="language-html" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+
+&lt;button onclick=&quot;changeColor()&quot;&gt;Change Color&lt;/button&gt;
+
+&lt;script&gt;
+function changeColor() {
+
+    // Step 1: Generate random RGB values
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+
+    // Step 2: Create RGB color string
+    let color = &quot;rgb(&quot; + r + &quot;,&quot; + g + &quot;,&quot; + b + &quot;)&quot;;
+
+    // Step 3: Apply color to page background
+    document.body.style.backgroundColor = color;
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></details></div></details></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
